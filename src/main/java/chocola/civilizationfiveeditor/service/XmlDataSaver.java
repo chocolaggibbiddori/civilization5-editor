@@ -24,6 +24,19 @@ import org.w3c.dom.NodeList;
 
 public class XmlDataSaver {
 
+    private static final Path BACKUP_ROOT = Path.of(System.getProperty("user.home"), ".civ5editor", "backups");
+
+    private final Path gameRoot;
+
+    public XmlDataSaver(Path gameRoot) {
+        this.gameRoot = gameRoot;
+    }
+
+    private Path backupPath(Path sourceFile) {
+        Path relative = gameRoot.relativize(sourceFile);
+        return BACKUP_ROOT.resolve(relative + ".bak");
+    }
+
     /**
      * Save a single unit's editable fields back to its source XML file.
      */
@@ -118,8 +131,8 @@ public class XmlDataSaver {
         if (value == 0) {
             return;
         }
-        for (int s = 0; s < sections.getLength(); s++) {
-            Element section = (Element) sections.item(s);
+        if (sections.getLength() > 0) {
+            Element section = (Element) sections.item(0);
             Element row = doc.createElement("Row");
             appendTextElement(doc, row, "ImprovementType", improvementType);
             appendTextElement(doc, row, "YieldType", yieldType);
@@ -168,11 +181,11 @@ public class XmlDataSaver {
     // ── Backup / Restore ──────────────────────────────────────────────────
 
     public boolean hasBackup(Path sourceFile) {
-        return Files.exists(sourceFile.resolveSibling(sourceFile.getFileName() + ".bak"));
+        return Files.exists(backupPath(sourceFile));
     }
 
     public void restoreBackup(Path sourceFile) throws Exception {
-        Path backup = sourceFile.resolveSibling(sourceFile.getFileName() + ".bak");
+        Path backup = backupPath(sourceFile);
         if (Files.exists(backup)) {
             Files.copy(backup, sourceFile, StandardCopyOption.REPLACE_EXISTING);
         }
@@ -232,9 +245,9 @@ public class XmlDataSaver {
     }
 
     private void save(Document doc, Path path) throws Exception {
-        // Backup original file once (only if .bak doesn't exist yet)
-        Path backup = path.resolveSibling(path.getFileName() + ".bak");
+        Path backup = backupPath(path);
         if (!Files.exists(backup)) {
+            Files.createDirectories(backup.getParent());
             Files.copy(path, backup);
         }
 

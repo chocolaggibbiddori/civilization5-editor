@@ -38,10 +38,11 @@ public class MainController {
 
     private static final Path DEFAULT_GAME_PATH = Path.of("C:\\Program Files (x86)\\Steam\\steamapps\\common\\Sid Meier's Civilization V");
 
-    private final XmlDataSaver saver = new XmlDataSaver();
     private final ObservableList<CivEntry> allCivs = FXCollections.observableArrayList();
     private final ObservableList<CivEntry> filteredCivs = FXCollections.observableArrayList();
     private final Set<Path> dirtyFiles = new HashSet<>();
+
+    private XmlDataSaver saver;
 
     @FXML
     private Button loadButton;
@@ -110,6 +111,7 @@ public class MainController {
 
     private void loadFrom(Path root, String selectCivType) {
         currentRoot = root;
+        saver = new XmlDataSaver(root);
         statusLabel.setText("로딩 중...");
         loadButton.setDisable(true);
 
