@@ -16,7 +16,7 @@ import org.xml.sax.SAXParseException;
 
 public class TextLoader {
 
-    private static final Pattern COLOR_TAG = Pattern.compile("\\[[^\\]]*\\]");
+    private static final Pattern COLOR_TAG = Pattern.compile("\\[[^]]*]");
 
     public void load(Path gameRoot, Map<String, String> out) throws Exception {
         // Base game
@@ -34,12 +34,18 @@ public class TextLoader {
             } else {
                 base = gameRoot.resolve("Assets/DLC");
             }
-            if (!Files.exists(base)) continue;
+            if (!Files.exists(base)) {
+                continue;
+            }
             try (var stream = Files.list(base)) {
                 for (Path dlcDir : stream.toList()) {
-                    if (!Files.isDirectory(dlcDir)) continue;
+                    if (!Files.isDirectory(dlcDir)) {
+                        continue;
+                    }
                     String name = dlcDir.getFileName().toString();
-                    if (!name.startsWith("DLC_")) continue;
+                    if (!name.startsWith("DLC_")) {
+                        continue;
+                    }
                     Path textDir = dlcDir.resolve("Gameplay/XML/Text/KO_KR");
                     loadDir(textDir, out);
                 }
@@ -48,7 +54,9 @@ public class TextLoader {
     }
 
     private void loadDir(Path dir, Map<String, String> out) throws Exception {
-        if (!Files.exists(dir)) return;
+        if (!Files.exists(dir)) {
+            return;
+        }
         try (var stream = Files.list(dir)) {
             for (Path file : stream.toList()) {
                 if (file.getFileName().toString().endsWith(".xml")) {
@@ -65,9 +73,15 @@ public class TextLoader {
             factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
             DocumentBuilder builder = factory.newDocumentBuilder();
             builder.setErrorHandler(new ErrorHandler() {
-                public void warning(SAXParseException e) {}
-                public void error(SAXParseException e) {}
-                public void fatalError(SAXParseException e) throws SAXParseException { throw e; }
+                public void warning(SAXParseException e) {
+                }
+
+                public void error(SAXParseException e) {
+                }
+
+                public void fatalError(SAXParseException e) throws SAXParseException {
+                    throw e;
+                }
             });
             Document doc = builder.parse(path.toFile());
 
@@ -77,9 +91,13 @@ public class TextLoader {
                 for (int i = 0; i < rows.getLength(); i++) {
                     Element row = (Element) rows.item(i);
                     String tag = row.getAttribute("Tag");
-                    if (tag.isBlank()) continue;
+                    if (tag.isBlank()) {
+                        continue;
+                    }
                     NodeList textNodes = row.getElementsByTagName("Text");
-                    if (textNodes.getLength() == 0) continue;
+                    if (textNodes.getLength() == 0) {
+                        continue;
+                    }
                     String raw = textNodes.item(0).getTextContent().trim();
                     out.put(tag, strip(raw));
                 }
@@ -90,7 +108,9 @@ public class TextLoader {
     }
 
     public static String strip(String text) {
-        if (text == null) return "";
+        if (text == null) {
+            return "";
+        }
         return COLOR_TAG.matcher(text).replaceAll("").trim();
     }
 }
