@@ -4,6 +4,7 @@ plugins {
     id("org.javamodularity.moduleplugin") version "1.8.15"
     id("org.openjfx.javafxplugin") version "0.0.13"
     id("org.beryx.jlink") version "2.25.0"
+    id("io.freefair.lombok") version "8.10.2"
 }
 
 group = "chocola"
@@ -23,11 +24,23 @@ java {
 
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
+    options.compilerArgs.addAll(listOf(
+        "--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED",
+        "--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED",
+        "--add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED",
+        "--add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED",
+        "--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED",
+        "--add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED",
+        "--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED",
+        "--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED",
+        "--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED",
+        "--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED"
+    ))
 }
 
 application {
     mainModule.set("chocola.civilizationfiveeditor")
-    mainClass.set("chocola.civilizationfiveeditor.HelloApplication")
+    mainClass.set("chocola.civilizationfiveeditor.Launcher")
 }
 
 javafx {
