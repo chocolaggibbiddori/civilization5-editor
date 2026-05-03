@@ -1,0 +1,29 @@
+#!/bin/bash
+
+PROJECT_DIR="$(git rev-parse --show-toplevel)"
+cd "$PROJECT_DIR" || exit 1
+
+echo "[post-commit] jlink 빌드 시작..."
+./gradlew jlink
+
+if [ $? -ne 0 ]; then
+    echo "[post-commit] 빌드 실패."
+    exit 1
+fi
+
+echo "[post-commit] 빌드 완료. 바탕화면 바로가기 생성 중..."
+
+APP_BAT_WIN="$(cygpath -w "$PROJECT_DIR/build/image/bin/app.bat")"
+
+TEMP_PS="$(mktemp --suffix=.ps1)"
+printf '\xEF\xBB\xBF$shell = New-Object -ComObject WScript.Shell\n$desktop = $shell.SpecialFolders("Desktop")\n$shortcut = $shell.CreateShortcut("$desktop\\문명5 에디터.lnk")\n$shortcut.TargetPath = "%s"\n$shortcut.Save()\nWrite-Host "바로가기 생성: $desktop\\문명5 에디터.lnk"\n' "$APP_BAT_WIN" > "$TEMP_PS"
+
+powershell -NoProfile -ExecutionPolicy Bypass -File "$(cygpath -w "$TEMP_PS")"
+STATUS=$?
+rm -f "$TEMP_PS"
+
+if [ $STATUS -eq 0 ]; then
+    echo "[post-commit] 완료."
+else
+    echo "[post-commit] 바로가기 생성 실패."
+fi
