@@ -12,9 +12,10 @@ import lombok.Setter;
 public class CivEntry {
     private final String type;
     @Setter private String leaderType;
-    private final List<String> uniqueUnitTypes     = new ArrayList<>();
-    private final List<String> uniqueBuildingTypes = new ArrayList<>();
-    private final List<String> traitTypes          = new ArrayList<>();
+    private final List<String> uniqueUnitTypes        = new ArrayList<>();
+    private final List<String> uniqueBuildingTypes    = new ArrayList<>();
+    private final List<String> uniqueImprovementTypes = new ArrayList<>();
+    private final List<String> traitTypes             = new ArrayList<>();
 
     /** CIVILIZATION_AMERICA → America */
     public String getDisplayName() {

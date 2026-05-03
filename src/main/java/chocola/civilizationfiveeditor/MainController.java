@@ -3,6 +3,7 @@ package chocola.civilizationfiveeditor;
 import chocola.civilizationfiveeditor.model.BuildingData;
 import chocola.civilizationfiveeditor.model.CivEntry;
 import chocola.civilizationfiveeditor.model.GameData;
+import chocola.civilizationfiveeditor.model.ImprovementData;
 import chocola.civilizationfiveeditor.model.TraitData;
 import chocola.civilizationfiveeditor.model.UnitData;
 import chocola.civilizationfiveeditor.service.XmlDataLoader;
@@ -22,6 +23,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -46,6 +48,8 @@ public class MainController {
     @FXML
     private Button saveButton;
     @FXML
+    private Button restoreButton;
+    @FXML
     private Label statusLabel;
     @FXML
     private TextField searchField;
@@ -65,8 +69,11 @@ public class MainController {
     private VBox unitsBox;
     @FXML
     private VBox buildingsBox;
+    @FXML
+    private VBox improvementsBox;
     private GameData gameData;
     private CivEntry currentCiv;
+    private Path currentRoot;
 
     @FXML
     public void initialize() {
@@ -98,6 +105,11 @@ public class MainController {
     }
 
     private void loadFrom(Path root) {
+        loadFrom(root, null);
+    }
+
+    private void loadFrom(Path root, String selectCivType) {
+        currentRoot = root;
         statusLabel.setText("로딩 중...");
         loadButton.setDisable(true);
 
@@ -106,12 +118,26 @@ public class MainController {
                 GameData data = new XmlDataLoader().load(root);
                 Platform.runLater(() -> {
                     gameData = data;
+                    currentCiv = null;
                     allCivs.setAll(data.getCivilizations());
                     filteredCivs.setAll(allCivs);
                     statusLabel.setText("문명 " + data.getCivilizations().size() + "개 로드 완료");
                     loadButton.setDisable(false);
-                    detailContent.setVisible(false);
-                    placeholderLabel.setVisible(true);
+
+                    if (selectCivType != null) {
+                        filteredCivs.stream()
+                                .filter(c -> c.getType().equals(selectCivType))
+                                .findFirst()
+                                .ifPresent(civ -> {
+                                    civListView.getSelectionModel().select(civ);
+                                    currentCiv = civ;
+                                    showCiv(civ);
+                                });
+                    } else {
+                        detailContent.setVisible(false);
+                        placeholderLabel.setVisible(true);
+                        restoreButton.setDisable(true);
+                    }
                 });
             } catch (Exception e) {
                 Platform.runLater(() -> {
@@ -161,6 +187,44 @@ public class MainController {
         }
     }
 
+    @FXML
+    private void onRestore() {
+        if (currentCiv == null || gameData == null) {
+            return;
+        }
+
+        Set<Path> sourceFiles = collectCivSourceFiles();
+        boolean anyBackup = sourceFiles.stream().anyMatch(saver::hasBackup);
+        if (!anyBackup) {
+            Alert info = new Alert(Alert.AlertType.INFORMATION);
+            info.setTitle("복원 불가");
+            info.setHeaderText(null);
+            info.setContentText("저장된 백업 파일이 없습니다.\n한 번 이상 저장해야 복원이 가능합니다.");
+            info.showAndWait();
+            return;
+        }
+
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("원본 복원");
+        confirm.setHeaderText(null);
+        confirm.setContentText("저장된 변경 내용이 모두 삭제됩니다. 원본으로 복원하시겠습니까?");
+        if (confirm.showAndWait().orElse(ButtonType.CANCEL) != ButtonType.OK) {
+            return;
+        }
+
+        for (Path file : sourceFiles) {
+            try {
+                saver.restoreBackup(file);
+            } catch (Exception e) {
+                showError("복원 오류", e.getMessage());
+                return;
+            }
+        }
+
+        String civType = currentCiv.getType();
+        loadFrom(currentRoot, civType);
+    }
+
     // ── Display ────────────────────────────────────────────────────────────
 
     private void showCiv(CivEntry civ) {
@@ -170,11 +234,13 @@ public class MainController {
         buildTraitsPanel(civ);
         buildUnitsPanel(civ);
         buildBuildingsPanel(civ);
+        buildImprovementsPanel(civ);
 
         placeholderLabel.setVisible(false);
         detailContent.setVisible(true);
         dirtyFiles.clear();
         saveButton.setDisable(true);
+        restoreButton.setDisable(false);
     }
 
     private void buildTraitsPanel(CivEntry civ) {
@@ -296,6 +362,35 @@ public class MainController {
         }
     }
 
+    private void buildImprovementsPanel(CivEntry civ) {
+        improvementsBox.getChildren().clear();
+
+        if (civ.getUniqueImprovementTypes().isEmpty()) {
+            improvementsBox.getChildren().add(new Label("고유 구조물 없음"));
+            return;
+        }
+
+        for (String impType : civ.getUniqueImprovementTypes()) {
+            ImprovementData imp = gameData.getImprovement(impType);
+            if (imp == null) {
+                continue;
+            }
+
+            VBox card = card();
+            card.getChildren().add(sectionHeader(koreanText(imp.getDescription())));
+
+            GridPane grid = fieldGrid();
+            addIntField(grid, "식량 (Food)",       0, 0, imp.getFood(),       imp::setFood,       imp.getSourceFile());
+            addIntField(grid, "생산 (Production)", 1, 0, imp.getProduction(), imp::setProduction, imp.getSourceFile());
+            addIntField(grid, "골드 (Gold)",        2, 0, imp.getGold(),       imp::setGold,       imp.getSourceFile());
+            addIntField(grid, "과학 (Science)",     0, 1, imp.getScience(),    imp::setScience,    imp.getSourceFile());
+            addIntField(grid, "문화 (Culture)",     1, 1, imp.getCulture(),    imp::setCulture,    imp.getSourceFile());
+            addIntField(grid, "신앙 (Faith)",       2, 1, imp.getFaith(),      imp::setFaith,      imp.getSourceFile());
+            card.getChildren().add(grid);
+            improvementsBox.getChildren().add(card);
+        }
+    }
+
     // ── Save ───────────────────────────────────────────────────────────────
 
     private void saveCurrentCiv() throws Exception {
@@ -321,6 +416,41 @@ public class MainController {
                 saver.saveBuilding(building);
             }
         }
+        for (String impType : currentCiv.getUniqueImprovementTypes()) {
+            ImprovementData imp = gameData.getImprovement(impType);
+            if (imp != null) {
+                saver.saveImprovement(imp);
+            }
+        }
+    }
+
+    private Set<Path> collectCivSourceFiles() {
+        Set<Path> files = new HashSet<>();
+        for (String traitType : currentCiv.getTraitTypes()) {
+            TraitData trait = gameData.getTrait(traitType);
+            if (trait != null && trait.getSourceFile() != null) {
+                files.add(trait.getSourceFile());
+            }
+        }
+        for (String unitType : currentCiv.getUniqueUnitTypes()) {
+            UnitData unit = gameData.getUnit(unitType);
+            if (unit != null && unit.getSourceFile() != null) {
+                files.add(unit.getSourceFile());
+            }
+        }
+        for (String buildingType : currentCiv.getUniqueBuildingTypes()) {
+            BuildingData building = gameData.getBuilding(buildingType);
+            if (building != null && building.getSourceFile() != null) {
+                files.add(building.getSourceFile());
+            }
+        }
+        for (String impType : currentCiv.getUniqueImprovementTypes()) {
+            ImprovementData imp = gameData.getImprovement(impType);
+            if (imp != null && imp.getSourceFile() != null) {
+                files.add(imp.getSourceFile());
+            }
+        }
+        return files;
     }
 
     // ── UI helpers ─────────────────────────────────────────────────────────

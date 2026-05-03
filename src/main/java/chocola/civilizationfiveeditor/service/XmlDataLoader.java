@@ -3,6 +3,7 @@ package chocola.civilizationfiveeditor.service;
 import chocola.civilizationfiveeditor.model.BuildingData;
 import chocola.civilizationfiveeditor.model.CivEntry;
 import chocola.civilizationfiveeditor.model.GameData;
+import chocola.civilizationfiveeditor.model.ImprovementData;
 import chocola.civilizationfiveeditor.model.TraitData;
 import chocola.civilizationfiveeditor.model.UnitData;
 
@@ -36,40 +37,49 @@ public class XmlDataLoader {
         Path exp1Xml = gameRoot.resolve("Assets/DLC/Expansion/Gameplay/XML");
         Path exp2Xml = gameRoot.resolve("Assets/DLC/Expansion2/Gameplay/XML");
 
-        // Units: base → exp1 → exp2, then individual DLC units
+        // Units: base → exp1 (base + expansion-only) → exp2 (base + expansion-only) → individual DLCs
         loadUnits(data, assetsXml.resolve("Units/CIV5Units.xml"));
         loadUnitsIfExists(data, exp1Xml.resolve("Units/CIV5Units.xml"));
+        loadUnitsIfExists(data, exp1Xml.resolve("Units/CIV5Units_Expansion.xml"));
         loadUnitsIfExists(data, exp2Xml.resolve("Units/CIV5Units.xml"));
-        loadDlcUnits(data, gameRoot);
+        loadUnitsIfExists(data, exp2Xml.resolve("Units/CIV5Units_Expansion2.xml"));
 
         // Buildings
         loadBuildings(data, assetsXml.resolve("Buildings/CIV5Buildings.xml"));
         loadBuildingsIfExists(data, exp1Xml.resolve("Buildings/CIV5Buildings.xml"));
+        loadBuildingsIfExists(data, exp1Xml.resolve("Buildings/CIV5Buildings_Expansion.xml"));
         loadBuildingsIfExists(data, exp2Xml.resolve("Buildings/CIV5Buildings.xml"));
-        loadDlcBuildings(data, gameRoot);
+        loadBuildingsIfExists(data, exp2Xml.resolve("Buildings/CIV5Buildings_Expansion2.xml"));
 
         // Traits
         loadTraits(data, assetsXml.resolve("Civilizations/CIV5Traits.xml"));
         loadTraitsIfExists(data, exp1Xml.resolve("Civilizations/CIV5Traits.xml"));
+        loadTraitsIfExists(data, exp1Xml.resolve("Civilizations/CIV5Traits_Expansion.xml"));
         loadTraitsIfExists(data, exp2Xml.resolve("Civilizations/CIV5Traits.xml"));
-        loadDlcTraits(data, gameRoot);
+        loadTraitsIfExists(data, exp2Xml.resolve("Civilizations/CIV5Traits_Expansion2.xml"));
 
-        // Leader traits (base)
+        // Leader traits
         loadLeaderTraits(data, assetsXml.resolve("Leaders"));
         loadLeaderTraitsIfExists(data, exp1Xml.resolve("Leaders"));
         loadLeaderTraitsIfExists(data, exp2Xml.resolve("Leaders"));
-        loadDlcLeaderTraits(data, gameRoot);
 
-        // Civilizations: base
+        // Civilizations
         loadCivs(data, assetsXml.resolve("Civilizations/CIV5Civilizations.xml"));
-        // Expansion civs
         loadCivsIfExists(data, exp1Xml.resolve("Civilizations/CIV5Civilizations_Expansion.xml"));
         loadCivsIfExists(data, exp2Xml.resolve("Civilizations/CIV5Civilizations_Expansion2.xml"));
-        // Individual DLC civs
-        loadDlcCivs(data, gameRoot);
+
+        // Improvements (civ-specific)
+        loadImprovementsIfExists(data, exp1Xml.resolve("Terrain/CIV5Improvements_Expansion.xml"));
+        loadImprovementsIfExists(data, exp2Xml.resolve("Terrain/CIV5Improvements_Expansion2.xml"));
+
+        // Individual DLC packs (DLC_01, DLC_02, …)
+        loadDlcPacks(data, gameRoot);
 
         // Resolve leader → traits for each civ
         resolveCivTraits(data);
+
+        // Resolve civ-specific improvements → civs
+        resolveImprovements(data);
 
         // Load Korean text
         new TextLoader().load(gameRoot, data.getTexts());
@@ -81,7 +91,6 @@ public class XmlDataLoader {
     }
 
     private String civShortDescKey(String civType) {
-        // CIVILIZATION_AMERICA → TXT_KEY_CIV_AMERICA_SHORT_DESC
         String name = civType.replace("CIVILIZATION_", "");
         return "TXT_KEY_CIV_" + name + "_SHORT_DESC";
     }
@@ -120,30 +129,6 @@ public class XmlDataLoader {
         }
     }
 
-    private void loadDlcUnits(GameData data, Path gameRoot) throws Exception {
-        for (String expansion : new String[]{"Expansion", "Expansion2"}) {
-            Path dlcBase = gameRoot.resolve("Assets/DLC/" + expansion + "/DLC");
-            if (!Files.exists(dlcBase)) {
-                continue;
-            }
-            try (var stream = Files.list(dlcBase)) {
-                for (Path dlcDir : stream.toList()) {
-                    Path xmlDir = dlcDir.resolve("Gameplay/XML");
-                    if (!Files.exists(xmlDir)) {
-                        continue;
-                    }
-                    try (var xmlFiles = Files.list(xmlDir)) {
-                        for (Path xmlFile : xmlFiles.toList()) {
-                            if (xmlFile.getFileName().toString().startsWith("CIV5Units")) {
-                                loadUnits(data, xmlFile);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     // ── Buildings ──────────────────────────────────────────────────────────
 
     private void loadBuildingsIfExists(GameData data, Path path) throws Exception {
@@ -159,7 +144,6 @@ public class XmlDataLoader {
             return;
         }
 
-        // Could be multiple <Buildings> sections across repeated loads; pick first with Row children
         for (int s = 0; s < sections.getLength(); s++) {
             Element section = (Element) sections.item(s);
             NodeList rows = section.getElementsByTagName("Row");
@@ -183,30 +167,6 @@ public class XmlDataLoader {
                 b.setHappiness(intVal(row, "Happiness"));
                 b.setDefense(intVal(row, "Defense"));
                 b.setGoldMaintenance(intVal(row, "GoldMaintenance"));
-            }
-        }
-    }
-
-    private void loadDlcBuildings(GameData data, Path gameRoot) throws Exception {
-        for (String expansion : new String[]{"Expansion", "Expansion2"}) {
-            Path dlcBase = gameRoot.resolve("Assets/DLC/" + expansion + "/DLC");
-            if (!Files.exists(dlcBase)) {
-                continue;
-            }
-            try (var stream = Files.list(dlcBase)) {
-                for (Path dlcDir : stream.toList()) {
-                    Path xmlDir = dlcDir.resolve("Gameplay/XML");
-                    if (!Files.exists(xmlDir)) {
-                        continue;
-                    }
-                    try (var xmlFiles = Files.list(xmlDir)) {
-                        for (Path xmlFile : xmlFiles.toList()) {
-                            if (xmlFile.getFileName().toString().startsWith("CIV5Buildings")) {
-                                loadBuildings(data, xmlFile);
-                            }
-                        }
-                    }
-                }
             }
         }
     }
@@ -263,30 +223,6 @@ public class XmlDataLoader {
         }
     }
 
-    private void loadDlcTraits(GameData data, Path gameRoot) throws Exception {
-        for (String expansion : new String[]{"Expansion", "Expansion2"}) {
-            Path dlcBase = gameRoot.resolve("Assets/DLC/" + expansion + "/DLC");
-            if (!Files.exists(dlcBase)) {
-                continue;
-            }
-            try (var stream = Files.list(dlcBase)) {
-                for (Path dlcDir : stream.toList()) {
-                    Path xmlDir = dlcDir.resolve("Gameplay/XML");
-                    if (!Files.exists(xmlDir)) {
-                        continue;
-                    }
-                    try (var xmlFiles = Files.list(xmlDir)) {
-                        for (Path xmlFile : xmlFiles.toList()) {
-                            if (xmlFile.getFileName().toString().startsWith("CIV5Traits")) {
-                                loadTraits(data, xmlFile);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     // ── Leader Traits ──────────────────────────────────────────────────────
 
     private void loadLeaderTraitsIfExists(GameData data, Path dir) throws Exception {
@@ -320,33 +256,9 @@ public class XmlDataLoader {
                 if (leaderType == null || traitType == null) {
                     continue;
                 }
-                data.getLeaderTraits().computeIfAbsent(leaderType, k -> new ArrayList<>()).add(traitType);
-            }
-        }
-    }
-
-    private void loadDlcLeaderTraits(GameData data, Path gameRoot) throws Exception {
-        for (String expansion : new String[]{"Expansion", "Expansion2"}) {
-            Path leadersDir = gameRoot.resolve("Assets/DLC/" + expansion + "/Gameplay/XML/Leaders");
-            loadLeaderTraitsIfExists(data, leadersDir);
-
-            Path dlcBase = gameRoot.resolve("Assets/DLC/" + expansion + "/DLC");
-            if (!Files.exists(dlcBase)) {
-                continue;
-            }
-            try (var stream = Files.list(dlcBase)) {
-                for (Path dlcDir : stream.toList()) {
-                    Path xmlDir = dlcDir.resolve("Gameplay/XML");
-                    if (!Files.exists(xmlDir)) {
-                        continue;
-                    }
-                    try (var xmlFiles = Files.list(xmlDir)) {
-                        for (Path xmlFile : xmlFiles.toList()) {
-                            if (xmlFile.getFileName().toString().startsWith("CIV5Leader_")) {
-                                loadLeaderTraitsFromFile(data, xmlFile);
-                            }
-                        }
-                    }
+                List<String> traits = data.getLeaderTraits().computeIfAbsent(leaderType, k -> new ArrayList<>());
+                if (!traits.contains(traitType)) {
+                    traits.add(traitType);
                 }
             }
         }
@@ -364,7 +276,6 @@ public class XmlDataLoader {
         Document doc = parse(path);
         Set<String> excluded = new HashSet<>(Arrays.asList(EXCLUDED_CIVS));
 
-        // Civ type list
         Map<String, CivEntry> civMap = new LinkedHashMap<>();
         for (CivEntry c : data.getCivilizations()) {
             civMap.put(c.getType(), c);
@@ -387,7 +298,6 @@ public class XmlDataLoader {
             }
         }
 
-        // Leader assignments
         NodeList leaderSections = doc.getElementsByTagName("Civilization_Leaders");
         for (int s = 0; s < leaderSections.getLength(); s++) {
             NodeList rows = ((Element) leaderSections.item(s)).getElementsByTagName("Row");
@@ -405,7 +315,6 @@ public class XmlDataLoader {
             }
         }
 
-        // Unique unit overrides
         NodeList unitOverrideSections = doc.getElementsByTagName("Civilization_UnitClassOverrides");
         for (int s = 0; s < unitOverrideSections.getLength(); s++) {
             NodeList rows = ((Element) unitOverrideSections.item(s)).getElementsByTagName("Row");
@@ -426,7 +335,6 @@ public class XmlDataLoader {
             }
         }
 
-        // Unique building overrides
         NodeList buildingOverrideSections = doc.getElementsByTagName("Civilization_BuildingClassOverrides");
         for (int s = 0; s < buildingOverrideSections.getLength(); s++) {
             NodeList rows = ((Element) buildingOverrideSections.item(s)).getElementsByTagName("Row");
@@ -448,26 +356,92 @@ public class XmlDataLoader {
         }
     }
 
-    private void loadDlcCivs(GameData data, Path gameRoot) throws Exception {
-        for (String expansion : new String[]{"Expansion", "Expansion2"}) {
-            Path dlcBase = gameRoot.resolve("Assets/DLC/" + expansion + "/DLC");
-            if (!Files.exists(dlcBase)) {
-                continue;
-            }
-            try (var stream = Files.list(dlcBase)) {
-                for (Path dlcDir : stream.toList()) {
-                    Path xmlDir = dlcDir.resolve("Gameplay/XML");
-                    if (!Files.exists(xmlDir)) {
-                        continue;
-                    }
-                    try (var xmlFiles = Files.list(xmlDir)) {
-                        for (Path xmlFile : xmlFiles.toList()) {
-                            String name = xmlFile.getFileName().toString();
-                            if (name.startsWith("CIV5Civilization") || name.startsWith("Civ5Civilization")) {
-                                loadCivs(data, xmlFile);
-                            }
+    // ── DLC Packs (DLC_01, DLC_02, …) ─────────────────────────────────────
+
+    private void loadDlcPacks(GameData data, Path gameRoot) throws Exception {
+        Path dlcBase = gameRoot.resolve("Assets/DLC");
+        if (!Files.exists(dlcBase)) {
+            return;
+        }
+        try (var dlcDirs = Files.list(dlcBase)) {
+            for (Path dlcDir : dlcDirs.toList()) {
+                if (!dlcDir.getFileName().toString().startsWith("DLC_")) {
+                    continue;
+                }
+                Path xmlDir = dlcDir.resolve("Gameplay/XML");
+                if (!Files.exists(xmlDir)) {
+                    continue;
+                }
+                try (var xmlFiles = Files.list(xmlDir)) {
+                    for (Path xmlFile : xmlFiles.toList()) {
+                        String name = xmlFile.getFileName().toString();
+                        if (!name.endsWith(".xml")) {
+                            continue;
                         }
+                        if (name.startsWith("CIV5Units")) loadUnits(data, xmlFile);
+                        else if (name.startsWith("CIV5Buildings")) loadBuildings(data, xmlFile);
+                        else if (name.startsWith("CIV5Traits")) loadTraits(data, xmlFile);
+                        else if (name.startsWith("CIV5Leader_")) loadLeaderTraitsFromFile(data, xmlFile);
+                        else if (name.startsWith("CIV5Improvements")) loadImprovements(data, xmlFile);
+                        else if (name.startsWith("CIV5Civilization")) loadCivs(data, xmlFile);
                     }
+                }
+            }
+        }
+    }
+
+    // ── Improvements ───────────────────────────────────────────────────────
+
+    private void loadImprovementsIfExists(GameData data, Path path) throws Exception {
+        if (Files.exists(path)) {
+            loadImprovements(data, path);
+        }
+    }
+
+    private void loadImprovements(GameData data, Path path) throws Exception {
+        Document doc = parse(path);
+
+        NodeList sections = doc.getElementsByTagName("Improvements");
+        for (int s = 0; s < sections.getLength(); s++) {
+            Element section = (Element) sections.item(s);
+            NodeList rows = section.getElementsByTagName("Row");
+            for (int i = 0; i < rows.getLength(); i++) {
+                Element row = (Element) rows.item(i);
+                String type = text(row, "Type");
+                String civType = text(row, "CivilizationType");
+                if (type == null || civType == null) {
+                    continue;
+                }
+                ImprovementData imp = data.getImprovements().computeIfAbsent(type, ImprovementData::new);
+                imp.setSourceFile(path);
+                imp.setCivType(civType);
+                imp.setDescription(text(row, "Description"));
+            }
+        }
+
+        NodeList yieldSections = doc.getElementsByTagName("Improvement_Yields");
+        for (int s = 0; s < yieldSections.getLength(); s++) {
+            Element section = (Element) yieldSections.item(s);
+            NodeList rows = section.getElementsByTagName("Row");
+            for (int i = 0; i < rows.getLength(); i++) {
+                Element row = (Element) rows.item(i);
+                String impType = text(row, "ImprovementType");
+                String yieldType = text(row, "YieldType");
+                if (impType == null || yieldType == null) {
+                    continue;
+                }
+                ImprovementData imp = data.getImprovements().get(impType);
+                if (imp == null) {
+                    continue;
+                }
+                int val = intVal(row, "Yield");
+                switch (yieldType) {
+                    case "YIELD_FOOD"       -> imp.setFood(val);
+                    case "YIELD_PRODUCTION" -> imp.setProduction(val);
+                    case "YIELD_GOLD"       -> imp.setGold(val);
+                    case "YIELD_SCIENCE"    -> imp.setScience(val);
+                    case "YIELD_CULTURE"    -> imp.setCulture(val);
+                    case "YIELD_FAITH"      -> imp.setFaith(val);
                 }
             }
         }
@@ -484,6 +458,19 @@ public class XmlDataLoader {
             List<String> traits = data.getLeaderTraits().get(leader);
             if (traits != null) {
                 civ.getTraitTypes().addAll(traits);
+            }
+        }
+    }
+
+    private void resolveImprovements(GameData data) {
+        for (ImprovementData imp : data.getImprovements().values()) {
+            String civType = imp.getCivType();
+            if (civType == null) {
+                continue;
+            }
+            CivEntry civ = getCivByType(data, civType);
+            if (civ != null && !civ.getUniqueImprovementTypes().contains(imp.getType())) {
+                civ.getUniqueImprovementTypes().add(imp.getType());
             }
         }
     }

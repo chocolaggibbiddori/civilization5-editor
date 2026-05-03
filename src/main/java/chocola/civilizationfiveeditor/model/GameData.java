@@ -10,12 +10,13 @@ import lombok.Getter;
 
 @Getter
 public class GameData {
-    private final List<CivEntry>              civilizations = new ArrayList<>();
-    private final Map<String, UnitData>       units         = new LinkedHashMap<>();
-    private final Map<String, BuildingData>   buildings     = new LinkedHashMap<>();
-    private final Map<String, TraitData>      traits        = new LinkedHashMap<>();
-    private final Map<String, List<String>>   leaderTraits  = new HashMap<>();
-    private final Map<String, String>         texts         = new LinkedHashMap<>();
+    private final List<CivEntry>                  civilizations = new ArrayList<>();
+    private final Map<String, UnitData>           units         = new LinkedHashMap<>();
+    private final Map<String, BuildingData>       buildings     = new LinkedHashMap<>();
+    private final Map<String, TraitData>          traits        = new LinkedHashMap<>();
+    private final Map<String, ImprovementData>    improvements  = new LinkedHashMap<>();
+    private final Map<String, List<String>>       leaderTraits  = new HashMap<>();
+    private final Map<String, String>             texts         = new LinkedHashMap<>();
 
     /** Resolve a TXT_KEY to Korean text; returns the key itself if not found. */
     public String getText(String key) {
@@ -23,7 +24,8 @@ public class GameData {
         return texts.getOrDefault(key, key);
     }
 
-    public UnitData     getUnit(String type)     { return units.get(type); }
-    public BuildingData getBuilding(String type) { return buildings.get(type); }
-    public TraitData    getTrait(String type)    { return traits.get(type); }
+    public UnitData        getUnit(String type)        { return units.get(type); }
+    public BuildingData    getBuilding(String type)    { return buildings.get(type); }
+    public TraitData       getTrait(String type)       { return traits.get(type); }
+    public ImprovementData getImprovement(String type) { return improvements.get(type); }
 }

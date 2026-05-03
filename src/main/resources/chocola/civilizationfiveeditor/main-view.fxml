@@ -16,6 +16,8 @@
             <Separator/>
             <Button fx:id="saveButton" text="저장" onAction="#onSave" disable="true"/>
             <Separator/>
+            <Button fx:id="restoreButton" text="원본 복원" onAction="#onRestore" disable="true"/>
+            <Separator/>
             <Label fx:id="statusLabel" text="게임 폴더를 선택해 주세요."/>
         </ToolBar>
     </top>
@@ -75,6 +77,15 @@
                     <Tab text="고유 건물">
                         <ScrollPane fitToWidth="true" fitToHeight="true">
                             <VBox fx:id="buildingsBox" spacing="16">
+                                <padding><Insets top="12" right="12" bottom="12" left="12"/></padding>
+                            </VBox>
+                        </ScrollPane>
+                    </Tab>
+
+                    <!-- Unique Improvements tab -->
+                    <Tab text="고유 구조물">
+                        <ScrollPane fitToWidth="true" fitToHeight="true">
+                            <VBox fx:id="improvementsBox" spacing="16">
                                 <padding><Insets top="12" right="12" bottom="12" left="12"/></padding>
                             </VBox>
                         </ScrollPane>
