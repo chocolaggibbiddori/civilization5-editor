@@ -1,26 +1,11 @@
 package chocola.civilizationfiveeditor.service;
 
-import chocola.civilizationfiveeditor.model.BuildingData;
-import chocola.civilizationfiveeditor.model.CivEntry;
-import chocola.civilizationfiveeditor.model.GameData;
-import chocola.civilizationfiveeditor.model.ImprovementData;
-import chocola.civilizationfiveeditor.model.TraitData;
-import chocola.civilizationfiveeditor.model.UnitData;
-
+import chocola.civilizationfiveeditor.model.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import java.util.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -378,12 +363,19 @@ public class XmlDataLoader {
                         if (!name.endsWith(".xml")) {
                             continue;
                         }
-                        if (name.startsWith("CIV5Units")) loadUnits(data, xmlFile);
-                        else if (name.startsWith("CIV5Buildings")) loadBuildings(data, xmlFile);
-                        else if (name.startsWith("CIV5Traits")) loadTraits(data, xmlFile);
-                        else if (name.startsWith("CIV5Leader_")) loadLeaderTraitsFromFile(data, xmlFile);
-                        else if (name.startsWith("CIV5Improvements")) loadImprovements(data, xmlFile);
-                        else if (name.startsWith("CIV5Civilization")) loadCivs(data, xmlFile);
+                        if (name.startsWith("CIV5Units")) {
+                            loadUnits(data, xmlFile);
+                        } else if (name.startsWith("CIV5Buildings")) {
+                            loadBuildings(data, xmlFile);
+                        } else if (name.startsWith("CIV5Traits")) {
+                            loadTraits(data, xmlFile);
+                        } else if (name.startsWith("CIV5Leader_")) {
+                            loadLeaderTraitsFromFile(data, xmlFile);
+                        } else if (name.startsWith("CIV5Improvements")) {
+                            loadImprovements(data, xmlFile);
+                        } else if (name.startsWith("CIV5Civilization")) {
+                            loadCivs(data, xmlFile);
+                        }
                     }
                 }
             }
@@ -436,12 +428,12 @@ public class XmlDataLoader {
                 }
                 int val = intVal(row, "Yield");
                 switch (yieldType) {
-                    case "YIELD_FOOD"       -> imp.setFood(val);
+                    case "YIELD_FOOD" -> imp.setFood(val);
                     case "YIELD_PRODUCTION" -> imp.setProduction(val);
-                    case "YIELD_GOLD"       -> imp.setGold(val);
-                    case "YIELD_SCIENCE"    -> imp.setScience(val);
-                    case "YIELD_CULTURE"    -> imp.setCulture(val);
-                    case "YIELD_FAITH"      -> imp.setFaith(val);
+                    case "YIELD_GOLD" -> imp.setGold(val);
+                    case "YIELD_SCIENCE" -> imp.setScience(val);
+                    case "YIELD_CULTURE" -> imp.setCulture(val);
+                    case "YIELD_FAITH" -> imp.setFaith(val);
                 }
             }
         }
