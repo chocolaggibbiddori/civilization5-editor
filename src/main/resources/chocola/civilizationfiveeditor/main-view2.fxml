@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="chocola.civilizationfiveeditor.v2.MainController"
+            prefWidth="1000"
+            prefHeight="700">
+
+    <!-- Top: toolbar -->
+    <top>
+        <ToolBar>
+            <Separator />
+            <Button fx:id="saveButton"
+                    text="저장"
+                    onAction="#onSave"
+                    disable="true" />
+            <Separator />
+            <Button fx:id="restoreButton"
+                    text="원본 복원"
+                    onAction="#onRestore"
+                    disable="true" />
+            <Separator />
+            <Label fx:id="statusLabel" />
+        </ToolBar>
+    </top>
+
+    <!-- Left: civilization list -->
+    <left>
+        <VBox prefWidth="200"
+              style="-fx-border-color: #cccccc; -fx-border-width: 0 1 0 0;">
+            <padding>
+                <Insets top="8"
+                        right="8"
+                        bottom="8"
+                        left="8" />
+            </padding>
+            <Label text="문명 목록"
+                   style="-fx-font-weight: bold; -fx-font-size: 13;" />
+            <VBox.margin>
+                <Insets bottom="6" />
+            </VBox.margin>
+            <TextField fx:id="searchField"
+                       promptText="검색..."
+                       onKeyReleased="#onSearch" />
+            <ListView fx:id="civListView"
+                      VBox.vgrow="ALWAYS"
+                      onMouseClicked="#onCivSelected"
+                      style="-fx-font-size: 13;" />
+        </VBox>
+    </left>
+
+    <!-- Center: detail panel -->
+    <center>
+        <StackPane fx:id="detailPane">
+            <!-- Placeholder shown before selection -->
+            <Label fx:id="placeholderLabel"
+                   text="좌측에서 문명을 선택하세요."
+                   style="-fx-font-size: 14; -fx-text-fill: #888888;" />
+
+            <!-- Main detail content (hidden until selection) -->
+            <VBox fx:id="detailContent"
+                  visible="false">
+                <padding>
+                    <Insets top="16"
+                            right="16"
+                            bottom="16"
+                            left="16" />
+                </padding>
+
+                <!-- Civ header -->
+                <HBox spacing="12"
+                      alignment="CENTER_LEFT">
+                    <Label fx:id="civNameLabel"
+                           style="-fx-font-size: 20; -fx-font-weight: bold;" />
+                    <Label fx:id="leaderLabel"
+                           style="-fx-font-size: 13; -fx-text-fill: #555555;" />
+                </HBox>
+                <VBox.margin>
+                    <Insets bottom="12" />
+                </VBox.margin>
+
+                <!-- Tabs -->
+                <TabPane fx:id="tabPane"
+                         VBox.vgrow="ALWAYS"
+                         tabClosingPolicy="UNAVAILABLE">
+
+                    <!-- Traits tab -->
+                    <Tab text="특성 (Traits)">
+                        <ScrollPane fitToWidth="true"
+                                    fitToHeight="true">
+                            <VBox fx:id="traitsBox"
+                                  spacing="8">
+                                <padding>
+                                    <Insets top="12"
+                                            right="12"
+                                            bottom="12"
+                                            left="12" />
+                                </padding>
+                            </VBox>
+                        </ScrollPane>
+                    </Tab>
+
+                    <!-- Unique Units tab -->
+                    <Tab text="고유 유닛">
+                        <ScrollPane fitToWidth="true"
+                                    fitToHeight="true">
+                            <VBox fx:id="unitsBox"
+                                  spacing="16">
+                                <padding>
+                                    <Insets top="12"
+                                            right="12"
+                                            bottom="12"
+                                            left="12" />
+                                </padding>
+                            </VBox>
+                        </ScrollPane>
+                    </Tab>
+
+                    <!-- Unique Buildings tab -->
+                    <Tab text="고유 건물">
+                        <ScrollPane fitToWidth="true"
+                                    fitToHeight="true">
+                            <VBox fx:id="buildingsBox"
+                                  spacing="16">
+                                <padding>
+                                    <Insets top="12"
+                                            right="12"
+                                            bottom="12"
+                                            left="12" />
+                                </padding>
+                            </VBox>
+                        </ScrollPane>
+                    </Tab>
+
+                    <!-- Unique Improvements tab -->
+                    <Tab text="고유 구조물">
+                        <ScrollPane fitToWidth="true"
+                                    fitToHeight="true">
+                            <VBox fx:id="improvementsBox"
+                                  spacing="16">
+                                <padding>
+                                    <Insets top="12"
+                                            right="12"
+                                            bottom="12"
+                                            left="12" />
+                                </padding>
+                            </VBox>
+                        </ScrollPane>
+                    </Tab>
+
+                </TabPane>
+            </VBox>
+        </StackPane>
+    </center>
+
+</BorderPane>

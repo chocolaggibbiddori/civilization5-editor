@@ -49,6 +49,7 @@ javafx {
 }
 
 dependencies {
+    implementation("org.dom4j:dom4j:2.1.4")
     implementation("org.controlsfx:controlsfx:11.2.1")
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
