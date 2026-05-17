@@ -1,18 +1,15 @@
 package chocola.civilizationfiveeditor.v2.model.civilization;
 
-import chocola.civilizationfiveeditor.v2.model.GameData;
-import java.io.File;
+import chocola.civilizationfiveeditor.v2.model.GameData.TypedFile;
 import java.util.List;
 
 public interface Civilization {
 
-    List<File> requiredFileList();
+    List<TypedFile> requiredFileList();
 
-    String getKoreanName(GameData gameData);
+    String getName();
 
-    String getEnglishName(GameData gameData);
+    String getLeaderName();
 
-    String getLeaderKoreanName(GameData gameData);
-
-    String getLeaderEnglishName(GameData gameData);
+    Trait getTrait();
 }

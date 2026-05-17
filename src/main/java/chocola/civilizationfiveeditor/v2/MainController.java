@@ -3,12 +3,16 @@ package chocola.civilizationfiveeditor.v2;
 import chocola.civilizationfiveeditor.v2.config.CivilizationConfiguration;
 import chocola.civilizationfiveeditor.v2.loader.GameDataLoader;
 import chocola.civilizationfiveeditor.v2.model.civilization.Civilization;
-import chocola.civilizationfiveeditor.v2.model.GameData;
+import chocola.civilizationfiveeditor.v2.model.civilization.Trait;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
@@ -37,7 +41,7 @@ public class MainController {
     @FXML
     private TabPane tabPane;
     @FXML
-    private VBox traitsBox;
+    private VBox traitBox;
     @FXML
     private VBox unitsBox;
     @FXML
@@ -45,12 +49,11 @@ public class MainController {
     @FXML
     private VBox improvementsBox;
 
-    private GameData gameData;
     private Civilization currentCivilization;
 
     @FXML
     public void initialize() {
-        gameData = GameDataLoader.load();
+        GameDataLoader.load();
 
         CivilizationConfiguration
                 .getCivilizationList()
@@ -60,7 +63,7 @@ public class MainController {
             @Override
             protected void updateItem(Civilization civilization, boolean empty) {
                 super.updateItem(civilization, empty);
-                setText(empty || civilization == null ? null : civilization.getKoreanName(gameData));
+                setText(empty || civilization == null ? null : civilization.getName());
             }
         });
     }
@@ -86,10 +89,10 @@ public class MainController {
         }
 
         currentCivilization = civilization;
-        civNameLabel.setText(civilization.getKoreanName(gameData));
-        leaderLabel.setText("지도자: " + civilization.getLeaderKoreanName(gameData));
+        civNameLabel.setText(civilization.getName());
+        leaderLabel.setText("지도자: " + civilization.getLeaderName());
 
-//        buildTraitsPanel(civilization);
+        buildTraitsPanel(civilization);
 //        buildUnitsPanel(civilization);
 //        buildBuildingsPanel(civilization);
 //        buildImprovementsPanel(civilization);
@@ -100,4 +103,44 @@ public class MainController {
         restoreButton.setDisable(false);
     }
 
+    private void buildTraitsPanel(Civilization civilization) {
+        ObservableList<Node> traitBoxChildren = traitBox.getChildren();
+        traitBoxChildren.clear();
+        Trait trait = civilization.getTrait();
+
+        VBox vBox = card();
+        vBox.getChildren().add(sectionHeader(trait.getDescription()));
+
+        GridPane grid = fieldGrid();
+
+        traitBoxChildren.add(vBox);
+    }
+
+    private VBox card() {
+        VBox box = new VBox(8);
+        box.setStyle("-fx-border-color: #dddddd; -fx-border-radius: 4; -fx-background-color: #fafafa; -fx-background-radius: 4; -fx-padding: 12;");
+
+        return box;
+    }
+
+    private Label sectionHeader(String text) {
+        Label label = new Label(text);
+        label.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
+
+        return label;
+    }
+
+    private GridPane fieldGrid() {
+        GridPane grid = new GridPane(8.0, 8.0);
+
+        for (int i = 0; i < 3; i++) {
+            ColumnConstraints label = new ColumnConstraints(160);
+            ColumnConstraints field = new ColumnConstraints(80);
+            ColumnConstraints spacer = new ColumnConstraints(20);
+
+            grid.getColumnConstraints().addAll(label, field, spacer);
+        }
+
+        return grid;
+    }
 }

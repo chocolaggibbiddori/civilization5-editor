@@ -4,9 +4,9 @@ import java.util.regex.Pattern;
 
 public class TextUtils {
 
-    private static final Pattern COLOR_TAG = Pattern.compile("\\[[^]]*]");
+    private static final Pattern INNER_TAG = Pattern.compile("\\[[^]]*]");
 
-    public static String stripColorTags(String text) {
-        return COLOR_TAG.matcher(text).replaceAll("");
+    public static String stripInnerTags(String text) {
+        return INNER_TAG.matcher(text).replaceAll("");
     }
 }

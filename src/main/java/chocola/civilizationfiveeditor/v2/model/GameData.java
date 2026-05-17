@@ -1,9 +1,12 @@
 package chocola.civilizationfiveeditor.v2.model;
 
+import java.io.File;
+import java.net.URI;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.Getter;
 import org.dom4j.Document;
 
 public record GameData(EnumMap<Type, Map<String, Document>> dataMap) {
@@ -29,6 +32,17 @@ public record GameData(EnumMap<Type, Map<String, Document>> dataMap) {
 
     public enum Type {
 
-        TEXT, CIVILIZATION
+        TEXT, CIVILIZATION, LEADER, TRAIT
+    }
+
+    @Getter
+    public static class TypedFile extends File {
+
+        private final Type type;
+
+        public TypedFile(Type type, URI uri) {
+            super(uri);
+            this.type = type;
+        }
     }
 }

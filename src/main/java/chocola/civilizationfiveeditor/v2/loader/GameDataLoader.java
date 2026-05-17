@@ -1,10 +1,9 @@
 package chocola.civilizationfiveeditor.v2.loader;
 
 import chocola.civilizationfiveeditor.v2.config.CivilizationConfiguration;
-import chocola.civilizationfiveeditor.v2.model.civilization.Civilization;
 import chocola.civilizationfiveeditor.v2.model.GameData;
 import chocola.civilizationfiveeditor.v2.model.GameData.DataType;
-import chocola.civilizationfiveeditor.v2.model.GameData.Type;
+import chocola.civilizationfiveeditor.v2.model.civilization.Civilization;
 import java.util.List;
 import java.util.Objects;
 import org.dom4j.Document;
@@ -13,7 +12,9 @@ import org.dom4j.io.SAXReader;
 
 public class GameDataLoader {
 
-    public static GameData load() {
+    public static GameData gameData = null;
+
+    public static void load() {
         SAXReader saxReader = SAXReader.createDefault();
         List<DataType> dataTypeList = CivilizationConfiguration
                 .getCivilizationList()
@@ -30,15 +31,11 @@ public class GameDataLoader {
                         return null;
                     }
 
-                    return switch (file) {
-                        case TextFile ignored -> new DataType(Type.TEXT, document);
-                        case CivilizationFile ignored -> new DataType(Type.CIVILIZATION, document);
-                        default -> null;
-                    };
+                    return new DataType(file.getType(), document);
                 })
                 .filter(Objects::nonNull)
                 .toList();
 
-        return new GameData(dataTypeList);
+        gameData = new GameData(dataTypeList);
     }
 }

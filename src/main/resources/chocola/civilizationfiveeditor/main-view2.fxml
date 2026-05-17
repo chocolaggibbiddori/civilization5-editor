@@ -90,7 +90,7 @@
                     <Tab text="특성 (Traits)">
                         <ScrollPane fitToWidth="true"
                                     fitToHeight="true">
-                            <VBox fx:id="traitsBox"
+                            <VBox fx:id="traitBox"
                                   spacing="8">
                                 <padding>
                                     <Insets top="12"
