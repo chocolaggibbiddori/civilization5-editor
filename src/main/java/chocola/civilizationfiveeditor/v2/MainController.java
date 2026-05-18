@@ -4,7 +4,12 @@ import chocola.civilizationfiveeditor.v2.config.CivilizationConfiguration;
 import chocola.civilizationfiveeditor.v2.loader.GameDataLoader;
 import chocola.civilizationfiveeditor.v2.model.civilization.Civilization;
 import chocola.civilizationfiveeditor.v2.model.civilization.Trait;
+import chocola.civilizationfiveeditor.v2.model.civilization.TraitVariable;
+import java.util.List;
+import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableSet;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -50,6 +55,7 @@ public class MainController {
     private VBox improvementsBox;
 
     private Civilization currentCivilization;
+    private ObservableSet<TraitVariable> changedChecker = FXCollections.observableSet();
 
     @FXML
     public void initialize() {
@@ -66,6 +72,8 @@ public class MainController {
                 setText(empty || civilization == null ? null : civilization.getName());
             }
         });
+
+        saveButton.disableProperty().bind(Bindings.isEmpty(changedChecker));
     }
 
     @FXML
@@ -112,7 +120,38 @@ public class MainController {
         vBox.getChildren().add(sectionHeader(trait.getDescription()));
 
         GridPane grid = fieldGrid();
+        List<TraitVariable> traitVariableList = trait.getVariableList();
 
+        int col = 0, row = 0;
+        for (TraitVariable variable : traitVariableList) {
+            String key = variable.getKey();
+            int value = variable.getValue();
+
+            Label label = new Label(key + ":");
+            label.setStyle("-fx-font-size: 12;");
+            GridPane.setConstraints(label, col * 3, row);
+
+            TextField textField = numberField(value);
+            textField.textProperty().addListener((obs, o, n) -> {
+                variable.setValue(n);
+
+                if (variable.isChanged()) {
+                    changedChecker.add(variable);
+                } else {
+                    changedChecker.remove(variable);
+                }
+            });
+
+            GridPane.setConstraints(textField, col * 3 + 1, row);
+            grid.getChildren().addAll(label, textField);
+
+            if (++col >= 3) {
+                col = 0;
+                row++;
+            }
+        }
+
+        vBox.getChildren().add(grid);
         traitBoxChildren.add(vBox);
     }
 
@@ -142,5 +181,18 @@ public class MainController {
         }
 
         return grid;
+    }
+
+    private TextField numberField(int val) {
+        TextField tf = new TextField(String.valueOf(val));
+        tf.setPrefWidth(80);
+        tf.setStyle("-fx-font-size: 12;");
+        tf.textProperty().addListener((obs, o, n) -> {
+            if (!n.matches("-?\\d*")) {
+                tf.setText(o);
+            }
+        });
+
+        return tf;
     }
 }

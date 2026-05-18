@@ -8,6 +8,7 @@ import chocola.civilizationfiveeditor.v2.util.PathUtils;
 import chocola.civilizationfiveeditor.v2.util.TextUtils;
 import java.nio.file.Path;
 import java.util.List;
+import lombok.EqualsAndHashCode;
 
 public abstract class BasicCivilization implements Civilization {
 
@@ -22,19 +23,10 @@ public abstract class BasicCivilization implements Civilization {
     private static final Path TRAIT_TEXT_FILE_PATH = DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Jon.xml");
 
     private final Path leaderPath = DEFAULT_LEADER_PATH.resolve("CIV5Leader_%s.xml".formatted(getLeaderEnglishName()));
-    private final BasicTrait trait;
 
     private String name;
     private String englishName;
     private String leaderName;
-
-    public BasicCivilization() {
-        this.trait = new BasicTrait();
-    }
-
-    public BasicCivilization(BasicTrait trait) {
-        this.trait = trait;
-    }
 
     @Override
     public List<TypedFile> requiredFileList() {
@@ -94,12 +86,7 @@ public abstract class BasicCivilization implements Civilization {
 
     protected abstract String getLeaderEnglishName();
 
-    @Override
-    public Trait getTrait() {
-        return trait;
-    }
-
-    public class BasicTrait implements Trait {
+    public abstract class BasicTrait implements Trait {
 
         private String description;
 
@@ -126,6 +113,52 @@ public abstract class BasicCivilization implements Civilization {
 
             this.description = TextUtils.stripInnerTags(description);
             return this.description;
+        }
+    }
+
+    @EqualsAndHashCode
+    public static class BasicTraitVariable implements TraitVariable {
+
+        private final String key;
+        private final int originValue;
+
+        @EqualsAndHashCode.Exclude
+        private int value;
+
+        public BasicTraitVariable(String key, int value) {
+            this.key = key;
+            this.originValue = value;
+            this.value = value;
+        }
+
+        @Override
+        public String getKey() {
+            return key;
+        }
+
+        @Override
+        public int getValue() {
+            return value;
+        }
+
+        @Override
+        public void setValue(int value) {
+            this.value = value;
+        }
+
+        @Override
+        public void setValue(String value) {
+            if (value == null) {
+                this.value = 0;
+                return;
+            }
+
+            setValue(Integer.parseInt(value));
+        }
+
+        @Override
+        public boolean isChanged() {
+            return originValue != value;
         }
     }
 }
