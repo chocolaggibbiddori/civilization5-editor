@@ -41,9 +41,6 @@
             <VBox.margin>
                 <Insets bottom="6" />
             </VBox.margin>
-            <TextField fx:id="searchField"
-                       promptText="검색..."
-                       onKeyReleased="#onSearch" />
             <ListView fx:id="civListView"
                       VBox.vgrow="ALWAYS"
                       onMouseClicked="#onCivSelected"

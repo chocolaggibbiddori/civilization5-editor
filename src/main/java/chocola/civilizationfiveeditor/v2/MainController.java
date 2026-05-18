@@ -30,8 +30,6 @@ public class MainController {
     @FXML
     private Label statusLabel;
     @FXML
-    private TextField searchField;
-    @FXML
     private ListView<Civilization> civListView;
     @FXML
     private StackPane detailPane;
@@ -85,10 +83,6 @@ public class MainController {
     }
 
     @FXML
-    public void onSearch(KeyEvent keyEvent) {
-    }
-
-    @FXML
     public void onCivSelected(MouseEvent mouseEvent) {
         Civilization civilization = civListView.getSelectionModel().getSelectedItem();
 
@@ -107,7 +101,6 @@ public class MainController {
 
         placeholderLabel.setVisible(false);
         detailContent.setVisible(true);
-        saveButton.setDisable(true);
         restoreButton.setDisable(false);
     }
 
