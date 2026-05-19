@@ -4,10 +4,7 @@ import static chocola.civilizationfiveeditor.v2.loader.GameDataLoader.gameData;
 
 import chocola.civilizationfiveeditor.v2.model.GameData.Type;
 import chocola.civilizationfiveeditor.v2.model.GameData.TypedFile;
-import chocola.civilizationfiveeditor.v2.model.KeyValueVariable;
-import chocola.civilizationfiveeditor.v2.model.Trait;
-import chocola.civilizationfiveeditor.v2.model.UniqueUnit;
-import chocola.civilizationfiveeditor.v2.model.Variable;
+import chocola.civilizationfiveeditor.v2.model.*;
 import chocola.civilizationfiveeditor.v2.model.civilization.BasicCivilization.BasicUniqueUnit.BasicUniqueUnitBuilder;
 import chocola.civilizationfiveeditor.v2.util.PathUtils;
 import chocola.civilizationfiveeditor.v2.util.TextUtils;
@@ -26,16 +23,19 @@ public abstract class BasicCivilization implements Civilization {
     private static final Path DEFAULT_CIVILIZATION_PATH = PathUtils.DEFAULT_GAME_PATH.resolve("Gameplay/XML/Civilizations");
     private static final Path DEFAULT_LEADER_PATH = PathUtils.DEFAULT_GAME_PATH.resolve("Gameplay/XML/Leaders");
     private static final Path DEFAULT_UNIT_PATH = PathUtils.DEFAULT_GAME_PATH.resolve("Gameplay/XML/Units");
+    private static final Path DEFAULT_BUILDING_PATH = PathUtils.DEFAULT_GAME_PATH.resolve("Gameplay/XML/Buildings");
 
     private static final Path CIVILIZATION_TEXT_FILE_PATH = DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Civilizations.xml");
     private static final Path LEADER_TEXT_FILE_PATH = DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Leaders.xml");
     private static final Path TRAIT_TEXT_FILE_PATH = DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Jon.xml");
     private static final Path UNIT_TEXT_FILE_PATH = DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Units.xml");
     private static final Path CIVILOPEDIA_TEXT_FILE_PATH = DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Civilopedia.xml");
+    private static final Path BUILDING_TEXT_FILE_PATH = DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Buildings.xml");
 
     private static final Path CIVILIZATION_FILE_PATH = DEFAULT_CIVILIZATION_PATH.resolve("CIV5Civilizations.xml");
     private static final Path TRAIT_FILE_PATH = DEFAULT_CIVILIZATION_PATH.resolve("CIV5Traits.xml");
     private static final Path UNIT_FILE_PATH = DEFAULT_UNIT_PATH.resolve("CIV5Units.xml");
+    private static final Path BUILDING_FILE_PATH = DEFAULT_BUILDING_PATH.resolve("CIV5Buildings.xml");
 
     private final Path leaderPath = DEFAULT_LEADER_PATH.resolve("CIV5Leader_%s.xml".formatted(getLeaderEnglishName()));
 
@@ -43,6 +43,7 @@ public abstract class BasicCivilization implements Civilization {
     private String englishName;
     private String leaderName;
     private UniqueUnit[] uniqueUnits;
+    private UniqueBuilding[] uniqueBuildings;
 
     @Override
     public List<TypedFile> requiredFileList() {
@@ -52,10 +53,12 @@ public abstract class BasicCivilization implements Civilization {
                 new TypedFile(Type.TEXT, TRAIT_TEXT_FILE_PATH.toUri()),
                 new TypedFile(Type.TEXT, UNIT_TEXT_FILE_PATH.toUri()),
                 new TypedFile(Type.TEXT, CIVILOPEDIA_TEXT_FILE_PATH.toUri()),
+                new TypedFile(Type.TEXT, BUILDING_TEXT_FILE_PATH.toUri()),
                 new TypedFile(Type.CIVILIZATION, CIVILIZATION_FILE_PATH.toUri()),
                 new TypedFile(Type.LEADER, leaderPath.toUri()),
                 new TypedFile(Type.TRAIT, TRAIT_FILE_PATH.toUri()),
-                new TypedFile(Type.UNIT, UNIT_FILE_PATH.toUri())
+                new TypedFile(Type.UNIT, UNIT_FILE_PATH.toUri()),
+                new TypedFile(Type.BUILDING, BUILDING_FILE_PATH.toUri())
         );
     }
 
@@ -142,10 +145,25 @@ public abstract class BasicCivilization implements Civilization {
             uniqueUnits[i] = unitBuilder.build();
         }
 
+        this.uniqueUnits = uniqueUnits;
         return uniqueUnits;
     }
 
     protected abstract String[] getUniqueUnitTypes();
+
+    @Override
+    public UniqueBuilding[] getUniqueBuildings() {
+        if (uniqueBuildings != null) {
+            return uniqueBuildings;
+        }
+
+        UniqueBuilding[] uniqueBuildings = createUniqueBuildings();
+
+        this.uniqueBuildings = uniqueBuildings;
+        return uniqueBuildings;
+    }
+
+    protected abstract UniqueBuilding[] createUniqueBuildings();
 
     public abstract class BasicTrait implements Trait {
 
@@ -233,6 +251,36 @@ public abstract class BasicCivilization implements Civilization {
             if (range != null) variableList.add(new KeyValueVariable("사거리(Range)", range));
 
             return variableList;
+        }
+    }
+
+    public static abstract class BasicUniqueBuilding implements UniqueBuilding {
+
+        private final String type;
+        private String description;
+
+        public BasicUniqueBuilding(String type) {
+            this.type = type;
+        }
+
+        @Override
+        public String getDescription() {
+            if (description != null) {
+                return description;
+            }
+
+            String descriptionKey = gameData
+                    .getDocument(Type.BUILDING, BUILDING_FILE_PATH.toString())
+                    .selectSingleNode("/GameData/Building/Row[Type='BUILDING_%s']/Description".formatted(type))
+                    .getText();
+
+            String description = gameData
+                    .getDocument(Type.TEXT, BUILDING_TEXT_FILE_PATH.toString())
+                    .selectSingleNode("/GameData/Language_KO_KR/Row[@Tag='%s']/Text".formatted(descriptionKey))
+                    .getText();
+
+            this.description = description;
+            return description;
         }
     }
 }

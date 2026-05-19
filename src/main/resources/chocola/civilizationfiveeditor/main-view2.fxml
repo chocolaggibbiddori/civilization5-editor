@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="chocola.civilizationfiveeditor.v2.MainController"
-            prefWidth="1000"
+            prefWidth="1300"
             prefHeight="700">
 
     <!-- Top: toolbar -->

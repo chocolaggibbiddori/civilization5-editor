@@ -50,8 +50,8 @@ public class MainController {
     @FXML
     private VBox improvementsBox;
 
+    private final ObservableSet<Variable> changedChecker = FXCollections.observableSet();
     private Civilization currentCivilization;
-    private ObservableSet<Variable> changedChecker = FXCollections.observableSet();
 
     @FXML
     public void initialize() {
@@ -94,7 +94,7 @@ public class MainController {
 
         buildTraitsPanel(civilization);
         buildUnitsPanel(civilization);
-//        buildBuildingsPanel(civilization);
+        buildBuildingsPanel(civilization);
 //        buildImprovementsPanel(civilization);
 
         placeholderLabel.setVisible(false);
@@ -103,10 +103,9 @@ public class MainController {
     }
 
     private void buildTraitsPanel(Civilization civilization) {
-        ObservableList<Node> traitBoxChildren = traitBox.getChildren();
-        traitBoxChildren.clear();
-
+        ObservableList<Node> traitBoxChildren = clearAndReturn(traitBox);
         Trait trait = civilization.getTrait();
+
         VBox vBox = card();
         vBox.getChildren().add(sectionHeader(trait));
         vBox.getChildren().add(sectionBody(trait));
@@ -115,10 +114,9 @@ public class MainController {
     }
 
     private void buildUnitsPanel(Civilization civilization) {
-        ObservableList<Node> unitsBoxChildren = unitsBox.getChildren();
-        unitsBoxChildren.clear();
-
+        ObservableList<Node> unitsBoxChildren = clearAndReturn(unitsBox);
         UniqueUnit[] uniqueUnits = civilization.getUniqueUnits();
+
         if (uniqueUnits.length == 0) {
             unitsBoxChildren.add(new Label("고유 유닛 없음"));
             return;
@@ -131,6 +129,31 @@ public class MainController {
 
             unitsBoxChildren.add(card);
         }
+    }
+
+    private void buildBuildingsPanel(Civilization civilization) {
+        ObservableList<Node> buildingsBoxChildren = clearAndReturn(buildingsBox);
+        UniqueBuilding[] uniqueBuildings = civilization.getUniqueBuildings();
+
+        if (uniqueBuildings.length == 0) {
+            buildingsBoxChildren.add(new Label("고유 건물 없음"));
+            return;
+        }
+
+        for (UniqueBuilding uniqueBuilding : uniqueBuildings) {
+            VBox card = card();
+            card.getChildren().add(sectionHeader(uniqueBuilding));
+            card.getChildren().add(sectionBody(uniqueBuilding));
+
+            buildingsBoxChildren.add(card);
+        }
+    }
+
+    private ObservableList<Node> clearAndReturn(VBox vBox) {
+        ObservableList<Node> children = vBox.getChildren();
+        children.clear();
+
+        return children;
     }
 
     private VBox card() {

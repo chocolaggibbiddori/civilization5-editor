@@ -32,7 +32,7 @@ public record GameData(EnumMap<Type, Map<String, Document>> dataMap) {
 
     public enum Type {
 
-        TEXT, CIVILIZATION, LEADER, TRAIT, UNIT
+        TEXT, CIVILIZATION, LEADER, TRAIT, UNIT, BUILDING
     }
 
     @Getter
