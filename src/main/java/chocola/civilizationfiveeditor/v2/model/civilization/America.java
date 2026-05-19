@@ -1,5 +1,8 @@
 package chocola.civilizationfiveeditor.v2.model.civilization;
 
+import chocola.civilizationfiveeditor.v2.model.KeyValueVariable;
+import chocola.civilizationfiveeditor.v2.model.Trait;
+import chocola.civilizationfiveeditor.v2.model.Variable;
 import java.util.List;
 
 public class America extends BasicCivilization {
@@ -21,11 +24,16 @@ public class America extends BasicCivilization {
         return trait;
     }
 
+    @Override
+    protected String[] getUniqueUnitTypes() {
+        return new String[]{"AMERICAN_MINUTEMAN", "AMERICAN_B17"};
+    }
+
     private class AmericaTrait extends BasicTrait {
 
         @Override
-        public List<TraitVariable> getVariableList() {
-            return List.of(new BasicTraitVariable("PlotBuyCostModifier", -50));
+        public List<Variable> getVariableList() {
+            return List.of(new KeyValueVariable("PlotBuyCostModifier", -50));
         }
     }
 }

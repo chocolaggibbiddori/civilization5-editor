@@ -2,9 +2,8 @@ package chocola.civilizationfiveeditor.v2;
 
 import chocola.civilizationfiveeditor.v2.config.CivilizationConfiguration;
 import chocola.civilizationfiveeditor.v2.loader.GameDataLoader;
+import chocola.civilizationfiveeditor.v2.model.*;
 import chocola.civilizationfiveeditor.v2.model.civilization.Civilization;
-import chocola.civilizationfiveeditor.v2.model.civilization.Trait;
-import chocola.civilizationfiveeditor.v2.model.civilization.TraitVariable;
 import java.util.List;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
@@ -14,7 +13,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -53,7 +51,7 @@ public class MainController {
     private VBox improvementsBox;
 
     private Civilization currentCivilization;
-    private ObservableSet<TraitVariable> changedChecker = FXCollections.observableSet();
+    private ObservableSet<Variable> changedChecker = FXCollections.observableSet();
 
     @FXML
     public void initialize() {
@@ -95,7 +93,7 @@ public class MainController {
         leaderLabel.setText("지도자: " + civilization.getLeaderName());
 
         buildTraitsPanel(civilization);
-//        buildUnitsPanel(civilization);
+        buildUnitsPanel(civilization);
 //        buildBuildingsPanel(civilization);
 //        buildImprovementsPanel(civilization);
 
@@ -107,22 +105,64 @@ public class MainController {
     private void buildTraitsPanel(Civilization civilization) {
         ObservableList<Node> traitBoxChildren = traitBox.getChildren();
         traitBoxChildren.clear();
+
         Trait trait = civilization.getTrait();
-
         VBox vBox = card();
-        vBox.getChildren().add(sectionHeader(trait.getDescription()));
+        vBox.getChildren().add(sectionHeader(trait));
+        vBox.getChildren().add(sectionBody(trait));
 
+        traitBoxChildren.add(vBox);
+    }
+
+    private void buildUnitsPanel(Civilization civilization) {
+        ObservableList<Node> unitsBoxChildren = unitsBox.getChildren();
+        unitsBoxChildren.clear();
+
+        UniqueUnit[] uniqueUnits = civilization.getUniqueUnits();
+        if (uniqueUnits.length == 0) {
+            unitsBoxChildren.add(new Label("고유 유닛 없음"));
+            return;
+        }
+
+        for (UniqueUnit uniqueUnit : uniqueUnits) {
+            VBox card = card();
+            card.getChildren().add(sectionHeader(uniqueUnit));
+            card.getChildren().add(sectionBody(uniqueUnit));
+
+            unitsBoxChildren.add(card);
+        }
+    }
+
+    private VBox card() {
+        VBox box = new VBox(8);
+        box.setStyle("-fx-border-color: #dddddd; -fx-border-radius: 4; -fx-background-color: #fafafa; -fx-background-radius: 4; -fx-padding: 12;");
+
+        return box;
+    }
+
+    private Label sectionHeader(Describable describable) {
+        String text = describable.getDescription();
+
+        Label label = new Label(text);
+        label.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
+
+        return label;
+    }
+
+    private GridPane sectionBody(VariableAccessor variableAccessor) {
+        List<Variable> traitVariableList = variableAccessor.getVariableList();
         GridPane grid = fieldGrid();
-        List<TraitVariable> traitVariableList = trait.getVariableList();
-
         int col = 0, row = 0;
-        for (TraitVariable variable : traitVariableList) {
+
+        for (Variable variable : traitVariableList) {
             String key = variable.getKey();
             int value = variable.getValue();
 
             Label label = new Label(key + ":");
             label.setStyle("-fx-font-size: 12;");
-            GridPane.setConstraints(label, col * 3, row);
+
+            int width = 3;
+            GridPane.setConstraints(label, col * width, row);
 
             TextField textField = numberField(value);
             textField.textProperty().addListener((obs, o, n) -> {
@@ -135,38 +175,23 @@ public class MainController {
                 }
             });
 
-            GridPane.setConstraints(textField, col * 3 + 1, row);
+            GridPane.setConstraints(textField, col * width + 1, row);
             grid.getChildren().addAll(label, textField);
 
-            if (++col >= 3) {
+            if (++col >= width) {
                 col = 0;
                 row++;
             }
         }
 
-        vBox.getChildren().add(grid);
-        traitBoxChildren.add(vBox);
-    }
-
-    private VBox card() {
-        VBox box = new VBox(8);
-        box.setStyle("-fx-border-color: #dddddd; -fx-border-radius: 4; -fx-background-color: #fafafa; -fx-background-radius: 4; -fx-padding: 12;");
-
-        return box;
-    }
-
-    private Label sectionHeader(String text) {
-        Label label = new Label(text);
-        label.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
-
-        return label;
+        return grid;
     }
 
     private GridPane fieldGrid() {
         GridPane grid = new GridPane(8.0, 8.0);
 
         for (int i = 0; i < 3; i++) {
-            ColumnConstraints label = new ColumnConstraints(160);
+            ColumnConstraints label = new ColumnConstraints(200);
             ColumnConstraints field = new ColumnConstraints(80);
             ColumnConstraints spacer = new ColumnConstraints(20);
 

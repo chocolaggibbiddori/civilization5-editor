@@ -1,6 +1,6 @@
-package chocola.civilizationfiveeditor.v2.model.civilization;
+package chocola.civilizationfiveeditor.v2.model;
 
-public interface TraitVariable {
+public interface Variable {
 
     String getKey();
 
