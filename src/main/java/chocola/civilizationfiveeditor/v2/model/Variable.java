@@ -1,8 +1,14 @@
 package chocola.civilizationfiveeditor.v2.model;
 
+import org.dom4j.Node;
+
 public interface Variable {
 
+    Node getNode();
+
     String getKey();
+
+    void setOriginValue(int originValue);
 
     int getValue();
 
@@ -11,8 +17,4 @@ public interface Variable {
     void setValue(String value);
 
     boolean isChanged();
-
-    boolean equals(Object obj);
-
-    int hashCode();
 }

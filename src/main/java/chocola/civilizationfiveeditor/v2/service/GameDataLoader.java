@@ -1,4 +1,4 @@
-package chocola.civilizationfiveeditor.v2.loader;
+package chocola.civilizationfiveeditor.v2.service;
 
 import chocola.civilizationfiveeditor.v2.config.CivilizationConfiguration;
 import chocola.civilizationfiveeditor.v2.model.GameData;

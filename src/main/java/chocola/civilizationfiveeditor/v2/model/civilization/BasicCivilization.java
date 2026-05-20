@@ -1,6 +1,6 @@
 package chocola.civilizationfiveeditor.v2.model.civilization;
 
-import static chocola.civilizationfiveeditor.v2.loader.GameDataLoader.gameData;
+import static chocola.civilizationfiveeditor.v2.service.GameDataLoader.gameData;
 
 import chocola.civilizationfiveeditor.v2.model.GameData.Type;
 import chocola.civilizationfiveeditor.v2.model.GameData.TypedFile;
@@ -19,25 +19,25 @@ import org.dom4j.Node;
 
 public abstract class BasicCivilization implements Civilization {
 
-    private static final Path DEFAULT_TEXT_PATH = PathUtils.DEFAULT_GAME_PATH.resolve("Gameplay/XML/NewText/KO_KR");
-    private static final Path DEFAULT_CIVILIZATION_PATH = PathUtils.DEFAULT_GAME_PATH.resolve("Gameplay/XML/Civilizations");
-    private static final Path DEFAULT_LEADER_PATH = PathUtils.DEFAULT_GAME_PATH.resolve("Gameplay/XML/Leaders");
-    private static final Path DEFAULT_UNIT_PATH = PathUtils.DEFAULT_GAME_PATH.resolve("Gameplay/XML/Units");
-    private static final Path DEFAULT_BUILDING_PATH = PathUtils.DEFAULT_GAME_PATH.resolve("Gameplay/XML/Buildings");
+    protected static final Path DEFAULT_TEXT_PATH = PathUtils.DEFAULT_GAME_PATH.resolve("Gameplay/XML/NewText/KO_KR");
+    protected static final Path DEFAULT_CIVILIZATION_PATH = PathUtils.DEFAULT_GAME_PATH.resolve("Gameplay/XML/Civilizations");
+    protected static final Path DEFAULT_LEADER_PATH = PathUtils.DEFAULT_GAME_PATH.resolve("Gameplay/XML/Leaders");
+    protected static final Path DEFAULT_UNIT_PATH = PathUtils.DEFAULT_GAME_PATH.resolve("Gameplay/XML/Units");
+    protected static final Path DEFAULT_BUILDING_PATH = PathUtils.DEFAULT_GAME_PATH.resolve("Gameplay/XML/Buildings");
 
-    private static final Path CIVILIZATION_TEXT_FILE_PATH = DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Civilizations.xml");
-    private static final Path LEADER_TEXT_FILE_PATH = DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Leaders.xml");
-    private static final Path TRAIT_TEXT_FILE_PATH = DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Jon.xml");
-    private static final Path UNIT_TEXT_FILE_PATH = DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Units.xml");
-    private static final Path CIVILOPEDIA_TEXT_FILE_PATH = DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Civilopedia.xml");
-    private static final Path BUILDING_TEXT_FILE_PATH = DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Buildings.xml");
+    protected static final Path CIVILIZATION_TEXT_FILE_PATH = DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Civilizations.xml");
+    protected static final Path LEADER_TEXT_FILE_PATH = DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Leaders.xml");
+    protected static final Path TRAIT_TEXT_FILE_PATH = DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Jon.xml");
+    protected static final Path UNIT_TEXT_FILE_PATH = DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Units.xml");
+    protected static final Path CIVILOPEDIA_TEXT_FILE_PATH = DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Civilopedia.xml");
+    protected static final Path BUILDING_TEXT_FILE_PATH = DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Buildings.xml");
 
-    private static final Path CIVILIZATION_FILE_PATH = DEFAULT_CIVILIZATION_PATH.resolve("CIV5Civilizations.xml");
-    private static final Path TRAIT_FILE_PATH = DEFAULT_CIVILIZATION_PATH.resolve("CIV5Traits.xml");
-    private static final Path UNIT_FILE_PATH = DEFAULT_UNIT_PATH.resolve("CIV5Units.xml");
-    private static final Path BUILDING_FILE_PATH = DEFAULT_BUILDING_PATH.resolve("CIV5Buildings.xml");
+    protected static final Path CIVILIZATION_FILE_PATH = DEFAULT_CIVILIZATION_PATH.resolve("CIV5Civilizations.xml");
+    protected static final Path TRAIT_FILE_PATH = DEFAULT_CIVILIZATION_PATH.resolve("CIV5Traits.xml");
+    protected static final Path UNIT_FILE_PATH = DEFAULT_UNIT_PATH.resolve("CIV5Units.xml");
+    protected static final Path BUILDING_FILE_PATH = DEFAULT_BUILDING_PATH.resolve("CIV5Buildings.xml");
 
-    private final Path leaderPath = DEFAULT_LEADER_PATH.resolve("CIV5Leader_%s.xml".formatted(getLeaderEnglishName()));
+    protected final Path leaderPath = DEFAULT_LEADER_PATH.resolve("CIV5Leader_%s.xml".formatted(getLeaderEnglishName()));
 
     private String name;
     private String englishName;
@@ -136,7 +136,8 @@ public abstract class BasicCivilization implements Civilization {
 
             BasicUniqueUnitBuilder unitBuilder = BasicUniqueUnit
                     .builder()
-                    .type(uniqueUnitType);
+                    .type(uniqueUnitType)
+                    .row(row);
             if (combat != null) unitBuilder.combat(Integer.parseInt(combat));
             if (rangedCombat != null) unitBuilder.rangedCombat(Integer.parseInt(rangedCombat));
             if (cost != null) unitBuilder.cost(Integer.parseInt(cost));
@@ -219,6 +220,7 @@ public abstract class BasicCivilization implements Civilization {
     public static class BasicUniqueUnit implements UniqueUnit {
 
         private final String type;
+        private final Node row;
         private String description;
 
         @Getter @Setter
@@ -264,11 +266,11 @@ public abstract class BasicCivilization implements Civilization {
         @Override
         public List<Variable> getVariableList() {
             List<Variable> variableList = new ArrayList<>();
-            if (combat != null) variableList.add(new KeyValueVariable("전투력(Combat)", combat));
-            if (rangedCombat != null) variableList.add(new KeyValueVariable("원거리 전투력(Ranged Combat)", rangedCombat));
-            if (cost != null) variableList.add(new KeyValueVariable("생산 비용(Cost)", cost));
-            if (moves != null) variableList.add(new KeyValueVariable("이동력(Moves)", moves));
-            if (range != null) variableList.add(new KeyValueVariable("사거리(Range)", range));
+            if (combat != null) variableList.add(new NodeVariable(row.selectSingleNode("Combat")));
+            if (rangedCombat != null) variableList.add(new NodeVariable(row.selectSingleNode("RangedCombat")));
+            if (cost != null) variableList.add(new NodeVariable(row.selectSingleNode("Cost")));
+            if (moves != null) variableList.add(new NodeVariable(row.selectSingleNode("Moves")));
+            if (range != null) variableList.add(new NodeVariable(row.selectSingleNode("Range")));
 
             return variableList;
         }

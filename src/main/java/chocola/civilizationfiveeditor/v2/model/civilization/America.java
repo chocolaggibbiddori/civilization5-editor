@@ -1,7 +1,11 @@
 package chocola.civilizationfiveeditor.v2.model.civilization;
 
+import static chocola.civilizationfiveeditor.v2.service.GameDataLoader.gameData;
+
 import chocola.civilizationfiveeditor.v2.model.*;
+import chocola.civilizationfiveeditor.v2.model.GameData.Type;
 import java.util.List;
+import org.dom4j.Node;
 
 public class America extends BasicCivilization {
 
@@ -36,7 +40,12 @@ public class America extends BasicCivilization {
 
         @Override
         public List<Variable> getVariableList() {
-            return List.of(new KeyValueVariable("PlotBuyCostModifier", -50));
+            String key = "PlotBuyCostModifier";
+            Node node = gameData
+                    .getDocument(Type.TRAIT, TRAIT_FILE_PATH)
+                    .selectSingleNode("/GameData/Traits/Row[Type='TRAIT_RIVER_EXPANSION']/%s".formatted(key));
+
+            return List.of(new NodeVariable(node));
         }
     }
 }

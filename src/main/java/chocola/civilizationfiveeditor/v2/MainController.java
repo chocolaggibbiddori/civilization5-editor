@@ -1,24 +1,26 @@
 package chocola.civilizationfiveeditor.v2;
 
 import chocola.civilizationfiveeditor.v2.config.CivilizationConfiguration;
-import chocola.civilizationfiveeditor.v2.loader.GameDataLoader;
+import chocola.civilizationfiveeditor.v2.service.GameDataLoader;
 import chocola.civilizationfiveeditor.v2.model.*;
 import chocola.civilizationfiveeditor.v2.model.civilization.Civilization;
+import chocola.civilizationfiveeditor.v2.service.GameDataSaver;
 import java.util.List;
+import java.util.logging.Level;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableSet;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
+import lombok.extern.slf4j.XSlf4j;
 
+@Log
 public class MainController {
 
     @FXML
@@ -73,15 +75,28 @@ public class MainController {
     }
 
     @FXML
-    public void onSave(ActionEvent actionEvent) {
+    public void onSave() {
+        if (currentCivilization == null) {
+            return;
+        }
+
+        try {
+            GameDataSaver.save(changedChecker);
+            statusLabel.setText("저장 완료");
+            changedChecker.clear();
+        } catch (Exception e) {
+            log.severe("Failed to save game data: " + e.getMessage());
+            e.printStackTrace(System.err);
+            statusLabel.setText("저장 실패");
+        }
     }
 
     @FXML
-    public void onRestore(ActionEvent actionEvent) {
+    public void onRestore() {
     }
 
     @FXML
-    public void onCivSelected(MouseEvent mouseEvent) {
+    public void onCivSelected() {
         Civilization civilization = civListView.getSelectionModel().getSelectedItem();
 
         if (civilization == null || currentCivilization == civilization) {
@@ -201,6 +216,7 @@ public class MainController {
 
             Label label = new Label(key + ":");
             label.setStyle("-fx-font-size: 12;");
+            label.setWrapText(false);
 
             int width = 3;
             GridPane.setConstraints(label, col * width, row);
@@ -232,7 +248,7 @@ public class MainController {
         GridPane grid = new GridPane(8.0, 8.0);
 
         for (int i = 0; i < 3; i++) {
-            ColumnConstraints label = new ColumnConstraints(200);
+            ColumnConstraints label = new ColumnConstraints(Region.USE_PREF_SIZE, Region.USE_COMPUTED_SIZE, Region.USE_PREF_SIZE);
             ColumnConstraints field = new ColumnConstraints(80);
             ColumnConstraints spacer = new ColumnConstraints(20);
 

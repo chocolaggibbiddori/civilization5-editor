@@ -1,25 +1,37 @@
 package chocola.civilizationfiveeditor.v2.model;
 
-import lombok.EqualsAndHashCode;
+import org.dom4j.Node;
 
-@EqualsAndHashCode
-public class KeyValueVariable implements Variable {
+public class NodeVariable implements Variable {
 
+    private final Node node;
     private final String key;
-    private final int originValue;
 
-    @EqualsAndHashCode.Exclude
+    private int originValue;
     private int value;
 
-    public KeyValueVariable(String key, int value) {
-        this.key = key;
+    public NodeVariable(Node node) {
+        this.node = node;
+        this.key = node.getName();
+
+        int value = Integer.parseInt(node.getText());
         this.originValue = value;
         this.value = value;
     }
 
     @Override
+    public Node getNode() {
+        return node;
+    }
+
+    @Override
     public String getKey() {
         return key;
+    }
+
+    @Override
+    public void setOriginValue(int originValue) {
+        this.originValue = originValue;
     }
 
     @Override
@@ -34,7 +46,7 @@ public class KeyValueVariable implements Variable {
 
     @Override
     public void setValue(String value) {
-        if (value == null) {
+        if (value.isBlank()) {
             this.value = 0;
             return;
         }

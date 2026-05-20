@@ -7,6 +7,7 @@ module chocola.civilizationfiveeditor {
     requires org.controlsfx.controls;
     requires java.xml;
     requires org.dom4j;
+    requires java.logging;
 
     opens chocola.civilizationfiveeditor to javafx.fxml;
     opens chocola.civilizationfiveeditor.v2 to javafx.fxml;
