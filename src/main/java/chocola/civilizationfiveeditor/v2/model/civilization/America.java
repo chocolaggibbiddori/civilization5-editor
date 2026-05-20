@@ -1,9 +1,6 @@
 package chocola.civilizationfiveeditor.v2.model.civilization;
 
-import chocola.civilizationfiveeditor.v2.model.KeyValueVariable;
-import chocola.civilizationfiveeditor.v2.model.Trait;
-import chocola.civilizationfiveeditor.v2.model.UniqueBuilding;
-import chocola.civilizationfiveeditor.v2.model.Variable;
+import chocola.civilizationfiveeditor.v2.model.*;
 import java.util.List;
 
 public class America extends BasicCivilization {
@@ -26,13 +23,13 @@ public class America extends BasicCivilization {
     }
 
     @Override
-    protected String[] getUniqueUnitTypes() {
-        return new String[]{"AMERICAN_MINUTEMAN", "AMERICAN_B17"};
+    protected UniqueBuilding[] getUniqueBuildings(String[] uniqueBuildingTypes) {
+        return new UniqueBuilding[0];
     }
 
     @Override
-    protected UniqueBuilding[] createUniqueBuildings() {
-        return new UniqueBuilding[0];
+    public UniqueImprovement[] getUniqueImprovements() {
+        return new UniqueImprovement[0];
     }
 
     private class AmericaTrait extends BasicTrait {

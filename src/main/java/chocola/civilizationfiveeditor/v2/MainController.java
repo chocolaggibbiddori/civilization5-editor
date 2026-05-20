@@ -95,7 +95,7 @@ public class MainController {
         buildTraitsPanel(civilization);
         buildUnitsPanel(civilization);
         buildBuildingsPanel(civilization);
-//        buildImprovementsPanel(civilization);
+        buildImprovementsPanel(civilization);
 
         placeholderLabel.setVisible(false);
         detailContent.setVisible(true);
@@ -103,7 +103,7 @@ public class MainController {
     }
 
     private void buildTraitsPanel(Civilization civilization) {
-        ObservableList<Node> traitBoxChildren = clearAndReturn(traitBox);
+        ObservableList<Node> traitBoxChildren = clearChildrenAndReturn(traitBox);
         Trait trait = civilization.getTrait();
 
         VBox vBox = card();
@@ -114,7 +114,7 @@ public class MainController {
     }
 
     private void buildUnitsPanel(Civilization civilization) {
-        ObservableList<Node> unitsBoxChildren = clearAndReturn(unitsBox);
+        ObservableList<Node> unitsBoxChildren = clearChildrenAndReturn(unitsBox);
         UniqueUnit[] uniqueUnits = civilization.getUniqueUnits();
 
         if (uniqueUnits.length == 0) {
@@ -132,7 +132,7 @@ public class MainController {
     }
 
     private void buildBuildingsPanel(Civilization civilization) {
-        ObservableList<Node> buildingsBoxChildren = clearAndReturn(buildingsBox);
+        ObservableList<Node> buildingsBoxChildren = clearChildrenAndReturn(buildingsBox);
         UniqueBuilding[] uniqueBuildings = civilization.getUniqueBuildings();
 
         if (uniqueBuildings.length == 0) {
@@ -149,7 +149,25 @@ public class MainController {
         }
     }
 
-    private ObservableList<Node> clearAndReturn(VBox vBox) {
+    private void buildImprovementsPanel(Civilization civilization) {
+        ObservableList<Node> improvementsBoxChildren = clearChildrenAndReturn(improvementsBox);
+        UniqueImprovement[] uniqueImprovements = civilization.getUniqueImprovements();
+
+        if (uniqueImprovements.length == 0) {
+            improvementsBoxChildren.add(new Label("고유 시설물 없음"));
+            return;
+        }
+
+        for (UniqueImprovement uniqueImprovement : uniqueImprovements) {
+            VBox card = card();
+            card.getChildren().add(sectionHeader(uniqueImprovement));
+            card.getChildren().add(sectionBody(uniqueImprovement));
+
+            improvementsBoxChildren.add(card);
+        }
+    }
+
+    private ObservableList<Node> clearChildrenAndReturn(VBox vBox) {
         ObservableList<Node> children = vBox.getChildren();
         children.clear();
 

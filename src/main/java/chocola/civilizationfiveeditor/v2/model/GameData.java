@@ -2,6 +2,7 @@ package chocola.civilizationfiveeditor.v2.model;
 
 import java.io.File;
 import java.net.URI;
+import java.nio.file.Path;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +24,8 @@ public record GameData(EnumMap<Type, Map<String, Document>> dataMap) {
         });
     }
 
-    public Document getDocument(Type type, String documentName) {
+    public Document getDocument(Type type, Path documentPath) {
+        String documentName = documentPath.toString();
         return dataMap.get(type).get("file:///" + documentName.replaceAll("\\\\", "/"));
     }
 

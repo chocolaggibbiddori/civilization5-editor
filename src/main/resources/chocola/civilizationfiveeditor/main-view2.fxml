@@ -132,7 +132,7 @@
                     </Tab>
 
                     <!-- Unique Improvements tab -->
-                    <Tab text="고유 구조물">
+                    <Tab text="고유 시설물">
                         <ScrollPane fitToWidth="true"
                                     fitToHeight="true">
                             <VBox fx:id="improvementsBox"

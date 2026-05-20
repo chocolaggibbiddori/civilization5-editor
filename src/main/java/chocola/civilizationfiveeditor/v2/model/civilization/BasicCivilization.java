@@ -68,13 +68,14 @@ public abstract class BasicCivilization implements Civilization {
             return name;
         }
 
+
         String shortDescriptionTag = gameData
-                .getDocument(Type.CIVILIZATION, CIVILIZATION_FILE_PATH.toString())
+                .getDocument(Type.CIVILIZATION, CIVILIZATION_FILE_PATH)
                 .selectSingleNode("/GameData/Civilizations/Row[Type='CIVILIZATION_%s']/ShortDescription"
                         .formatted(getEnglishName().toUpperCase()))
                 .getText();
         String name = gameData
-                .getDocument(Type.TEXT, CIVILIZATION_TEXT_FILE_PATH.toString())
+                .getDocument(Type.TEXT, CIVILIZATION_TEXT_FILE_PATH)
                 .selectSingleNode("/GameData/Language_KO_KR/Row[@Tag='%s']/Text"
                         .formatted(shortDescriptionTag))
                 .getText();
@@ -99,7 +100,7 @@ public abstract class BasicCivilization implements Civilization {
         }
 
         leaderName = gameData
-                .getDocument(Type.TEXT, LEADER_TEXT_FILE_PATH.toString())
+                .getDocument(Type.TEXT, LEADER_TEXT_FILE_PATH)
                 .selectSingleNode("/GameData/Language_KO_KR/Row[@Tag='TXT_KEY_LEADER_%s']/Text"
                         .formatted(getLeaderEnglishName().toUpperCase()))
                 .getText();
@@ -124,7 +125,7 @@ public abstract class BasicCivilization implements Civilization {
         for (int i = 0; i < uniqueUnitTypes.length; i++) {
             String uniqueUnitType = uniqueUnitTypes[i];
             Element row = (Element) gameData
-                    .getDocument(Type.UNIT, UNIT_FILE_PATH.toString())
+                    .getDocument(Type.UNIT, UNIT_FILE_PATH)
                     .selectSingleNode("/GameData/Units/Row[Type='UNIT_%s']".formatted(uniqueUnitType));
 
             String combat = row.elementText("Combat");
@@ -149,7 +150,15 @@ public abstract class BasicCivilization implements Civilization {
         return uniqueUnits;
     }
 
-    protected abstract String[] getUniqueUnitTypes();
+    private String[] getUniqueUnitTypes() {
+        return gameData
+                .getDocument(Type.CIVILIZATION, CIVILIZATION_FILE_PATH)
+                .selectNodes("/GameData/Civilization_UnitClassOverrides/Row[CivilizationType='CIVILIZATION_%s']/UnitType"
+                        .formatted(getEnglishName().toUpperCase()))
+                .stream()
+                .map(node -> node.getText().substring("UNIT_".length()))
+                .toArray(String[]::new);
+    }
 
     @Override
     public UniqueBuilding[] getUniqueBuildings() {
@@ -157,13 +166,24 @@ public abstract class BasicCivilization implements Civilization {
             return uniqueBuildings;
         }
 
-        UniqueBuilding[] uniqueBuildings = createUniqueBuildings();
+        String[] uniqueBuildingTypes = getUniqueBuildingTypes();
+        UniqueBuilding[] uniqueBuildings = getUniqueBuildings(uniqueBuildingTypes);
 
         this.uniqueBuildings = uniqueBuildings;
         return uniqueBuildings;
     }
 
-    protected abstract UniqueBuilding[] createUniqueBuildings();
+    private String[] getUniqueBuildingTypes() {
+        return gameData
+                .getDocument(Type.CIVILIZATION, CIVILIZATION_FILE_PATH)
+                .selectNodes("/GameData/Civilization_BuildingClassOverrides/Row[CivilizationType='CIVILIZATION_%s']/BuildingType"
+                        .formatted(getEnglishName().toUpperCase()))
+                .stream()
+                .map(node -> node.getText().substring("BUILDING_".length()))
+                .toArray(String[]::new);
+    }
+
+    protected abstract UniqueBuilding[] getUniqueBuildings(String[] uniqueBuildingTypes);
 
     public abstract class BasicTrait implements Trait {
 
@@ -176,17 +196,17 @@ public abstract class BasicCivilization implements Civilization {
             }
 
             String traitType = gameData
-                    .getDocument(Type.LEADER, leaderPath.toString())
+                    .getDocument(Type.LEADER, leaderPath)
                     .selectSingleNode("/GameData/Leader_Traits/Row/TraitType")
                     .getText();
 
             String descriptionKey = gameData
-                    .getDocument(Type.TRAIT, TRAIT_FILE_PATH.toString())
+                    .getDocument(Type.TRAIT, TRAIT_FILE_PATH)
                     .selectSingleNode("/GameData/Traits/Row[Type='%s']/Description".formatted(traitType))
                     .getText();
 
             String description = gameData
-                    .getDocument(Type.TEXT, TRAIT_TEXT_FILE_PATH.toString())
+                    .getDocument(Type.TEXT, TRAIT_TEXT_FILE_PATH)
                     .selectSingleNode("/GameData/Language_KO_KR/Row[@Tag='%s']/Text".formatted(descriptionKey))
                     .getText();
 
@@ -223,17 +243,17 @@ public abstract class BasicCivilization implements Civilization {
             }
 
             String descriptionKey = gameData
-                    .getDocument(Type.UNIT, UNIT_FILE_PATH.toString())
+                    .getDocument(Type.UNIT, UNIT_FILE_PATH)
                     .selectSingleNode("/GameData/Units/Row[Type='UNIT_%s']/Description".formatted(type))
                     .getText();
 
             Node descriptionNode = gameData
-                    .getDocument(Type.TEXT, UNIT_TEXT_FILE_PATH.toString())
+                    .getDocument(Type.TEXT, UNIT_TEXT_FILE_PATH)
                     .selectSingleNode("/GameData/Language_KO_KR/Row[@Tag='%s']/Text".formatted(descriptionKey));
 
             if (descriptionNode == null) {
                 descriptionNode = gameData
-                        .getDocument(Type.TEXT, CIVILOPEDIA_TEXT_FILE_PATH.toString())
+                        .getDocument(Type.TEXT, CIVILOPEDIA_TEXT_FILE_PATH)
                         .selectSingleNode("/GameData/Language_KO_KR/Row[@Tag='%s']/Text".formatted(descriptionKey));
             }
 
@@ -270,12 +290,12 @@ public abstract class BasicCivilization implements Civilization {
             }
 
             String descriptionKey = gameData
-                    .getDocument(Type.BUILDING, BUILDING_FILE_PATH.toString())
+                    .getDocument(Type.BUILDING, BUILDING_FILE_PATH)
                     .selectSingleNode("/GameData/Building/Row[Type='BUILDING_%s']/Description".formatted(type))
                     .getText();
 
             String description = gameData
-                    .getDocument(Type.TEXT, BUILDING_TEXT_FILE_PATH.toString())
+                    .getDocument(Type.TEXT, BUILDING_TEXT_FILE_PATH)
                     .selectSingleNode("/GameData/Language_KO_KR/Row[@Tag='%s']/Text".formatted(descriptionKey))
                     .getText();
 
