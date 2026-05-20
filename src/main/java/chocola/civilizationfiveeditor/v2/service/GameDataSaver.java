@@ -1,9 +1,10 @@
 package chocola.civilizationfiveeditor.v2.service;
 
+import static chocola.civilizationfiveeditor.v2.util.PathUtils.DEFAULT_BACKUP_PATH;
+import static chocola.civilizationfiveeditor.v2.util.PathUtils.DEFAULT_GAME_PATH;
 import static java.util.stream.Collectors.toSet;
 
 import chocola.civilizationfiveeditor.v2.model.Variable;
-import chocola.civilizationfiveeditor.v2.util.PathUtils;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -36,7 +37,7 @@ public class GameDataSaver {
 
     private static void backup(Document document) {
         Path origin = Path.of(document.getName().substring("file:///".length()));
-        Path backupPath = PathUtils.DEFAULT_BACKUP_PATH.resolve(PathUtils.DEFAULT_GAME_PATH.relativize(origin));
+        Path backupPath = DEFAULT_BACKUP_PATH.resolve(DEFAULT_GAME_PATH.relativize(origin));
 
         try {
             if (Files.notExists(backupPath)) {

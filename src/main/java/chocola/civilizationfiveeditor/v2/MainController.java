@@ -1,12 +1,12 @@
 package chocola.civilizationfiveeditor.v2;
 
 import chocola.civilizationfiveeditor.v2.config.CivilizationConfiguration;
-import chocola.civilizationfiveeditor.v2.service.GameDataLoader;
 import chocola.civilizationfiveeditor.v2.model.*;
 import chocola.civilizationfiveeditor.v2.model.civilization.Civilization;
+import chocola.civilizationfiveeditor.v2.service.GameDataLoader;
+import chocola.civilizationfiveeditor.v2.service.GameDataRestorer;
 import chocola.civilizationfiveeditor.v2.service.GameDataSaver;
 import java.util.List;
-import java.util.logging.Level;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,9 +16,6 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import lombok.extern.java.Log;
-import lombok.extern.log4j.Log4j;
-import lombok.extern.slf4j.Slf4j;
-import lombok.extern.slf4j.XSlf4j;
 
 @Log
 public class MainController {
@@ -57,6 +54,30 @@ public class MainController {
 
     @FXML
     public void initialize() {
+        saveButton.disableProperty().bind(Bindings.isEmpty(changedChecker));
+        refreshHard();
+    }
+
+    private void refreshHard() {
+        refresh();
+        CivilizationConfiguration.init();
+        changedChecker.clear();
+        currentCivilization = null;
+        civListView.refresh();
+        civNameLabel.setText(null);
+        leaderLabel.setText(null);
+        placeholderLabel.setVisible(true);
+        detailContent.setVisible(false);
+        load();
+    }
+
+    private void refresh() {
+        restoreButton.disableProperty().bind(Bindings.createBooleanBinding(GameDataRestorer::canRestore).not());
+    }
+
+    private void load() {
+        civListView.getItems().clear();
+
         GameDataLoader.load();
 
         CivilizationConfiguration
@@ -70,8 +91,6 @@ public class MainController {
                 setText(empty || civilization == null ? null : civilization.getName());
             }
         });
-
-        saveButton.disableProperty().bind(Bindings.isEmpty(changedChecker));
     }
 
     @FXML
@@ -84,6 +103,7 @@ public class MainController {
             GameDataSaver.save(changedChecker);
             statusLabel.setText("저장 완료");
             changedChecker.clear();
+            refresh();
         } catch (Exception e) {
             log.severe("Failed to save game data: " + e.getMessage());
             e.printStackTrace(System.err);
@@ -93,6 +113,16 @@ public class MainController {
 
     @FXML
     public void onRestore() {
+        try {
+            GameDataRestorer.restore();
+            statusLabel.setText("복원 완료");
+            refreshHard();
+            load();
+        } catch (Exception e) {
+            log.severe("Failed to restore game data: " + e.getMessage());
+            e.printStackTrace(System.err);
+            statusLabel.setText("복원 실패");
+        }
     }
 
     @FXML
@@ -114,7 +144,6 @@ public class MainController {
 
         placeholderLabel.setVisible(false);
         detailContent.setVisible(true);
-        restoreButton.setDisable(false);
     }
 
     private void buildTraitsPanel(Civilization civilization) {

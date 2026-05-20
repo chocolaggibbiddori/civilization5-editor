@@ -6,10 +6,10 @@ import java.util.List;
 
 public class CivilizationConfiguration {
 
-    private static final List<Civilization> CIVILIZATION_LIST;
+    private static final List<Civilization> CIVILIZATION_LIST = new ArrayList<>();
 
-    static {
-        CIVILIZATION_LIST = new ArrayList<>();
+    public static void init() {
+        CIVILIZATION_LIST.clear();
         CIVILIZATION_LIST.add(new America());
     }
 
