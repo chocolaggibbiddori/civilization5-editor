@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
+import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;
 
@@ -325,7 +326,10 @@ public abstract class AbstractCivilization implements Civilization {
             if (cost != null) variableList.add(new NodeVariable(row.selectSingleNode("Cost")));
         }
 
-        protected void addVariables(List<Variable> variableList) {
+        protected abstract void addVariables(List<Variable> variableList);
+
+        protected Document getDocument() {
+            return gameData.getDocument(getBuildingFilePath());
         }
     }
 }

@@ -79,7 +79,7 @@ public class Arabia extends BasicCivilization {
 
         @Override
         protected void addVariables(List<Variable> variableList) {
-            Document document = gameData.getDocument(EXPANSION2_BUILDING_FILE_PATH);
+            Document document = getDocument();
             String type = getType();
 
             Node node1 = document.selectSingleNode("/GameData/Building_ResourceYieldChanges/Row[BuildingType='%s']/Yield".formatted(type));
