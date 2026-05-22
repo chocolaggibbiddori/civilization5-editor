@@ -1,12 +1,12 @@
-package chocola.civilizationfiveeditor.v2.model.civilization;
+package chocola.civilizationfiveeditor.v2.model.civilization.impl;
 
-import static chocola.civilizationfiveeditor.v2.service.GameDataLoader.gameData;
 import static chocola.civilizationfiveeditor.v2.util.PathUtils.*;
 
 import chocola.civilizationfiveeditor.v2.model.NodeVariable;
 import chocola.civilizationfiveeditor.v2.model.UniqueBuilding;
 import chocola.civilizationfiveeditor.v2.model.UniqueUnit;
 import chocola.civilizationfiveeditor.v2.model.Variable;
+import chocola.civilizationfiveeditor.v2.model.civilization.BasicCivilization;
 import java.nio.file.Path;
 import java.util.List;
 import org.dom4j.Document;

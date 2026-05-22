@@ -1,4 +1,4 @@
-package chocola.civilizationfiveeditor.v2.model.civilization;
+package chocola.civilizationfiveeditor.v2.model.civilization.impl;
 
 import static chocola.civilizationfiveeditor.v2.util.PathUtils.*;
 
@@ -6,16 +6,17 @@ import chocola.civilizationfiveeditor.v2.model.NodeVariable;
 import chocola.civilizationfiveeditor.v2.model.UniqueBuilding;
 import chocola.civilizationfiveeditor.v2.model.UniqueUnit;
 import chocola.civilizationfiveeditor.v2.model.Variable;
+import chocola.civilizationfiveeditor.v2.model.civilization.BasicCivilization;
 import java.nio.file.Path;
 import java.util.List;
 import org.dom4j.Document;
 import org.dom4j.Node;
 
-public class Aztec extends BasicCivilization {
+public class China extends BasicCivilization {
 
     @Override
     protected String getLeaderEnglishName() {
-        return "Montezuma";
+        return "WuZetian";
     }
 
     @Override
@@ -30,20 +31,20 @@ public class Aztec extends BasicCivilization {
 
     @Override
     protected AbstractTrait createTrait() {
-        return new AztecTrait();
+        return new ChinaTrait();
     }
 
     @Override
     protected UniqueUnit[] createUniqueUnits() {
-        return new UniqueUnit[]{new Jaguar()};
+        return new UniqueUnit[]{new Chukonu()};
     }
 
     @Override
     protected UniqueBuilding[] createUniqueBuildings() {
-        return new UniqueBuilding[]{new FloatingGardens()};
+        return new UniqueBuilding[]{new PaperMaker()};
     }
 
-    private class AztecTrait extends BasicTrait {
+    private class ChinaTrait extends BasicTrait {
 
         @Override
         protected Path getTraitFilePath() {
@@ -53,13 +54,15 @@ public class Aztec extends BasicCivilization {
         @Override
         protected void addVariables(List<Variable> variableList) {
             Node row = getRow();
-            Node node = row.selectSingleNode("CultureFromKills");
+            Node node1 = row.selectSingleNode("GreatGeneralRateModifier");
+            Node node2 = row.selectSingleNode("GreatGeneralExtraBonus");
 
-            variableList.add(new NodeVariable(node));
+            variableList.add(new NodeVariable(node1));
+            variableList.add(new NodeVariable(node2));
         }
     }
 
-    private class Jaguar extends BasicUniqueUnit {
+    private class Chukonu extends BasicUniqueUnit {
 
         @Override
         protected Path getUnitFilePath() {
@@ -67,7 +70,7 @@ public class Aztec extends BasicCivilization {
         }
     }
 
-    private class FloatingGardens extends BasicUniqueBuilding {
+    private class PaperMaker extends BasicUniqueBuilding {
 
         @Override
         protected Path getBuildingFilePath() {
@@ -84,11 +87,11 @@ public class Aztec extends BasicCivilization {
             Document document = getDocument();
             String type = getType();
 
-            Node node1 = document.selectSingleNode("/GameData/Building_LakePlotYieldChanges/Row[BuildingType='%s']/Yield".formatted(type));
-            Node node2 = document.selectSingleNode("/GameData/Building_YieldModifiers/Row[BuildingType='%s']/Yield".formatted(type));
+            Node node1 = document.selectSingleNode("/GameData/Building_YieldChanges/Row[BuildingType='%s']/Yield".formatted(type));
+            Node node2 = document.selectSingleNode("/GameData/Building_YieldChangesPerPop/Row[BuildingType='%s']/Yield".formatted(type));
 
-            variableList.add(new NodeVariable(node1, "Yield(Food, Lake)"));
-            variableList.add(new NodeVariable(node2, "Yield(Food, Modifiers)"));
+            variableList.add(new NodeVariable(node1, "Yield(Gold)"));
+            variableList.add(new NodeVariable(node2, "Yield(Science, Modifiers)"));
         }
     }
 }
