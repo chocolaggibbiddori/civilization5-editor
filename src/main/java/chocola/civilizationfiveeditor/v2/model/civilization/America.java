@@ -1,20 +1,18 @@
 package chocola.civilizationfiveeditor.v2.model.civilization;
 
-import static chocola.civilizationfiveeditor.v2.service.GameDataLoader.gameData;
+import static chocola.civilizationfiveeditor.v2.util.PathUtils.EXPANSION2_CIVILIZATION_FILE_PATH;
+import static chocola.civilizationfiveeditor.v2.util.PathUtils.EXPANSION2_TRAIT_FILE_PATH;
+import static chocola.civilizationfiveeditor.v2.util.PathUtils.EXPANSION2_UNIT_FILE_PATH;
+import static chocola.civilizationfiveeditor.v2.util.PathUtils.EXPANSION_DEFAULT_LEADER_PATH;
 
-import chocola.civilizationfiveeditor.v2.model.*;
-import chocola.civilizationfiveeditor.v2.model.GameData.Type;
+import chocola.civilizationfiveeditor.v2.model.NodeVariable;
+import chocola.civilizationfiveeditor.v2.model.UniqueUnit;
+import chocola.civilizationfiveeditor.v2.model.Variable;
+import java.nio.file.Path;
 import java.util.List;
 import org.dom4j.Node;
 
 public class America extends BasicCivilization {
-
-    private final AmericaTrait trait;
-
-    public America() {
-        super();
-        trait = new AmericaTrait();
-    }
 
     @Override
     protected String getLeaderEnglishName() {
@@ -22,30 +20,53 @@ public class America extends BasicCivilization {
     }
 
     @Override
-    public Trait getTrait() {
-        return trait;
+    protected Path getCivilizationFilePath() {
+        return EXPANSION2_CIVILIZATION_FILE_PATH;
     }
 
     @Override
-    protected UniqueBuilding[] getUniqueBuildings(String[] uniqueBuildingTypes) {
-        return new UniqueBuilding[0];
+    protected Path getDefaultLeaderPath() {
+        return EXPANSION_DEFAULT_LEADER_PATH;
     }
 
     @Override
-    public UniqueImprovement[] getUniqueImprovements() {
-        return new UniqueImprovement[0];
+    protected AbstractTrait createTrait() {
+        return new AmericaTrait();
+    }
+
+    @Override
+    protected UniqueUnit[] createUniqueUnits() {
+        return new UniqueUnit[]{new B17(), new Minuteman()};
     }
 
     private class AmericaTrait extends BasicTrait {
 
         @Override
-        public List<Variable> getVariableList() {
-            String key = "PlotBuyCostModifier";
-            Node node = gameData
-                    .getDocument(Type.TRAIT, TRAIT_FILE_PATH)
-                    .selectSingleNode("/GameData/Traits/Row[Type='TRAIT_RIVER_EXPANSION']/%s".formatted(key));
+        protected void addVariables(List<Variable> variableList) {
+            Node node = getRow().selectSingleNode("PlotBuyCostModifier");
 
-            return List.of(new NodeVariable(node));
+            variableList.add(new NodeVariable(node));
+        }
+
+        @Override
+        protected Path getTraitFilePath() {
+            return EXPANSION2_TRAIT_FILE_PATH;
+        }
+    }
+
+    private class B17 extends BasicUniqueUnit {
+
+        @Override
+        protected Path getUnitFilePath() {
+            return EXPANSION2_UNIT_FILE_PATH;
+        }
+    }
+
+    private class Minuteman extends BasicUniqueUnit {
+
+        @Override
+        protected Path getUnitFilePath() {
+            return EXPANSION2_UNIT_FILE_PATH;
         }
     }
 }

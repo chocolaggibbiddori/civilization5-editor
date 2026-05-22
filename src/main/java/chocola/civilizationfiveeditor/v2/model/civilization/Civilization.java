@@ -1,15 +1,15 @@
 package chocola.civilizationfiveeditor.v2.model.civilization;
 
-import chocola.civilizationfiveeditor.v2.model.GameData.TypedFile;
 import chocola.civilizationfiveeditor.v2.model.Trait;
 import chocola.civilizationfiveeditor.v2.model.UniqueBuilding;
 import chocola.civilizationfiveeditor.v2.model.UniqueImprovement;
 import chocola.civilizationfiveeditor.v2.model.UniqueUnit;
+import java.nio.file.Path;
 import java.util.List;
 
 public interface Civilization {
 
-    List<TypedFile> requiredFileList();
+    List<Path> requiredPathList();
 
     String getName();
 

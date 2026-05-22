@@ -1,308 +1,72 @@
 package chocola.civilizationfiveeditor.v2.model.civilization;
 
-import static chocola.civilizationfiveeditor.v2.service.GameDataLoader.gameData;
+import static chocola.civilizationfiveeditor.v2.util.PathUtils.*;
 
-import chocola.civilizationfiveeditor.v2.model.GameData.Type;
-import chocola.civilizationfiveeditor.v2.model.GameData.TypedFile;
-import chocola.civilizationfiveeditor.v2.model.*;
-import chocola.civilizationfiveeditor.v2.model.civilization.BasicCivilization.BasicUniqueUnit.BasicUniqueUnitBuilder;
-import chocola.civilizationfiveeditor.v2.util.PathUtils;
-import chocola.civilizationfiveeditor.v2.util.TextUtils;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import org.dom4j.Element;
-import org.dom4j.Node;
 
-public abstract class BasicCivilization implements Civilization {
-
-    protected static final Path DEFAULT_TEXT_PATH = PathUtils.DEFAULT_GAME_PATH.resolve("Gameplay/XML/NewText/KO_KR");
-    protected static final Path DEFAULT_CIVILIZATION_PATH = PathUtils.DEFAULT_GAME_PATH.resolve("Gameplay/XML/Civilizations");
-    protected static final Path DEFAULT_LEADER_PATH = PathUtils.DEFAULT_GAME_PATH.resolve("Gameplay/XML/Leaders");
-    protected static final Path DEFAULT_UNIT_PATH = PathUtils.DEFAULT_GAME_PATH.resolve("Gameplay/XML/Units");
-    protected static final Path DEFAULT_BUILDING_PATH = PathUtils.DEFAULT_GAME_PATH.resolve("Gameplay/XML/Buildings");
-
-    protected static final Path CIVILIZATION_TEXT_FILE_PATH = DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Civilizations.xml");
-    protected static final Path LEADER_TEXT_FILE_PATH = DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Leaders.xml");
-    protected static final Path TRAIT_TEXT_FILE_PATH = DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Jon.xml");
-    protected static final Path UNIT_TEXT_FILE_PATH = DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Units.xml");
-    protected static final Path CIVILOPEDIA_TEXT_FILE_PATH = DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Civilopedia.xml");
-    protected static final Path BUILDING_TEXT_FILE_PATH = DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Buildings.xml");
-
-    protected static final Path CIVILIZATION_FILE_PATH = DEFAULT_CIVILIZATION_PATH.resolve("CIV5Civilizations.xml");
-    protected static final Path TRAIT_FILE_PATH = DEFAULT_CIVILIZATION_PATH.resolve("CIV5Traits.xml");
-    protected static final Path UNIT_FILE_PATH = DEFAULT_UNIT_PATH.resolve("CIV5Units.xml");
-    protected static final Path BUILDING_FILE_PATH = DEFAULT_BUILDING_PATH.resolve("CIV5Buildings.xml");
-
-    protected final Path leaderPath = DEFAULT_LEADER_PATH.resolve("CIV5Leader_%s.xml".formatted(getLeaderEnglishName()));
-
-    private String name;
-    private String englishName;
-    private String leaderName;
-    private UniqueUnit[] uniqueUnits;
-    private UniqueBuilding[] uniqueBuildings;
+public abstract class BasicCivilization extends AbstractCivilization {
 
     @Override
-    public List<TypedFile> requiredFileList() {
-        return List.of(
-                new TypedFile(Type.TEXT, CIVILIZATION_TEXT_FILE_PATH.toUri()),
-                new TypedFile(Type.TEXT, LEADER_TEXT_FILE_PATH.toUri()),
-                new TypedFile(Type.TEXT, TRAIT_TEXT_FILE_PATH.toUri()),
-                new TypedFile(Type.TEXT, UNIT_TEXT_FILE_PATH.toUri()),
-                new TypedFile(Type.TEXT, CIVILOPEDIA_TEXT_FILE_PATH.toUri()),
-                new TypedFile(Type.TEXT, BUILDING_TEXT_FILE_PATH.toUri()),
-                new TypedFile(Type.CIVILIZATION, CIVILIZATION_FILE_PATH.toUri()),
-                new TypedFile(Type.LEADER, leaderPath.toUri()),
-                new TypedFile(Type.TRAIT, TRAIT_FILE_PATH.toUri()),
-                new TypedFile(Type.UNIT, UNIT_FILE_PATH.toUri()),
-                new TypedFile(Type.BUILDING, BUILDING_FILE_PATH.toUri())
-        );
+    protected Path getDefaultLeaderPath() {
+        return DEFAULT_LEADER_PATH;
     }
 
     @Override
-    public String getName() {
-        if (name != null) {
-            return name;
-        }
-
-
-        String shortDescriptionTag = gameData
-                .getDocument(Type.CIVILIZATION, CIVILIZATION_FILE_PATH)
-                .selectSingleNode("/GameData/Civilizations/Row[Type='CIVILIZATION_%s']/ShortDescription"
-                        .formatted(getEnglishName().toUpperCase()))
-                .getText();
-        String name = gameData
-                .getDocument(Type.TEXT, CIVILIZATION_TEXT_FILE_PATH)
-                .selectSingleNode("/GameData/Language_KO_KR/Row[@Tag='%s']/Text"
-                        .formatted(shortDescriptionTag))
-                .getText();
-
-        this.name = TextUtils.stripInnerTags(name);
-        return this.name;
-    }
-
-    protected String getEnglishName() {
-        if (englishName != null) {
-            return englishName;
-        }
-
-        englishName = getClass().getSimpleName();
-        return englishName;
+    protected Path getCivilizationTextFilePath() {
+        return CIVILIZATION_TEXT_FILE_PATH;
     }
 
     @Override
-    public String getLeaderName() {
-        if (leaderName != null) {
-            return leaderName;
-        }
-
-        leaderName = gameData
-                .getDocument(Type.TEXT, LEADER_TEXT_FILE_PATH)
-                .selectSingleNode("/GameData/Language_KO_KR/Row[@Tag='TXT_KEY_LEADER_%s']/Text"
-                        .formatted(getLeaderEnglishName().toUpperCase()))
-                .getText();
-        return leaderName;
-    }
-
-    protected abstract String getLeaderEnglishName();
-
-    @Override
-    public UniqueUnit[] getUniqueUnits() {
-        if (uniqueUnits != null) {
-            return uniqueUnits;
-        }
-
-        String[] uniqueUnitTypes = getUniqueUnitTypes();
-        if (uniqueUnitTypes.length == 0) {
-            uniqueUnits = new UniqueUnit[0];
-            return uniqueUnits;
-        }
-
-        UniqueUnit[] uniqueUnits = new UniqueUnit[uniqueUnitTypes.length];
-        for (int i = 0; i < uniqueUnitTypes.length; i++) {
-            String uniqueUnitType = uniqueUnitTypes[i];
-            Element row = (Element) gameData
-                    .getDocument(Type.UNIT, UNIT_FILE_PATH)
-                    .selectSingleNode("/GameData/Units/Row[Type='UNIT_%s']".formatted(uniqueUnitType));
-
-            String combat = row.elementText("Combat");
-            String rangedCombat = row.elementText("RangedCombat");
-            String cost = row.elementText("Cost");
-            String moves = row.elementText("Moves");
-            String range = row.elementText("Range");
-
-            BasicUniqueUnitBuilder unitBuilder = BasicUniqueUnit
-                    .builder()
-                    .type(uniqueUnitType)
-                    .row(row);
-            if (combat != null) unitBuilder.combat(Integer.parseInt(combat));
-            if (rangedCombat != null) unitBuilder.rangedCombat(Integer.parseInt(rangedCombat));
-            if (cost != null) unitBuilder.cost(Integer.parseInt(cost));
-            if (moves != null) unitBuilder.moves(Integer.parseInt(moves));
-            if (range != null) unitBuilder.range(Integer.parseInt(range));
-
-            uniqueUnits[i] = unitBuilder.build();
-        }
-
-        this.uniqueUnits = uniqueUnits;
-        return uniqueUnits;
-    }
-
-    private String[] getUniqueUnitTypes() {
-        return gameData
-                .getDocument(Type.CIVILIZATION, CIVILIZATION_FILE_PATH)
-                .selectNodes("/GameData/Civilization_UnitClassOverrides/Row[CivilizationType='CIVILIZATION_%s']/UnitType"
-                        .formatted(getEnglishName().toUpperCase()))
-                .stream()
-                .map(node -> node.getText().substring("UNIT_".length()))
-                .toArray(String[]::new);
+    protected Path getCivilizationFilePath() {
+        return CIVILIZATION_FILE_PATH;
     }
 
     @Override
-    public UniqueBuilding[] getUniqueBuildings() {
-        if (uniqueBuildings != null) {
-            return uniqueBuildings;
-        }
-
-        String[] uniqueBuildingTypes = getUniqueBuildingTypes();
-        UniqueBuilding[] uniqueBuildings = getUniqueBuildings(uniqueBuildingTypes);
-
-        this.uniqueBuildings = uniqueBuildings;
-        return uniqueBuildings;
+    protected Path getLeaderTextFilePath() {
+        return LEADER_TEXT_FILE_PATH;
     }
 
-    private String[] getUniqueBuildingTypes() {
-        return gameData
-                .getDocument(Type.CIVILIZATION, CIVILIZATION_FILE_PATH)
-                .selectNodes("/GameData/Civilization_BuildingClassOverrides/Row[CivilizationType='CIVILIZATION_%s']/BuildingType"
-                        .formatted(getEnglishName().toUpperCase()))
-                .stream()
-                .map(node -> node.getText().substring("BUILDING_".length()))
-                .toArray(String[]::new);
-    }
-
-    protected abstract UniqueBuilding[] getUniqueBuildings(String[] uniqueBuildingTypes);
-
-    public abstract class BasicTrait implements Trait {
-
-        private String description;
+    public abstract class BasicTrait extends AbstractTrait {
 
         @Override
-        public String getDescription() {
-            if (description != null) {
-                return description;
-            }
-
-            String traitType = gameData
-                    .getDocument(Type.LEADER, leaderPath)
-                    .selectSingleNode("/GameData/Leader_Traits/Row/TraitType")
-                    .getText();
-
-            String descriptionKey = gameData
-                    .getDocument(Type.TRAIT, TRAIT_FILE_PATH)
-                    .selectSingleNode("/GameData/Traits/Row[Type='%s']/Description".formatted(traitType))
-                    .getText();
-
-            String description = gameData
-                    .getDocument(Type.TEXT, TRAIT_TEXT_FILE_PATH)
-                    .selectSingleNode("/GameData/Language_KO_KR/Row[@Tag='%s']/Text".formatted(descriptionKey))
-                    .getText();
-
-            this.description = TextUtils.stripInnerTags(description);
-            return this.description;
-        }
-    }
-
-    @Builder
-    public static class BasicUniqueUnit implements UniqueUnit {
-
-        private final String type;
-        private final Node row;
-        private String description;
-
-        @Getter @Setter
-        private Integer combat;
-
-        @Getter @Setter
-        private Integer rangedCombat;
-
-        @Getter @Setter
-        private Integer cost;
-
-        @Getter @Setter
-        private Integer moves;
-
-        @Getter @Setter
-        private Integer range;
-
-        @Override
-        public String getDescription() {
-            if (description != null) {
-                return description;
-            }
-
-            String descriptionKey = gameData
-                    .getDocument(Type.UNIT, UNIT_FILE_PATH)
-                    .selectSingleNode("/GameData/Units/Row[Type='UNIT_%s']/Description".formatted(type))
-                    .getText();
-
-            Node descriptionNode = gameData
-                    .getDocument(Type.TEXT, UNIT_TEXT_FILE_PATH)
-                    .selectSingleNode("/GameData/Language_KO_KR/Row[@Tag='%s']/Text".formatted(descriptionKey));
-
-            if (descriptionNode == null) {
-                descriptionNode = gameData
-                        .getDocument(Type.TEXT, CIVILOPEDIA_TEXT_FILE_PATH)
-                        .selectSingleNode("/GameData/Language_KO_KR/Row[@Tag='%s']/Text".formatted(descriptionKey));
-            }
-
-            description = descriptionNode.getText();
-            return description;
+        protected Path getTraitFilePath() {
+            return TRAIT_FILE_PATH;
         }
 
         @Override
-        public List<Variable> getVariableList() {
-            List<Variable> variableList = new ArrayList<>();
-            if (combat != null) variableList.add(new NodeVariable(row.selectSingleNode("Combat")));
-            if (rangedCombat != null) variableList.add(new NodeVariable(row.selectSingleNode("RangedCombat")));
-            if (cost != null) variableList.add(new NodeVariable(row.selectSingleNode("Cost")));
-            if (moves != null) variableList.add(new NodeVariable(row.selectSingleNode("Moves")));
-            if (range != null) variableList.add(new NodeVariable(row.selectSingleNode("Range")));
-
-            return variableList;
+        protected Path getTraitTextFilePath() {
+            return TRAIT_TEXT_FILE_PATH;
         }
     }
 
-    public static abstract class BasicUniqueBuilding implements UniqueBuilding {
+    public abstract class BasicUniqueUnit extends AbstractUniqueUnit {
 
-        private final String type;
-        private String description;
-
-        public BasicUniqueBuilding(String type) {
-            this.type = type;
+        @Override
+        protected Path getUnitFilePath() {
+            return UNIT_FILE_PATH;
         }
 
         @Override
-        public String getDescription() {
-            if (description != null) {
-                return description;
-            }
+        protected Path getCivilopediaTextFilePath() {
+            return CIVILOPEDIA_TEXT_FILE_PATH;
+        }
 
-            String descriptionKey = gameData
-                    .getDocument(Type.BUILDING, BUILDING_FILE_PATH)
-                    .selectSingleNode("/GameData/Building/Row[Type='BUILDING_%s']/Description".formatted(type))
-                    .getText();
+        @Override
+        protected Path getUnitTextFilePath() {
+            return UNIT_TEXT_FILE_PATH;
+        }
+    }
 
-            String description = gameData
-                    .getDocument(Type.TEXT, BUILDING_TEXT_FILE_PATH)
-                    .selectSingleNode("/GameData/Language_KO_KR/Row[@Tag='%s']/Text".formatted(descriptionKey))
-                    .getText();
+    public abstract class BasicUniqueBuilding extends AbstractUniqueBuilding {
 
-            this.description = description;
-            return description;
+        @Override
+        protected Path getBuildingFilePath() {
+            return BUILDING_FILE_PATH;
+        }
+
+        @Override
+        protected Path getBuildingTextFilePath() {
+            return BUILDING_TEXT_FILE_PATH;
         }
     }
 }
