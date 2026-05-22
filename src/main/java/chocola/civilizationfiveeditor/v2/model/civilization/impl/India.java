@@ -13,16 +13,11 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;
 
-public class Egypt extends BasicCivilization {
+public class India extends BasicCivilization {
 
     @Override
     protected String getLeaderEnglishName() {
-        return "Ramesses";
-    }
-
-    @Override
-    protected Path getDefaultLeaderPath() {
-        return EXPANSION_DEFAULT_LEADER_PATH;
+        return "Gandhi";
     }
 
     @Override
@@ -31,37 +26,44 @@ public class Egypt extends BasicCivilization {
     }
 
     @Override
+    protected Path getDefaultLeaderPath() {
+        return EXPANSION_DEFAULT_LEADER_PATH;
+    }
+
+    @Override
     protected AbstractTrait createTrait() {
-        return new EgyptTrait();
+        return new IndiaTrait();
     }
 
     @Override
     protected UniqueUnit[] createUniqueUnits() {
-        return new UniqueUnit[]{new WarChariot()};
+        return new UniqueUnit[]{new WarElephant()};
     }
 
     @Override
     protected UniqueBuilding[] createUniqueBuildings() {
-        return new UniqueBuilding[]{new BurialTomb()};
+        return new UniqueBuilding[]{new MughalFort()};
     }
 
-    private class EgyptTrait extends BasicTrait {
+    private class IndiaTrait extends BasicTrait {
+
+        @Override
+        protected void addVariables(List<Variable> variableList) {
+            Node row = getRow();
+            Node node1 = row.selectSingleNode("CityUnhappinessModifier");
+            Node node2 = row.selectSingleNode("PopulationUnhappinessModifier");
+
+            variableList.add(new NodeVariable(node1));
+            variableList.add(new NodeVariable(node2));
+        }
 
         @Override
         protected Path getTraitFilePath() {
             return EXPANSION2_TRAIT_FILE_PATH;
         }
-
-        @Override
-        protected void addVariables(List<Variable> variableList) {
-            Node row = getRow();
-            Node node = row.selectSingleNode("WonderProductionModifier");
-
-            variableList.add(new NodeVariable(node));
-        }
     }
 
-    private class WarChariot extends BasicUniqueUnit {
+    private class WarElephant extends BasicUniqueUnit {
 
         @Override
         protected Path getUnitFilePath() {
@@ -69,17 +71,7 @@ public class Egypt extends BasicCivilization {
         }
     }
 
-    private class BurialTomb extends BasicUniqueBuilding {
-
-        @Override
-        protected Path getBuildingFilePath() {
-            return EXPANSION2_BASIC_BUILDING_FILE_PATH;
-        }
-
-        @Override
-        protected Path getBuildingTextFilePath() {
-            return OBJECT_TEXT_FILE_PATH;
-        }
+    private class MughalFort extends BasicUniqueBuilding {
 
         @Override
         protected void addVariables(List<Variable> variableList) {
@@ -87,10 +79,15 @@ public class Egypt extends BasicCivilization {
             String type = getType();
 
             Node node1 = document.selectSingleNode("/GameData/Building_YieldChanges/Row[BuildingType='%s']/Yield".formatted(type));
-            Element node2 = ((Element) getRow()).element("Happiness");
+            Element node2 = ((Element) getRow()).element("TechEnhancedTourism");
 
-            variableList.add(new NodeVariable(node1, "Yield(Faith)"));
+            variableList.add(new NodeVariable(node1, "Yield(Culture)"));
             variableList.add(new NodeVariable(node2));
+        }
+
+        @Override
+        protected Path getBuildingFilePath() {
+            return EXPANSION2_BASIC_BUILDING_FILE_PATH;
         }
     }
 }
