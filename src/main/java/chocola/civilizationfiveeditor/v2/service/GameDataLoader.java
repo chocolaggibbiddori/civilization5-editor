@@ -58,10 +58,13 @@ public class GameDataLoader {
                 BUILDING_FILE_PATH,
                 EXPANSION_DEFAULT_LEADER_PATH,
                 EXPANSION2_TRAIT_TEXT_FILE_PATH,
-                EXPANSION2_JON_INHERITED_FILE_PATH,
+                EXPANSION2_JON_INHERITED_TEXT_FILE_PATH,
+                EXPANSION2_OBJECT_TEXT_FILE_PATH,
                 EXPANSION2_CIVILIZATION_FILE_PATH,
                 EXPANSION2_TRAIT_FILE_PATH,
                 EXPANSION2_UNIT_FILE_PATH,
-                EXPANSION2_BUILDING_FILE_PATH);
+                EXPANSION2_BUILDING_FILE_PATH,
+                EXPANSION2_IMPROVEMENT_FILE_PATH
+        );
     }
 }

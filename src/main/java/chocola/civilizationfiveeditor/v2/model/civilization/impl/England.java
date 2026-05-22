@@ -46,7 +46,7 @@ public class England extends BasicCivilization {
 
         @Override
         protected Path getTraitTextFilePath() {
-            return EXPANSION2_JON_INHERITED_FILE_PATH;
+            return EXPANSION2_JON_INHERITED_TEXT_FILE_PATH;
         }
 
         @Override

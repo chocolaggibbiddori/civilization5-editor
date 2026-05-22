@@ -115,11 +115,10 @@ public abstract class AbstractCivilization implements Civilization {
         return new UniqueImprovement[0];
     }
 
+    @Getter
     public abstract class AbstractTrait implements Trait {
 
-        @Getter
         private final String type;
-        @Getter
         private final Node row;
         private final List<Variable> variableList = new ArrayList<>();
         private String description;
@@ -139,16 +138,15 @@ public abstract class AbstractCivilization implements Civilization {
 
         protected abstract Path getTraitTextFilePath();
 
+        protected abstract void addVariables(List<Variable> variableList);
+
         @Override
         public String getDescription() {
             if (description != null) {
                 return description;
             }
 
-            String descriptionKey = row
-                    .selectSingleNode("Description")
-                    .getText();
-
+            String descriptionKey = ((Element) row).elementText("Description");
             String description = gameData
                     .getDocument(getTraitTextFilePath())
                     .selectSingleNode("/GameData/Language_KO_KR/Row[@Tag='%s']/Text".formatted(descriptionKey))
@@ -157,33 +155,20 @@ public abstract class AbstractCivilization implements Civilization {
             this.description = TextUtils.stripInnerTags(description);
             return this.description;
         }
-
-        @Override
-        public List<Variable> getVariableList() {
-            return variableList;
-        }
-
-        protected abstract void addVariables(List<Variable> variableList);
     }
 
+    @Getter
     public abstract class AbstractUniqueUnit implements UniqueUnit {
 
-        @Getter
         private final String type;
-        @Getter
         private final Node row;
         private final List<Variable> variableList;
         private String description;
 
-        @Getter
         private final Integer combat;
-        @Getter
         private final Integer rangedCombat;
-        @Getter
         private final Integer cost;
-        @Getter
         private final Integer moves;
-        @Getter
         private final Integer range;
 
         public AbstractUniqueUnit() {
@@ -220,6 +205,8 @@ public abstract class AbstractCivilization implements Civilization {
 
         protected abstract Path getCivilopediaTextFilePath();
 
+        protected abstract void addVariables(List<Variable> variableList);
+
         @Override
         public String getDescription() {
             if (description != null) {
@@ -245,11 +232,6 @@ public abstract class AbstractCivilization implements Civilization {
             return description;
         }
 
-        @Override
-        public List<Variable> getVariableList() {
-            return variableList;
-        }
-
         private void addDefaultVariables() {
             if (combat != null) variableList.add(new NodeVariable(row.selectSingleNode("Combat")));
             if (rangedCombat != null) variableList.add(new NodeVariable(row.selectSingleNode("RangedCombat")));
@@ -257,21 +239,16 @@ public abstract class AbstractCivilization implements Civilization {
             if (moves != null) variableList.add(new NodeVariable(row.selectSingleNode("Moves")));
             if (range != null) variableList.add(new NodeVariable(row.selectSingleNode("Range")));
         }
-
-        protected void addVariables(List<Variable> variableList) {
-        }
     }
 
+    @Getter
     public abstract class AbstractUniqueBuilding implements UniqueBuilding {
 
-        @Getter
         private final String type;
-        @Getter
         private final Node row;
         private final List<Variable> variableList;
         private String description;
 
-        @Getter
         private final Integer cost;
 
         public AbstractUniqueBuilding() {
@@ -298,16 +275,15 @@ public abstract class AbstractCivilization implements Civilization {
 
         protected abstract Path getBuildingTextFilePath();
 
+        protected abstract void addVariables(List<Variable> variableList);
+
         @Override
         public String getDescription() {
             if (description != null) {
                 return description;
             }
 
-            String descriptionKey = row
-                    .selectSingleNode("Description")
-                    .getText();
-
+            String descriptionKey = ((Element) row).elementText("Description");
             String description = gameData
                     .getDocument(getBuildingTextFilePath())
                     .selectSingleNode("/GameData/Language_KO_KR/Row[@Tag='%s']/Text".formatted(descriptionKey))
@@ -317,19 +293,59 @@ public abstract class AbstractCivilization implements Civilization {
             return description;
         }
 
-        @Override
-        public List<Variable> getVariableList() {
-            return variableList;
-        }
-
         private void addDefaultVariables() {
             if (cost != null) variableList.add(new NodeVariable(row.selectSingleNode("Cost")));
         }
 
-        protected abstract void addVariables(List<Variable> variableList);
-
         protected Document getDocument() {
             return gameData.getDocument(getBuildingFilePath());
+        }
+    }
+
+    @Getter
+    public abstract class AbstractUniqueImprovement implements UniqueImprovement {
+
+        private final String type;
+        private final Node row;
+        private final List<Variable> variableList;
+        private String description;
+
+        public AbstractUniqueImprovement() {
+            row = gameData
+                    .getDocument(getImprovementFilePath())
+                    .selectSingleNode("/GameData/Improvements/Row[CivilizationType='%s']"
+                            .formatted(AbstractCivilization.this.type));
+
+            type = ((Element) row).elementText("Type");
+
+            variableList = new ArrayList<>();
+            addVariables(variableList);
+        }
+
+        protected abstract Path getImprovementFilePath();
+
+        protected abstract Path getImprovementTextFilePath();
+
+        protected abstract void addVariables(List<Variable> variableList);
+
+        @Override
+        public String getDescription() {
+            if (description != null) {
+                return description;
+            }
+
+            String descriptionKey = ((Element) row).elementText("Description");
+            String description = gameData
+                    .getDocument(getImprovementTextFilePath())
+                    .selectSingleNode("/GameData/Language_KO_KR/Row[@Tag='%s']/Text".formatted(descriptionKey))
+                    .getText();
+
+            this.description = description;
+            return description;
+        }
+
+        protected Document getDocument() {
+            return gameData.getDocument(getImprovementFilePath());
         }
     }
 }

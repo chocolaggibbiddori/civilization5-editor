@@ -17,6 +17,7 @@ public class CivilizationConfiguration {
         CIVILIZATION_LIST.add(new China());
         CIVILIZATION_LIST.add(new Egypt());
         CIVILIZATION_LIST.add(new England());
+        CIVILIZATION_LIST.add(new France());
     }
 
     public static List<Civilization> getCivilizationList() {

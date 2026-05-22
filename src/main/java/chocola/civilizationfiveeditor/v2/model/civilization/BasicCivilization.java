@@ -2,7 +2,9 @@ package chocola.civilizationfiveeditor.v2.model.civilization;
 
 import static chocola.civilizationfiveeditor.v2.util.PathUtils.*;
 
+import chocola.civilizationfiveeditor.v2.model.Variable;
 import java.nio.file.Path;
+import java.util.List;
 
 public abstract class BasicCivilization extends AbstractCivilization {
 
@@ -55,6 +57,10 @@ public abstract class BasicCivilization extends AbstractCivilization {
         protected Path getUnitTextFilePath() {
             return UNIT_TEXT_FILE_PATH;
         }
+
+        @Override
+        protected void addVariables(List<Variable> variableList) {
+        }
     }
 
     public abstract class BasicUniqueBuilding extends AbstractUniqueBuilding {
@@ -67,6 +73,19 @@ public abstract class BasicCivilization extends AbstractCivilization {
         @Override
         protected Path getBuildingTextFilePath() {
             return BUILDING_TEXT_FILE_PATH;
+        }
+    }
+
+    public abstract class BasicUniqueImprovement extends AbstractUniqueImprovement {
+
+        @Override
+        protected Path getImprovementFilePath() {
+            return EXPANSION2_IMPROVEMENT_FILE_PATH;
+        }
+
+        @Override
+        protected Path getImprovementTextFilePath() {
+            return EXPANSION2_OBJECT_TEXT_FILE_PATH;
         }
     }
 }
