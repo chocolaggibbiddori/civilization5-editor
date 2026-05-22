@@ -74,7 +74,7 @@ public class China extends BasicCivilization {
 
         @Override
         protected Path getBuildingFilePath() {
-            return EXPANSION2_BUILDING_FILE_PATH;
+            return EXPANSION2_BASIC_BUILDING_FILE_PATH;
         }
 
         @Override
