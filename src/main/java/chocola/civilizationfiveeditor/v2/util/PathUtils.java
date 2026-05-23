@@ -34,7 +34,26 @@ public class PathUtils {
     public static final Path BUILDING_FILE_PATH = DEFAULT_BUILDING_PATH.resolve("CIV5Buildings.xml");
 
     // expansion
+    public static final Path EXPANSION_DEFAULT_TEXT_PATH = EXPANSION_GAME_PATH.resolve("Text/KO_KR");
+    public static final Path EXPANSION_CIVILIZATION_TEXT_FILE_PATH = EXPANSION_DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Civilizations_Expansion.xml");
+    public static final Path EXPANSION_TRAIT_TEXT_FILE_PATH = EXPANSION_DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Jon_Expansion_Expansion.xml");
+    public static final Path EXPANSION_LEADER_TEXT_FILE_PATH = EXPANSION_DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Leaders_Expansion.xml");
+    public static final Path EXPANSION_UNIT_TEXT_FILE_PATH = EXPANSION_DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Units_Expansion.xml");
+    public static final Path EXPANSION_CIVILOPEDIA_TEXT_FILE_PATH = EXPANSION_DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Civilopedia_Expansion.xml");
+    public static final Path EXPANSION_BUILDING_TEXT_FILE_PATH = EXPANSION_DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Buildings_Expansion.xml");
+    public static final Path EXPANSION_OBJECT_TEXT_FILE_PATH = EXPANSION_DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Objects_Expansion.xml");
+
+    public static final Path EXPANSION_DEFAULT_CIVILIZATION_PATH = EXPANSION_GAME_PATH.resolve("Civilizations");
+    public static final Path EXPANSION_CIVILIZATION_FILE_PATH = EXPANSION_DEFAULT_CIVILIZATION_PATH.resolve("CIV5Civilizations_Expansion.xml");
+    public static final Path EXPANSION_TRAIT_FILE_PATH = EXPANSION_DEFAULT_CIVILIZATION_PATH.resolve("CIV5Traits_Expansion.xml");
+
     public static final Path EXPANSION_DEFAULT_LEADER_PATH = EXPANSION_GAME_PATH.resolve("Leaders");
+
+    public static final Path EXPANSION_DEFAULT_UNIT_PATH = EXPANSION_GAME_PATH.resolve("Units");
+    public static final Path EXPANSION_UNIT_FILE_PATH = EXPANSION_DEFAULT_UNIT_PATH.resolve("CIV5Units_Expansion.xml");
+
+    public static final Path EXPANSION_DEFAULT_BUILDING_PATH = EXPANSION_GAME_PATH.resolve("Buildings");
+    public static final Path EXPANSION_BUILDING_FILE_PATH = EXPANSION_DEFAULT_BUILDING_PATH.resolve("CIV5Buildings_Expansion.xml");
 
     // expansion2
     public static final Path EXPANSION2_DEFAULT_TEXT_PATH = EXPANSION2_GAME_PATH.resolve("Text/KO_KR");
