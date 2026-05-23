@@ -31,6 +31,7 @@ public class CivilizationConfiguration {
         CIVILIZATION_LIST.add(new Songhai());
         CIVILIZATION_LIST.add(new Austria());
         CIVILIZATION_LIST.add(new Byzantium());
+        CIVILIZATION_LIST.add(new Carthage());
     }
 
     public static List<Civilization> getCivilizationList() {

@@ -178,7 +178,7 @@ public abstract class AbstractCivilization implements Civilization {
         public AbstractUniqueUnit() {
             type = gameData
                     .getDocument(getCivilizationFilePath())
-                    .selectSingleNode("/GameData/Civilization_UnitClassOverrides/Row[CivilizationType='%s' and contains(UnitType, '%s')]/UnitType"
+                    .selectSingleNode("/GameData/Civilization_UnitClassOverrides/Row[CivilizationType='%s' and contains(translate(UnitType, '_', ''), '%s')]/UnitType"
                             .formatted(AbstractCivilization.this.type, getClass().getSimpleName().toUpperCase()))
                     .getText();
             row = gameData
