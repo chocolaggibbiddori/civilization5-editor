@@ -25,6 +25,7 @@ public class CivilizationConfiguration {
         CIVILIZATION_LIST.add(new Japan());
         CIVILIZATION_LIST.add(new Ottoman());
         CIVILIZATION_LIST.add(new Persia());
+        CIVILIZATION_LIST.add(new Rome());
     }
 
     public static List<Civilization> getCivilizationList() {
