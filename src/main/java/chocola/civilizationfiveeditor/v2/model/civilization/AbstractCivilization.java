@@ -165,10 +165,10 @@ public abstract class AbstractCivilization implements Civilization {
         private final List<Variable> variableList;
         private String description;
 
-        private final Integer combat;
-        private final Integer rangedCombat;
         private final Integer cost;
         private final Integer moves;
+        private final Integer combat;
+        private final Integer rangedCombat;
         private final Integer range;
 
         public AbstractUniqueUnit() {
@@ -188,10 +188,10 @@ public abstract class AbstractCivilization implements Civilization {
             String moves = element.elementText("Moves");
             String range = element.elementText("Range");
 
-            this.combat = combat == null ? null : Integer.parseInt(combat);
-            this.rangedCombat = rangedCombat == null ? null : Integer.parseInt(rangedCombat);
             this.cost = cost == null ? null : Integer.parseInt(cost);
             this.moves = moves == null ? null : Integer.parseInt(moves);
+            this.combat = combat == null ? null : Integer.parseInt(combat);
+            this.rangedCombat = rangedCombat == null ? null : Integer.parseInt(rangedCombat);
             this.range = range == null ? null : Integer.parseInt(range);
 
             variableList = new ArrayList<>();
@@ -233,10 +233,10 @@ public abstract class AbstractCivilization implements Civilization {
         }
 
         private void addDefaultVariables() {
-            if (combat != null) variableList.add(new NodeVariable(row.selectSingleNode("Combat")));
-            if (rangedCombat != null) variableList.add(new NodeVariable(row.selectSingleNode("RangedCombat")));
             if (cost != null) variableList.add(new NodeVariable(row.selectSingleNode("Cost")));
             if (moves != null) variableList.add(new NodeVariable(row.selectSingleNode("Moves")));
+            if (combat != null) variableList.add(new NodeVariable(row.selectSingleNode("Combat")));
+            if (rangedCombat != null) variableList.add(new NodeVariable(row.selectSingleNode("RangedCombat")));
             if (range != null) variableList.add(new NodeVariable(row.selectSingleNode("Range")));
         }
     }
