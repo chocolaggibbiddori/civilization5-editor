@@ -39,6 +39,7 @@ public class PathUtils {
     // expansion2
     public static final Path EXPANSION2_DEFAULT_TEXT_PATH = EXPANSION2_GAME_PATH.resolve("Text/KO_KR");
     public static final Path EXPANSION2_TRAIT_TEXT_FILE_PATH = EXPANSION2_DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Traits_Expansion2.xml");
+    public static final Path EXPANSION2_INHERITED_TRAIT_TEXT_FILE_PATH = EXPANSION2_DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Traits_Inherited_Expansion2.xml");
     public static final Path EXPANSION2_JON_INHERITED_TEXT_FILE_PATH = EXPANSION2_DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Jon_Inherited_Expansion2.xml");
     public static final Path EXPANSION2_OBJECT_TEXT_FILE_PATH = EXPANSION2_DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Objects_Expansion2.xml");
     public static final Path EXPANSION2_BUILDING_TEXT_FILE_PATH = EXPANSION2_DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Buildings_Expansion2.xml");

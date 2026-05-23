@@ -28,6 +28,7 @@ public class CivilizationConfiguration {
         CIVILIZATION_LIST.add(new Rome());
         CIVILIZATION_LIST.add(new Russia());
         CIVILIZATION_LIST.add(new Siam());
+        CIVILIZATION_LIST.add(new Songhai());
     }
 
     public static List<Civilization> getCivilizationList() {
