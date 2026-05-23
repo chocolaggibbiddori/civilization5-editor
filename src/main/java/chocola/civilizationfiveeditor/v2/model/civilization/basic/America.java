@@ -1,8 +1,8 @@
 package chocola.civilizationfiveeditor.v2.model.civilization.basic;
 
-import static chocola.civilizationfiveeditor.v2.util.PathUtils.EXPANSION2_CIVILIZATION_FILE_PATH;
-import static chocola.civilizationfiveeditor.v2.util.PathUtils.EXPANSION2_TRAIT_FILE_PATH;
-import static chocola.civilizationfiveeditor.v2.util.PathUtils.EXPANSION2_UNIT_FILE_PATH;
+import static chocola.civilizationfiveeditor.v2.util.PathUtils.EXPANSION2_BASIC_CIVILIZATION_FILE_PATH;
+import static chocola.civilizationfiveeditor.v2.util.PathUtils.EXPANSION2_BASIC_TRAIT_FILE_PATH;
+import static chocola.civilizationfiveeditor.v2.util.PathUtils.EXPANSION2_BASIC_UNIT_FILE_PATH;
 import static chocola.civilizationfiveeditor.v2.util.PathUtils.EXPANSION_DEFAULT_LEADER_PATH;
 
 import chocola.civilizationfiveeditor.v2.model.NodeVariable;
@@ -21,7 +21,7 @@ public class America extends BasicCivilization {
 
     @Override
     protected Path getCivilizationFilePath() {
-        return EXPANSION2_CIVILIZATION_FILE_PATH;
+        return EXPANSION2_BASIC_CIVILIZATION_FILE_PATH;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class America extends BasicCivilization {
 
         @Override
         protected Path getTraitFilePath() {
-            return EXPANSION2_TRAIT_FILE_PATH;
+            return EXPANSION2_BASIC_TRAIT_FILE_PATH;
         }
     }
 
@@ -58,7 +58,7 @@ public class America extends BasicCivilization {
 
         @Override
         protected Path getUnitFilePath() {
-            return EXPANSION2_UNIT_FILE_PATH;
+            return EXPANSION2_BASIC_UNIT_FILE_PATH;
         }
     }
 
@@ -66,7 +66,7 @@ public class America extends BasicCivilization {
 
         @Override
         protected Path getUnitFilePath() {
-            return EXPANSION2_UNIT_FILE_PATH;
+            return EXPANSION2_BASIC_UNIT_FILE_PATH;
         }
     }
 }

@@ -6,7 +6,6 @@ import chocola.civilizationfiveeditor.v2.model.UniqueUnit;
 import chocola.civilizationfiveeditor.v2.model.Variable;
 import java.util.List;
 import org.dom4j.Document;
-import org.dom4j.Element;
 import org.dom4j.Node;
 
 public class Maya extends GodsAndKingsCivilization {

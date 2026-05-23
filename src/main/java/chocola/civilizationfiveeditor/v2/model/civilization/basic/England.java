@@ -23,7 +23,7 @@ public class England extends BasicCivilization {
 
     @Override
     protected Path getCivilizationFilePath() {
-        return EXPANSION2_CIVILIZATION_FILE_PATH;
+        return EXPANSION2_BASIC_CIVILIZATION_FILE_PATH;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class England extends BasicCivilization {
 
         @Override
         protected Path getTraitFilePath() {
-            return EXPANSION2_TRAIT_FILE_PATH;
+            return EXPANSION2_BASIC_TRAIT_FILE_PATH;
         }
 
         @Override
@@ -63,7 +63,7 @@ public class England extends BasicCivilization {
 
         @Override
         protected Path getUnitFilePath() {
-            return EXPANSION2_UNIT_FILE_PATH;
+            return EXPANSION2_BASIC_UNIT_FILE_PATH;
         }
     }
 
@@ -71,7 +71,7 @@ public class England extends BasicCivilization {
 
         @Override
         protected Path getUnitFilePath() {
-            return EXPANSION2_UNIT_FILE_PATH;
+            return EXPANSION2_BASIC_UNIT_FILE_PATH;
         }
     }
 }
