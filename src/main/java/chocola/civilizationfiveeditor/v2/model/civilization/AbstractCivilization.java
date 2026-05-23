@@ -155,6 +155,10 @@ public abstract class AbstractCivilization implements Civilization {
             this.description = TextUtils.stripInnerTags(description);
             return this.description;
         }
+
+        protected Document getDocument() {
+            return row.getDocument();
+        }
     }
 
     @Getter
@@ -239,6 +243,10 @@ public abstract class AbstractCivilization implements Civilization {
             if (rangedCombat != null) variableList.add(new NodeVariable(row.selectSingleNode("RangedCombat")));
             if (range != null) variableList.add(new NodeVariable(row.selectSingleNode("Range")));
         }
+
+        protected Document getDocument() {
+            return row.getDocument();
+        }
     }
 
     @Getter
@@ -298,7 +306,7 @@ public abstract class AbstractCivilization implements Civilization {
         }
 
         protected Document getDocument() {
-            return gameData.getDocument(getBuildingFilePath());
+            return row.getDocument();
         }
     }
 
@@ -345,7 +353,7 @@ public abstract class AbstractCivilization implements Civilization {
         }
 
         protected Document getDocument() {
-            return gameData.getDocument(getImprovementFilePath());
+            return row.getDocument();
         }
     }
 }
