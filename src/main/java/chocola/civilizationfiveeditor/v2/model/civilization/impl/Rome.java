@@ -44,7 +44,7 @@ public class Rome extends BasicCivilization {
 
         @Override
         protected void addVariables(List<Variable> variableList) {
-            Element node = ((Element) getRow()).element("CapitalBuildingModifier");
+            Element node = getElement().element("CapitalBuildingModifier");
 
             variableList.add(new NodeVariable(node));
         }

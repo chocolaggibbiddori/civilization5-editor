@@ -79,7 +79,7 @@ public class India extends BasicCivilization {
             String type = getType();
 
             Node node1 = document.selectSingleNode("/GameData/Building_YieldChanges/Row[BuildingType='%s']/Yield".formatted(type));
-            Element node2 = ((Element) getRow()).element("TechEnhancedTourism");
+            Element node2 = getElement().element("TechEnhancedTourism");
 
             variableList.add(new NodeVariable(node1, "Yield(Culture)"));
             variableList.add(new NodeVariable(node2));

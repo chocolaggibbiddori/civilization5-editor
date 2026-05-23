@@ -87,7 +87,7 @@ public class Egypt extends BasicCivilization {
             String type = getType();
 
             Node node1 = document.selectSingleNode("/GameData/Building_YieldChanges/Row[BuildingType='%s']/Yield".formatted(type));
-            Element node2 = ((Element) getRow()).element("Happiness");
+            Element node2 = getElement().element("Happiness");
 
             variableList.add(new NodeVariable(node1, "Yield(Faith)"));
             variableList.add(new NodeVariable(node2));

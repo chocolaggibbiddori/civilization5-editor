@@ -33,6 +33,7 @@ public class CivilizationConfiguration {
         CIVILIZATION_LIST.add(new Byzantium());
         CIVILIZATION_LIST.add(new Carthage());
         CIVILIZATION_LIST.add(new Celts());
+        CIVILIZATION_LIST.add(new Ethiopia());
     }
 
     public static List<Civilization> getCivilizationList() {

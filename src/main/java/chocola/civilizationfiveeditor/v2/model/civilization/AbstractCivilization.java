@@ -146,7 +146,7 @@ public abstract class AbstractCivilization implements Civilization {
                 return description;
             }
 
-            String descriptionKey = ((Element) row).elementText("Description");
+            String descriptionKey = getElement().elementText("Description");
             String description = gameData
                     .getDocument(getTraitTextFilePath())
                     .selectSingleNode("/GameData/Language_KO_KR/Row[@Tag='%s']/Text".formatted(descriptionKey))
@@ -154,6 +154,10 @@ public abstract class AbstractCivilization implements Civilization {
 
             this.description = TextUtils.stripInnerTags(description);
             return this.description;
+        }
+
+        protected Element getElement() {
+            return (Element) row;
         }
 
         protected Document getDocument() {
@@ -244,6 +248,10 @@ public abstract class AbstractCivilization implements Civilization {
             if (range != null) variableList.add(new NodeVariable(row.selectSingleNode("Range")));
         }
 
+        protected Element getElement() {
+            return (Element) row;
+        }
+
         protected Document getDocument() {
             return row.getDocument();
         }
@@ -291,7 +299,7 @@ public abstract class AbstractCivilization implements Civilization {
                 return description;
             }
 
-            String descriptionKey = ((Element) row).elementText("Description");
+            String descriptionKey = getElement().elementText("Description");
             String description = gameData
                     .getDocument(getBuildingTextFilePath())
                     .selectSingleNode("/GameData/Language_KO_KR/Row[@Tag='%s']/Text".formatted(descriptionKey))
@@ -303,6 +311,10 @@ public abstract class AbstractCivilization implements Civilization {
 
         private void addDefaultVariables() {
             if (cost != null) variableList.add(new NodeVariable(row.selectSingleNode("Cost")));
+        }
+
+        protected Element getElement() {
+            return (Element) row;
         }
 
         protected Document getDocument() {
@@ -324,7 +336,7 @@ public abstract class AbstractCivilization implements Civilization {
                     .selectSingleNode("/GameData/Improvements/Row[CivilizationType='%s']"
                             .formatted(AbstractCivilization.this.type));
 
-            type = ((Element) row).elementText("Type");
+            type = getElement().elementText("Type");
 
             variableList = new ArrayList<>();
             addVariables(variableList);
@@ -342,7 +354,7 @@ public abstract class AbstractCivilization implements Civilization {
                 return description;
             }
 
-            String descriptionKey = ((Element) row).elementText("Description");
+            String descriptionKey = getElement().elementText("Description");
             String description = gameData
                     .getDocument(getImprovementTextFilePath())
                     .selectSingleNode("/GameData/Language_KO_KR/Row[@Tag='%s']/Text".formatted(descriptionKey))
@@ -350,6 +362,10 @@ public abstract class AbstractCivilization implements Civilization {
 
             this.description = description;
             return description;
+        }
+
+        protected Element getElement() {
+            return (Element) row;
         }
 
         protected Document getDocument() {
