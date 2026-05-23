@@ -1,47 +1,61 @@
-package chocola.civilizationfiveeditor.v2.model.civilization.impl;
+package chocola.civilizationfiveeditor.v2.model.civilization.basic;
 
-import static chocola.civilizationfiveeditor.v2.util.PathUtils.EXPANSION2_INHERITED_TRAIT_TEXT_FILE_PATH;
+import static chocola.civilizationfiveeditor.v2.util.PathUtils.*;
 
 import chocola.civilizationfiveeditor.v2.model.NodeVariable;
 import chocola.civilizationfiveeditor.v2.model.UniqueBuilding;
 import chocola.civilizationfiveeditor.v2.model.UniqueUnit;
 import chocola.civilizationfiveeditor.v2.model.Variable;
-import chocola.civilizationfiveeditor.v2.model.civilization.GodsAndKingsCivilization;
 import java.nio.file.Path;
 import java.util.List;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;
 
-public class Ethiopia extends GodsAndKingsCivilization {
+public class Songhai extends BasicCivilization {
 
     @Override
     protected String getLeaderEnglishName() {
-        return "Selassie";
+        return "Askia";
+    }
+
+    @Override
+    protected Path getCivilizationFilePath() {
+        return EXPANSION2_CIVILIZATION_FILE_PATH;
+    }
+
+    @Override
+    protected Path getDefaultLeaderPath() {
+        return EXPANSION_DEFAULT_LEADER_PATH;
     }
 
     @Override
     protected AbstractTrait createTrait() {
-        return new EthiopiaTrait();
+        return new SonghaiTrait();
     }
 
     @Override
     protected UniqueUnit[] createUniqueUnits() {
-        return new UniqueUnit[]{new MehalSefari()};
+        return new UniqueUnit[]{new MuslimCavalry()};
     }
 
     @Override
     protected UniqueBuilding[] createUniqueBuildings() {
-        return new UniqueBuilding[]{new Stele()};
+        return new UniqueBuilding[]{new MudPyramidMosque()};
     }
 
-    private class EthiopiaTrait extends GodsAndKingsTrait {
+    private class SonghaiTrait extends BasicTrait {
 
         @Override
         protected void addVariables(List<Variable> variableList) {
-            Element node = getElement().element("CombatBonusVsLargerCiv");
+            Element node = getElement().element("PlunderModifier");
 
             variableList.add(new NodeVariable(node));
+        }
+
+        @Override
+        protected Path getTraitFilePath() {
+            return EXPANSION2_TRAIT_FILE_PATH;
         }
 
         @Override
@@ -50,10 +64,15 @@ public class Ethiopia extends GodsAndKingsCivilization {
         }
     }
 
-    private class MehalSefari extends GodsAndKingsUniqueUnit {
+    private class MuslimCavalry extends BasicUniqueUnit {
+
+        @Override
+        protected Path getUnitFilePath() {
+            return EXPANSION2_UNIT_FILE_PATH;
+        }
     }
 
-    private class Stele extends GodsAndKingsUniqueBuilding {
+    private class MudPyramidMosque extends BasicUniqueBuilding {
 
         @Override
         protected void addVariables(List<Variable> variableList) {
@@ -65,6 +84,16 @@ public class Ethiopia extends GodsAndKingsCivilization {
 
             variableList.add(new NodeVariable(node1, "Yield(Faith)"));
             variableList.add(new NodeVariable(node2, "Yield(Culture)"));
+        }
+
+        @Override
+        protected Path getBuildingFilePath() {
+            return EXPANSION2_BASIC_BUILDING_FILE_PATH;
+        }
+
+        @Override
+        protected Path getBuildingTextFilePath() {
+            return OBJECT_TEXT_FILE_PATH;
         }
     }
 }

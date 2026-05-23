@@ -1,8 +1,9 @@
-package chocola.civilizationfiveeditor.v2.model.civilization;
+package chocola.civilizationfiveeditor.v2.model.civilization.gak;
 
 import static chocola.civilizationfiveeditor.v2.util.PathUtils.*;
 
 import chocola.civilizationfiveeditor.v2.model.Variable;
+import chocola.civilizationfiveeditor.v2.model.civilization.AbstractCivilization;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -37,7 +38,7 @@ public abstract class GodsAndKingsCivilization extends AbstractCivilization {
 
         @Override
         protected Path getTraitTextFilePath() {
-            return EXPANSION_TRAIT_TEXT_FILE_PATH;
+            return EXPANSION2_INHERITED_TRAIT_TEXT_FILE_PATH;
         }
     }
 

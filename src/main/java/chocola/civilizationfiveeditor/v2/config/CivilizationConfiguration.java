@@ -1,7 +1,8 @@
 package chocola.civilizationfiveeditor.v2.config;
 
 import chocola.civilizationfiveeditor.v2.model.civilization.Civilization;
-import chocola.civilizationfiveeditor.v2.model.civilization.impl.*;
+import chocola.civilizationfiveeditor.v2.model.civilization.basic.*;
+import chocola.civilizationfiveeditor.v2.model.civilization.gak.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +35,7 @@ public class CivilizationConfiguration {
         CIVILIZATION_LIST.add(new Carthage());
         CIVILIZATION_LIST.add(new Celts());
         CIVILIZATION_LIST.add(new Ethiopia());
+        CIVILIZATION_LIST.add(new Huns());
     }
 
     public static List<Civilization> getCivilizationList() {

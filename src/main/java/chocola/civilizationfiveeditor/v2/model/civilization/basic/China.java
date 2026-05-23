@@ -1,4 +1,4 @@
-package chocola.civilizationfiveeditor.v2.model.civilization.impl;
+package chocola.civilizationfiveeditor.v2.model.civilization.basic;
 
 import static chocola.civilizationfiveeditor.v2.util.PathUtils.*;
 
@@ -6,18 +6,16 @@ import chocola.civilizationfiveeditor.v2.model.NodeVariable;
 import chocola.civilizationfiveeditor.v2.model.UniqueBuilding;
 import chocola.civilizationfiveeditor.v2.model.UniqueUnit;
 import chocola.civilizationfiveeditor.v2.model.Variable;
-import chocola.civilizationfiveeditor.v2.model.civilization.BasicCivilization;
 import java.nio.file.Path;
 import java.util.List;
 import org.dom4j.Document;
-import org.dom4j.Element;
 import org.dom4j.Node;
 
-public class Germany extends BasicCivilization {
+public class China extends BasicCivilization {
 
     @Override
     protected String getLeaderEnglishName() {
-        return "Bismark";
+        return "WuZetian";
     }
 
     @Override
@@ -32,20 +30,20 @@ public class Germany extends BasicCivilization {
 
     @Override
     protected AbstractTrait createTrait() {
-        return new GermanyTrait();
+        return new ChinaTrait();
     }
 
     @Override
     protected UniqueUnit[] createUniqueUnits() {
-        return new UniqueUnit[]{new Panzer()};
+        return new UniqueUnit[]{new Chukonu()};
     }
 
     @Override
     protected UniqueBuilding[] createUniqueBuildings() {
-        return new UniqueBuilding[]{new Hanse()};
+        return new UniqueBuilding[]{new PaperMaker()};
     }
 
-    private class GermanyTrait extends BasicTrait {
+    private class ChinaTrait extends BasicTrait {
 
         @Override
         protected Path getTraitFilePath() {
@@ -53,22 +51,17 @@ public class Germany extends BasicCivilization {
         }
 
         @Override
-        protected Path getTraitTextFilePath() {
-            return EXPANSION2_TRAIT_TEXT_FILE_PATH;
-        }
-
-        @Override
         protected void addVariables(List<Variable> variableList) {
             Node row = getRow();
-            Node node1 = row.selectSingleNode("LandBarbarianConversionPercent");
-            Node node2 = row.selectSingleNode("LandUnitMaintenanceModifier");
+            Node node1 = row.selectSingleNode("GreatGeneralRateModifier");
+            Node node2 = row.selectSingleNode("GreatGeneralExtraBonus");
 
             variableList.add(new NodeVariable(node1));
             variableList.add(new NodeVariable(node2));
         }
     }
 
-    private class Panzer extends BasicUniqueUnit {
+    private class Chukonu extends BasicUniqueUnit {
 
         @Override
         protected Path getUnitFilePath() {
@@ -76,16 +69,16 @@ public class Germany extends BasicCivilization {
         }
     }
 
-    private class Hanse extends BasicUniqueBuilding {
+    private class PaperMaker extends BasicUniqueBuilding {
 
         @Override
         protected Path getBuildingFilePath() {
-            return EXPANSION2_BUILDING_FILE_PATH;
+            return EXPANSION2_BASIC_BUILDING_FILE_PATH;
         }
 
         @Override
         protected Path getBuildingTextFilePath() {
-            return EXPANSION2_BUILDING_TEXT_FILE_PATH;
+            return OBJECT_TEXT_FILE_PATH;
         }
 
         @Override
@@ -94,12 +87,10 @@ public class Germany extends BasicCivilization {
             String type = getType();
 
             Node node1 = document.selectSingleNode("/GameData/Building_YieldChanges/Row[BuildingType='%s']/Yield".formatted(type));
-            Node node2 = document.selectSingleNode("/GameData/Building_YieldModifiers/Row[BuildingType='%s']/Yield".formatted(type));
-            Element node3 = getElement().element("CityStateTradeRouteProductionModifier");
+            Node node2 = document.selectSingleNode("/GameData/Building_YieldChangesPerPop/Row[BuildingType='%s']/Yield".formatted(type));
 
             variableList.add(new NodeVariable(node1, "Yield(Gold)"));
-            variableList.add(new NodeVariable(node2, "Yield(Gold, Modifiers)"));
-            variableList.add(new NodeVariable(node3));
+            variableList.add(new NodeVariable(node2, "Yield(Science, Modifiers)"));
         }
     }
 }

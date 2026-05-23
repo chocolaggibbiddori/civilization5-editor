@@ -1,11 +1,7 @@
-package chocola.civilizationfiveeditor.v2.model.civilization.impl;
-
-import static chocola.civilizationfiveeditor.v2.util.PathUtils.EXPANSION2_INHERITED_TRAIT_TEXT_FILE_PATH;
+package chocola.civilizationfiveeditor.v2.model.civilization.gak;
 
 import chocola.civilizationfiveeditor.v2.model.UniqueUnit;
 import chocola.civilizationfiveeditor.v2.model.Variable;
-import chocola.civilizationfiveeditor.v2.model.civilization.GodsAndKingsCivilization;
-import java.nio.file.Path;
 import java.util.List;
 
 public class Byzantium extends GodsAndKingsCivilization {
@@ -29,11 +25,6 @@ public class Byzantium extends GodsAndKingsCivilization {
 
         @Override
         protected void addVariables(List<Variable> variableList) {
-        }
-
-        @Override
-        protected Path getTraitTextFilePath() {
-            return EXPANSION2_INHERITED_TRAIT_TEXT_FILE_PATH;
         }
     }
 

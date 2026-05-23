@@ -1,4 +1,4 @@
-package chocola.civilizationfiveeditor.v2.model.civilization.impl;
+package chocola.civilizationfiveeditor.v2.model.civilization.basic;
 
 import static chocola.civilizationfiveeditor.v2.util.PathUtils.EXPANSION2_CIVILIZATION_FILE_PATH;
 import static chocola.civilizationfiveeditor.v2.util.PathUtils.EXPANSION2_TRAIT_FILE_PATH;
@@ -8,16 +8,15 @@ import static chocola.civilizationfiveeditor.v2.util.PathUtils.EXPANSION_DEFAULT
 import chocola.civilizationfiveeditor.v2.model.NodeVariable;
 import chocola.civilizationfiveeditor.v2.model.UniqueUnit;
 import chocola.civilizationfiveeditor.v2.model.Variable;
-import chocola.civilizationfiveeditor.v2.model.civilization.BasicCivilization;
 import java.nio.file.Path;
 import java.util.List;
-import org.dom4j.Node;
+import org.dom4j.Element;
 
-public class America extends BasicCivilization {
+public class Rome extends BasicCivilization {
 
     @Override
     protected String getLeaderEnglishName() {
-        return "Washington";
+        return "Augustus";
     }
 
     @Override
@@ -32,19 +31,19 @@ public class America extends BasicCivilization {
 
     @Override
     protected AbstractTrait createTrait() {
-        return new AmericaTrait();
+        return new RomeTrait();
     }
 
     @Override
     protected UniqueUnit[] createUniqueUnits() {
-        return new UniqueUnit[]{new B17(), new Minuteman()};
+        return new UniqueUnit[]{new Ballista(), new Legion()};
     }
 
-    private class AmericaTrait extends BasicTrait {
+    private class RomeTrait extends BasicTrait {
 
         @Override
         protected void addVariables(List<Variable> variableList) {
-            Node node = getRow().selectSingleNode("PlotBuyCostModifier");
+            Element node = getElement().element("CapitalBuildingModifier");
 
             variableList.add(new NodeVariable(node));
         }
@@ -55,7 +54,7 @@ public class America extends BasicCivilization {
         }
     }
 
-    private class B17 extends BasicUniqueUnit {
+    private class Ballista extends BasicUniqueUnit {
 
         @Override
         protected Path getUnitFilePath() {
@@ -63,7 +62,7 @@ public class America extends BasicCivilization {
         }
     }
 
-    private class Minuteman extends BasicUniqueUnit {
+    private class Legion extends BasicUniqueUnit {
 
         @Override
         protected Path getUnitFilePath() {

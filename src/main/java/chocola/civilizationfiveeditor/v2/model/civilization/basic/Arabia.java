@@ -1,4 +1,4 @@
-package chocola.civilizationfiveeditor.v2.model.civilization.impl;
+package chocola.civilizationfiveeditor.v2.model.civilization.basic;
 
 import static chocola.civilizationfiveeditor.v2.util.PathUtils.*;
 
@@ -6,18 +6,16 @@ import chocola.civilizationfiveeditor.v2.model.NodeVariable;
 import chocola.civilizationfiveeditor.v2.model.UniqueBuilding;
 import chocola.civilizationfiveeditor.v2.model.UniqueUnit;
 import chocola.civilizationfiveeditor.v2.model.Variable;
-import chocola.civilizationfiveeditor.v2.model.civilization.BasicCivilization;
 import java.nio.file.Path;
 import java.util.List;
 import org.dom4j.Document;
-import org.dom4j.Element;
 import org.dom4j.Node;
 
-public class Siam extends BasicCivilization {
+public class Arabia extends BasicCivilization {
 
     @Override
     protected String getLeaderEnglishName() {
-        return "Ramkhamhaeng";
+        return "HarunAlRashid";
     }
 
     @Override
@@ -32,26 +30,29 @@ public class Siam extends BasicCivilization {
 
     @Override
     protected AbstractTrait createTrait() {
-        return new SiamTrait();
+        return new ArabiaTrait();
     }
 
     @Override
     protected UniqueUnit[] createUniqueUnits() {
-        return new UniqueUnit[]{new WarElephant()};
+        return new UniqueUnit[]{new CamelArcher()};
     }
 
     @Override
     protected UniqueBuilding[] createUniqueBuildings() {
-        return new UniqueBuilding[]{new Wat()};
+        return new UniqueBuilding[]{new Bazaar()};
     }
 
-    private class SiamTrait extends BasicTrait {
+    private class ArabiaTrait extends BasicTrait {
 
         @Override
         protected void addVariables(List<Variable> variableList) {
-            Element node = getElement().element("CityStateBonusModifier");
+            Node row = getRow();
+            Node node1 = row.selectSingleNode("LandTradeRouteRangeBonus");
+            Node node2 = row.selectSingleNode("TradeReligionModifier");
 
-            variableList.add(new NodeVariable(node));
+            variableList.add(new NodeVariable(node1));
+            variableList.add(new NodeVariable(node2));
         }
 
         @Override
@@ -61,11 +62,11 @@ public class Siam extends BasicCivilization {
 
         @Override
         protected Path getTraitTextFilePath() {
-            return EXPANSION2_JON_INHERITED_TEXT_FILE_PATH;
+            return EXPANSION2_TRAIT_TEXT_FILE_PATH;
         }
     }
 
-    private class WarElephant extends BasicUniqueUnit {
+    private class CamelArcher extends BasicUniqueUnit {
 
         @Override
         protected Path getUnitFilePath() {
@@ -73,20 +74,18 @@ public class Siam extends BasicCivilization {
         }
     }
 
-    private class Wat extends BasicUniqueBuilding {
+    private class Bazaar extends BasicUniqueBuilding {
 
         @Override
         protected void addVariables(List<Variable> variableList) {
             Document document = getDocument();
             String type = getType();
 
-            Node node1 = document.selectSingleNode("/GameData/Building_YieldChanges/Row[BuildingType='%s']/Yield".formatted(type));
-            Node node2 = document.selectSingleNode("/GameData/Building_YieldModifiers/Row[BuildingType='%s']/Yield".formatted(type));
-            Node node3 = document.selectSingleNode("/GameData/Building_FeatureYieldChanges/Row[BuildingType='%s']/Yield".formatted(type));
+            Node node1 = document.selectSingleNode("/GameData/Building_ResourceYieldChanges/Row[BuildingType='%s']/Yield".formatted(type));
+            Node node2 = document.selectSingleNode("/GameData/Building_FeatureYieldChanges/Row[BuildingType='%s']/Yield".formatted(type));
 
-            variableList.add(new NodeVariable(node1, "Yield(Culture)"));
-            variableList.add(new NodeVariable(node2, "Yield(Science, Modifiers)"));
-            variableList.add(new NodeVariable(node3, "Yield(Science, Jungle)"));
+            variableList.add(new NodeVariable(node1, "Yield(Gold, Oil)"));
+            variableList.add(new NodeVariable(node2, "Yield(Gold, Oasis)"));
         }
 
         @Override

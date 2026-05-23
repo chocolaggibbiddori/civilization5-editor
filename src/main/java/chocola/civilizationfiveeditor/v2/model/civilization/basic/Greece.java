@@ -1,4 +1,4 @@
-package chocola.civilizationfiveeditor.v2.model.civilization.impl;
+package chocola.civilizationfiveeditor.v2.model.civilization.basic;
 
 import static chocola.civilizationfiveeditor.v2.util.PathUtils.EXPANSION2_CIVILIZATION_FILE_PATH;
 import static chocola.civilizationfiveeditor.v2.util.PathUtils.EXPANSION2_TRAIT_FILE_PATH;
@@ -8,7 +8,6 @@ import static chocola.civilizationfiveeditor.v2.util.PathUtils.EXPANSION_DEFAULT
 import chocola.civilizationfiveeditor.v2.model.NodeVariable;
 import chocola.civilizationfiveeditor.v2.model.UniqueUnit;
 import chocola.civilizationfiveeditor.v2.model.Variable;
-import chocola.civilizationfiveeditor.v2.model.civilization.BasicCivilization;
 import java.nio.file.Path;
 import java.util.List;
 import org.dom4j.Node;

@@ -1,4 +1,4 @@
-package chocola.civilizationfiveeditor.v2.model.civilization.impl;
+package chocola.civilizationfiveeditor.v2.model.civilization.basic;
 
 import static chocola.civilizationfiveeditor.v2.util.PathUtils.*;
 
@@ -6,18 +6,17 @@ import chocola.civilizationfiveeditor.v2.model.NodeVariable;
 import chocola.civilizationfiveeditor.v2.model.UniqueBuilding;
 import chocola.civilizationfiveeditor.v2.model.UniqueUnit;
 import chocola.civilizationfiveeditor.v2.model.Variable;
-import chocola.civilizationfiveeditor.v2.model.civilization.BasicCivilization;
 import java.nio.file.Path;
 import java.util.List;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;
 
-public class Egypt extends BasicCivilization {
+public class Germany extends BasicCivilization {
 
     @Override
     protected String getLeaderEnglishName() {
-        return "Ramesses";
+        return "Bismark";
     }
 
     @Override
@@ -32,20 +31,20 @@ public class Egypt extends BasicCivilization {
 
     @Override
     protected AbstractTrait createTrait() {
-        return new EgyptTrait();
+        return new GermanyTrait();
     }
 
     @Override
     protected UniqueUnit[] createUniqueUnits() {
-        return new UniqueUnit[]{new WarChariot()};
+        return new UniqueUnit[]{new Panzer()};
     }
 
     @Override
     protected UniqueBuilding[] createUniqueBuildings() {
-        return new UniqueBuilding[]{new BurialTomb()};
+        return new UniqueBuilding[]{new Hanse()};
     }
 
-    private class EgyptTrait extends BasicTrait {
+    private class GermanyTrait extends BasicTrait {
 
         @Override
         protected Path getTraitFilePath() {
@@ -53,15 +52,22 @@ public class Egypt extends BasicCivilization {
         }
 
         @Override
+        protected Path getTraitTextFilePath() {
+            return EXPANSION2_TRAIT_TEXT_FILE_PATH;
+        }
+
+        @Override
         protected void addVariables(List<Variable> variableList) {
             Node row = getRow();
-            Node node = row.selectSingleNode("WonderProductionModifier");
+            Node node1 = row.selectSingleNode("LandBarbarianConversionPercent");
+            Node node2 = row.selectSingleNode("LandUnitMaintenanceModifier");
 
-            variableList.add(new NodeVariable(node));
+            variableList.add(new NodeVariable(node1));
+            variableList.add(new NodeVariable(node2));
         }
     }
 
-    private class WarChariot extends BasicUniqueUnit {
+    private class Panzer extends BasicUniqueUnit {
 
         @Override
         protected Path getUnitFilePath() {
@@ -69,16 +75,16 @@ public class Egypt extends BasicCivilization {
         }
     }
 
-    private class BurialTomb extends BasicUniqueBuilding {
+    private class Hanse extends BasicUniqueBuilding {
 
         @Override
         protected Path getBuildingFilePath() {
-            return EXPANSION2_BASIC_BUILDING_FILE_PATH;
+            return EXPANSION2_BUILDING_FILE_PATH;
         }
 
         @Override
         protected Path getBuildingTextFilePath() {
-            return OBJECT_TEXT_FILE_PATH;
+            return EXPANSION2_BUILDING_TEXT_FILE_PATH;
         }
 
         @Override
@@ -87,10 +93,12 @@ public class Egypt extends BasicCivilization {
             String type = getType();
 
             Node node1 = document.selectSingleNode("/GameData/Building_YieldChanges/Row[BuildingType='%s']/Yield".formatted(type));
-            Element node2 = getElement().element("Happiness");
+            Node node2 = document.selectSingleNode("/GameData/Building_YieldModifiers/Row[BuildingType='%s']/Yield".formatted(type));
+            Element node3 = getElement().element("CityStateTradeRouteProductionModifier");
 
-            variableList.add(new NodeVariable(node1, "Yield(Faith)"));
-            variableList.add(new NodeVariable(node2));
+            variableList.add(new NodeVariable(node1, "Yield(Gold)"));
+            variableList.add(new NodeVariable(node2, "Yield(Gold, Modifiers)"));
+            variableList.add(new NodeVariable(node3));
         }
     }
 }

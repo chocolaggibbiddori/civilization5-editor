@@ -1,23 +1,19 @@
-package chocola.civilizationfiveeditor.v2.model.civilization.impl;
+package chocola.civilizationfiveeditor.v2.model.civilization.basic;
 
-import static chocola.civilizationfiveeditor.v2.util.PathUtils.EXPANSION2_CIVILIZATION_FILE_PATH;
-import static chocola.civilizationfiveeditor.v2.util.PathUtils.EXPANSION2_TRAIT_FILE_PATH;
-import static chocola.civilizationfiveeditor.v2.util.PathUtils.EXPANSION2_UNIT_FILE_PATH;
-import static chocola.civilizationfiveeditor.v2.util.PathUtils.EXPANSION_DEFAULT_LEADER_PATH;
+import static chocola.civilizationfiveeditor.v2.util.PathUtils.*;
 
 import chocola.civilizationfiveeditor.v2.model.NodeVariable;
 import chocola.civilizationfiveeditor.v2.model.UniqueUnit;
 import chocola.civilizationfiveeditor.v2.model.Variable;
-import chocola.civilizationfiveeditor.v2.model.civilization.BasicCivilization;
 import java.nio.file.Path;
 import java.util.List;
 import org.dom4j.Element;
 
-public class Rome extends BasicCivilization {
+public class Ottoman extends BasicCivilization {
 
     @Override
     protected String getLeaderEnglishName() {
-        return "Augustus";
+        return "Suleiman";
     }
 
     @Override
@@ -32,19 +28,19 @@ public class Rome extends BasicCivilization {
 
     @Override
     protected AbstractTrait createTrait() {
-        return new RomeTrait();
+        return new OttomanTrait();
     }
 
     @Override
     protected UniqueUnit[] createUniqueUnits() {
-        return new UniqueUnit[]{new Ballista(), new Legion()};
+        return new UniqueUnit[]{new Janissary(), new Sipahi()};
     }
 
-    private class RomeTrait extends BasicTrait {
+    private class OttomanTrait extends BasicTrait {
 
         @Override
         protected void addVariables(List<Variable> variableList) {
-            Element node = getElement().element("CapitalBuildingModifier");
+            Element node = getElement().element("NavalUnitMaintenanceModifier");
 
             variableList.add(new NodeVariable(node));
         }
@@ -55,7 +51,7 @@ public class Rome extends BasicCivilization {
         }
     }
 
-    private class Ballista extends BasicUniqueUnit {
+    private class Janissary extends BasicUniqueUnit {
 
         @Override
         protected Path getUnitFilePath() {
@@ -63,7 +59,7 @@ public class Rome extends BasicCivilization {
         }
     }
 
-    private class Legion extends BasicUniqueUnit {
+    private class Sipahi extends BasicUniqueUnit {
 
         @Override
         protected Path getUnitFilePath() {
