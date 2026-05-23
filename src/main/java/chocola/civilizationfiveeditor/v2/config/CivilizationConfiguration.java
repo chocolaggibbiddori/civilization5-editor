@@ -5,6 +5,7 @@ import chocola.civilizationfiveeditor.v2.model.civilization.basic.*;
 import chocola.civilizationfiveeditor.v2.model.civilization.bnw.Assyria;
 import chocola.civilizationfiveeditor.v2.model.civilization.bnw.Brazil;
 import chocola.civilizationfiveeditor.v2.model.civilization.bnw.Indonesia;
+import chocola.civilizationfiveeditor.v2.model.civilization.bnw.Morocco;
 import chocola.civilizationfiveeditor.v2.model.civilization.gak.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +46,7 @@ public class CivilizationConfiguration {
         CIVILIZATION_LIST.add(new Assyria());
         CIVILIZATION_LIST.add(new Brazil());
         CIVILIZATION_LIST.add(new Indonesia());
+        CIVILIZATION_LIST.add(new Morocco());
     }
 
     public static List<Civilization> getCivilizationList() {

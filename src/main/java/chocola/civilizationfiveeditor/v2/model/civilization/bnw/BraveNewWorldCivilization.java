@@ -86,7 +86,7 @@ public abstract class BraveNewWorldCivilization extends AbstractCivilization {
 
         @Override
         protected Path getImprovementTextFilePath() {
-            return EXPANSION2_TRAIT_TEXT_FILE_PATH;
+            return EXPANSION2_OBJECT_TEXT_FILE_PATH;
         }
     }
 }

@@ -1,12 +1,9 @@
 package chocola.civilizationfiveeditor.v2.model.civilization.bnw;
 
-import static chocola.civilizationfiveeditor.v2.util.PathUtils.EXPANSION2_OBJECT_TEXT_FILE_PATH;
-
 import chocola.civilizationfiveeditor.v2.model.NodeVariable;
 import chocola.civilizationfiveeditor.v2.model.UniqueImprovement;
 import chocola.civilizationfiveeditor.v2.model.UniqueUnit;
 import chocola.civilizationfiveeditor.v2.model.Variable;
-import java.nio.file.Path;
 import java.util.List;
 import org.dom4j.Document;
 import org.dom4j.Element;
@@ -66,11 +63,6 @@ public class Brazil extends BraveNewWorldCivilization {
 
             variableList.add(new NodeVariable(node1, "Yield(Gold)"));
             variableList.add(new NodeVariable(node2, "Yield(Culture, Tech)"));
-        }
-
-        @Override
-        protected Path getImprovementTextFilePath() {
-            return EXPANSION2_OBJECT_TEXT_FILE_PATH;
         }
     }
 }
