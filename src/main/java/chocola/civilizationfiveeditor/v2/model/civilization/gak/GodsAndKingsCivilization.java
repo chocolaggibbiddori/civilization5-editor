@@ -81,12 +81,12 @@ public abstract class GodsAndKingsCivilization extends AbstractCivilization {
 
         @Override
         protected Path getImprovementFilePath() {
-            return EXPANSION2_IMPROVEMENT_FILE_PATH;
+            return EXPANSION_IMPROVEMENT_FILE_PATH;
         }
 
         @Override
         protected Path getImprovementTextFilePath() {
-            return EXPANSION2_OBJECT_TEXT_FILE_PATH;
+            return EXPANSION_TRAIT_TEXT_FILE_PATH;
         }
     }
 }

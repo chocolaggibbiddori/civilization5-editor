@@ -37,6 +37,7 @@ public class CivilizationConfiguration {
         CIVILIZATION_LIST.add(new Ethiopia());
         CIVILIZATION_LIST.add(new Huns());
         CIVILIZATION_LIST.add(new Maya());
+        CIVILIZATION_LIST.add(new Netherlands());
     }
 
     public static List<Civilization> getCivilizationList() {

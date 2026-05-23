@@ -36,7 +36,7 @@ public class PathUtils {
     // expansion
     public static final Path EXPANSION_DEFAULT_TEXT_PATH = EXPANSION_GAME_PATH.resolve("Text/KO_KR");
     public static final Path EXPANSION_CIVILIZATION_TEXT_FILE_PATH = EXPANSION_DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Civilizations_Expansion.xml");
-    public static final Path EXPANSION_TRAIT_TEXT_FILE_PATH = EXPANSION_DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Jon_Expansion_Expansion.xml");
+    public static final Path EXPANSION_TRAIT_TEXT_FILE_PATH = EXPANSION_DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Jon_Expansion.xml");
     public static final Path EXPANSION_LEADER_TEXT_FILE_PATH = EXPANSION_DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Leaders_Expansion.xml");
     public static final Path EXPANSION_UNIT_TEXT_FILE_PATH = EXPANSION_DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Units_Expansion.xml");
     public static final Path EXPANSION_CIVILOPEDIA_TEXT_FILE_PATH = EXPANSION_DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Civilopedia_Expansion.xml");
@@ -55,11 +55,15 @@ public class PathUtils {
     public static final Path EXPANSION_DEFAULT_BUILDING_PATH = EXPANSION_GAME_PATH.resolve("Buildings");
     public static final Path EXPANSION_BUILDING_FILE_PATH = EXPANSION_DEFAULT_BUILDING_PATH.resolve("CIV5Buildings_Expansion.xml");
 
+    public static final Path EXPANSION_DEFAULT_TERRAIN_PATH = EXPANSION_GAME_PATH.resolve("Terrain");
+    public static final Path EXPANSION_IMPROVEMENT_FILE_PATH = EXPANSION_DEFAULT_TERRAIN_PATH.resolve("CIV5Improvements_Expansion.xml");
+
     // expansion2
     public static final Path EXPANSION2_DEFAULT_TEXT_PATH = EXPANSION2_GAME_PATH.resolve("Text/KO_KR");
     public static final Path EXPANSION2_TRAIT_TEXT_FILE_PATH = EXPANSION2_DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Traits_Expansion2.xml");
     public static final Path EXPANSION2_INHERITED_TRAIT_TEXT_FILE_PATH = EXPANSION2_DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Traits_Inherited_Expansion2.xml");
     public static final Path EXPANSION2_JON_INHERITED_TEXT_FILE_PATH = EXPANSION2_DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Jon_Inherited_Expansion2.xml");
+    public static final Path EXPANSION2_INHERITED_UNIT_TEXT_FILE_PATH = EXPANSION2_DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Units_Inherited_Expansion2.xml");
     public static final Path EXPANSION2_OBJECT_TEXT_FILE_PATH = EXPANSION2_DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Objects_Expansion2.xml");
     public static final Path EXPANSION2_BUILDING_TEXT_FILE_PATH = EXPANSION2_DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Buildings_Expansion2.xml");
 
