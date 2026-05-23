@@ -58,7 +58,7 @@ public class Morocco extends BraveNewWorldCivilization {
             Document document = getDocument();
             String type = getType();
 
-            Element node1 = getElement().element("DefenseModifier");
+            Element node1 = getElement("DefenseModifier");
             Node node2 = document.selectSingleNode("/GameData/Improvement_Yields/Row[ImprovementType='%s' and YieldType='YIELD_FOOD']/Yield".formatted(type));
             Node node3 = document.selectSingleNode("/GameData/Improvement_Yields/Row[ImprovementType='%s' and YieldType='YIELD_PRODUCTION']/Yield".formatted(type));
             Node node4 = document.selectSingleNode("/GameData/Improvement_Yields/Row[ImprovementType='%s' and YieldType='YIELD_GOLD']/Yield".formatted(type));

@@ -32,7 +32,7 @@ public class Huns extends GodsAndKingsCivilization {
             Document document = getDocument();
             String type = getType();
 
-            Element node1 = getElement().element("RazeSpeedModifier");
+            Element node1 = getElement("RazeSpeedModifier");
             Node node2 = document.selectSingleNode("/GameData/Trait_ImprovementYieldChanges/Row[TraitType='%s']/Yield".formatted(type));
 
             variableList.add(new NodeVariable(node1));

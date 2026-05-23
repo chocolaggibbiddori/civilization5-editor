@@ -50,7 +50,7 @@ public class Austria extends GodsAndKingsCivilization {
 
             Node node1 = document.selectSingleNode("/GameData/Building_YieldChanges/Row[BuildingType='%s']/Yield".formatted(type));
             Node node2 = document.selectSingleNode("/GameData/Building_YieldModifiers/Row[BuildingType='%s']/Yield".formatted(type));
-            Element node3 = getElement().element("GreatPeopleRateModifier");
+            Element node3 = getElement("GreatPeopleRateModifier");
 
             variableList.add(new NodeVariable(node1, "Yield(Production)"));
             variableList.add(new NodeVariable(node2, "Yield(Production, Modifiers)"));

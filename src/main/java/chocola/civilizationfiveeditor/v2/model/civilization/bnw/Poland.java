@@ -35,8 +35,7 @@ public class Poland extends BraveNewWorldCivilization {
 
         @Override
         protected void addVariables(List<Variable> variableList) {
-            Element element = getElement();
-            Element node = element.element("FreeSocialPoliciesPerEra");
+            Element node = getElement("FreeSocialPoliciesPerEra");
 
             variableList.add(new NodeVariable(node));
         }

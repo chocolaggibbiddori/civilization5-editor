@@ -35,8 +35,7 @@ public class Indonesia extends BraveNewWorldCivilization {
 
         @Override
         protected void addVariables(List<Variable> variableList) {
-            Element element = getElement();
-            Element node = element.element("UniqueLuxuryQuantity");
+            Element node = getElement("UniqueLuxuryQuantity");
 
             variableList.add(new NodeVariable(node));
         }
@@ -52,7 +51,7 @@ public class Indonesia extends BraveNewWorldCivilization {
             Document document = getDocument();
             String type = getType();
 
-            Element node1 = getElement().element("GreatPeopleRateModifier");
+            Element node1 = getElement("GreatPeopleRateModifier");
             Node node2 = document.selectSingleNode("/GameData/Building_YieldChanges/Row[BuildingType='%s']/Yield".formatted(type));
             Node node3 = document.selectSingleNode("/GameData/Building_YieldChangesPerReligion/Row[BuildingType='%s']/Yield".formatted(type));
 

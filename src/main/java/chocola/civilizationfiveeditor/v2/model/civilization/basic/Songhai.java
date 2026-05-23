@@ -48,7 +48,7 @@ public class Songhai extends BasicCivilization {
 
         @Override
         protected void addVariables(List<Variable> variableList) {
-            Element node = getElement().element("PlunderModifier");
+            Element node = getElement("PlunderModifier");
 
             variableList.add(new NodeVariable(node));
         }

@@ -45,6 +45,7 @@ public class CivilizationConfiguration {
         CIVILIZATION_LIST.add(new Indonesia());
         CIVILIZATION_LIST.add(new Morocco());
         CIVILIZATION_LIST.add(new Poland());
+        CIVILIZATION_LIST.add(new Portugal());
     }
 
     public static List<Civilization> getCivilizationList() {

@@ -35,7 +35,7 @@ public class Ethiopia extends GodsAndKingsCivilization {
 
         @Override
         protected void addVariables(List<Variable> variableList) {
-            Element node = getElement().element("CombatBonusVsLargerCiv");
+            Element node = getElement("CombatBonusVsLargerCiv");
 
             variableList.add(new NodeVariable(node));
         }

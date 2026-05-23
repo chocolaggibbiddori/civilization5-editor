@@ -38,7 +38,7 @@ public class Netherlands extends GodsAndKingsCivilization {
 
         @Override
         protected void addVariables(List<Variable> variableList) {
-            Element node = getElement().element("LuxuryHappinessRetention");
+            Element node = getElement("LuxuryHappinessRetention");
 
             variableList.add(new NodeVariable(node));
         }

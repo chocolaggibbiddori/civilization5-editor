@@ -160,6 +160,10 @@ public abstract class AbstractCivilization implements Civilization {
             return (Element) row;
         }
 
+        protected Element getElement(String element) {
+            return getElement().element(element);
+        }
+
         protected Document getDocument() {
             return row.getDocument();
         }
@@ -252,6 +256,10 @@ public abstract class AbstractCivilization implements Civilization {
             return (Element) row;
         }
 
+        protected Element getElement(String element) {
+            return getElement().element(element);
+        }
+
         protected Document getDocument() {
             return row.getDocument();
         }
@@ -317,6 +325,10 @@ public abstract class AbstractCivilization implements Civilization {
             return (Element) row;
         }
 
+        protected Element getElement(String element) {
+            return getElement().element(element);
+        }
+
         protected Document getDocument() {
             return row.getDocument();
         }
@@ -366,6 +378,10 @@ public abstract class AbstractCivilization implements Civilization {
 
         protected Element getElement() {
             return (Element) row;
+        }
+
+        protected Element getElement(String element) {
+            return getElement().element(element);
         }
 
         protected Document getDocument() {

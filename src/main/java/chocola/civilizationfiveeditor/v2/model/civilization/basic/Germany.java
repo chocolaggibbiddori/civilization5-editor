@@ -94,7 +94,7 @@ public class Germany extends BasicCivilization {
 
             Node node1 = document.selectSingleNode("/GameData/Building_YieldChanges/Row[BuildingType='%s']/Yield".formatted(type));
             Node node2 = document.selectSingleNode("/GameData/Building_YieldModifiers/Row[BuildingType='%s']/Yield".formatted(type));
-            Element node3 = getElement().element("CityStateTradeRouteProductionModifier");
+            Element node3 = getElement("CityStateTradeRouteProductionModifier");
 
             variableList.add(new NodeVariable(node1, "Yield(Gold)"));
             variableList.add(new NodeVariable(node2, "Yield(Gold, Modifiers)"));

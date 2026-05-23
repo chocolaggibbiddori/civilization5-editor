@@ -40,7 +40,7 @@ public class Ottoman extends BasicCivilization {
 
         @Override
         protected void addVariables(List<Variable> variableList) {
-            Element node = getElement().element("NavalUnitMaintenanceModifier");
+            Element node = getElement("NavalUnitMaintenanceModifier");
 
             variableList.add(new NodeVariable(node));
         }

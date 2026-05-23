@@ -48,7 +48,7 @@ public class Siam extends BasicCivilization {
 
         @Override
         protected void addVariables(List<Variable> variableList) {
-            Element node = getElement().element("CityStateBonusModifier");
+            Element node = getElement("CityStateBonusModifier");
 
             variableList.add(new NodeVariable(node));
         }
