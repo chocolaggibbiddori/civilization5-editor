@@ -38,6 +38,7 @@ public class CivilizationConfiguration {
         CIVILIZATION_LIST.add(new Huns());
         CIVILIZATION_LIST.add(new Maya());
         CIVILIZATION_LIST.add(new Netherlands());
+        CIVILIZATION_LIST.add(new Sweden());
     }
 
     public static List<Civilization> getCivilizationList() {
