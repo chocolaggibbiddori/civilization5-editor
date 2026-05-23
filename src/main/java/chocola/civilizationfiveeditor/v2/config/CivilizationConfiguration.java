@@ -30,6 +30,7 @@ public class CivilizationConfiguration {
         CIVILIZATION_LIST.add(new Siam());
         CIVILIZATION_LIST.add(new Songhai());
         CIVILIZATION_LIST.add(new Austria());
+        CIVILIZATION_LIST.add(new Byzantium());
     }
 
     public static List<Civilization> getCivilizationList() {
