@@ -48,6 +48,7 @@ public class CivilizationConfiguration {
         CIVILIZATION_LIST.add(new Portugal());
         CIVILIZATION_LIST.add(new Shoshone());
         CIVILIZATION_LIST.add(new Venice());
+        CIVILIZATION_LIST.add(new Zulu());
     }
 
     public static List<Civilization> getCivilizationList() {

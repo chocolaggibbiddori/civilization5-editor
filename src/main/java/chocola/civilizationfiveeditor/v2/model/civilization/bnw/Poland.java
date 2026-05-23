@@ -60,7 +60,7 @@ public class Poland extends BraveNewWorldCivilization {
             Node node7 = document.selectSingleNode("/GameData/Building_ResourceYieldChanges/Row[BuildingType='%s' and ResourceType='RESOURCE_COW' and YieldType='YIELD_GOLD']/Yield".formatted(type));
             Node node8 = document.selectSingleNode("/GameData/Building_UnitCombatProductionModifiers/Row[BuildingType='%s']/Modifier".formatted(type));
 
-            variableList.add(new NodeVariable(node1, "CombatExperience"));
+            variableList.add(new NodeVariable(node1));
             variableList.add(new NodeVariable(node2, "Yield(PRODUCTION, SHEEP)"));
             variableList.add(new NodeVariable(node3, "Yield(GOLD, SHEEP)"));
             variableList.add(new NodeVariable(node4, "Yield(PRODUCTION, HORSE)"));

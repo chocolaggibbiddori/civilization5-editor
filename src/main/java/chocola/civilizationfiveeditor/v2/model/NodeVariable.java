@@ -18,7 +18,7 @@ public class NodeVariable implements Variable {
         this.node = node;
         this.key = key;
 
-        int value = Integer.parseInt(node.getText());
+        int value = Integer.parseInt(node.getText().trim());
         this.originValue = value;
         this.value = value;
     }
