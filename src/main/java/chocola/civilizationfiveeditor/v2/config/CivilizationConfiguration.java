@@ -23,6 +23,7 @@ public class CivilizationConfiguration {
         CIVILIZATION_LIST.add(new India());
         CIVILIZATION_LIST.add(new Iroquois());
         CIVILIZATION_LIST.add(new Japan());
+        CIVILIZATION_LIST.add(new Ottoman());
     }
 
     public static List<Civilization> getCivilizationList() {
