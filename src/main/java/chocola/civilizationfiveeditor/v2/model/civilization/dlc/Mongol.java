@@ -14,20 +14,20 @@ import org.dom4j.Node;
 
 public class Mongol extends AbstractCivilization {
 
-    public static final Path DLC_01_GAME_PATH = DEFAULT_GAME_PATH.resolve("DLC/DLC_01/Gameplay/XML");
-    public static final Path DLC_01_TEXT_PATH = DLC_01_GAME_PATH.resolve("Text/KO_KR");
-    public static final Path EXPANSION2_DLC_01_GAME_PATH = DEFAULT_GAME_PATH.resolve("DLC/Expansion2/DLC/DLC_01/Gameplay/XML");
+    private static final Path DLC_01_GAME_PATH = DEFAULT_GAME_PATH.resolve("DLC/DLC_01/Gameplay/XML");
+    private static final Path DLC_01_TEXT_PATH = DLC_01_GAME_PATH.resolve("Text/KO_KR");
+    private static final Path EXPANSION2_DLC_01_GAME_PATH = DEFAULT_GAME_PATH.resolve("DLC/Expansion2/DLC/DLC_01/Gameplay/XML");
 
-    public static final Path MONGOL_CIVILIZATION_TEXT_FILE_PATH = DLC_01_TEXT_PATH.resolve("CIV5GameTextInfos_Civilizations_Mongol.xml");
-    public static final Path MONGOL_LEADER_TEXT_FILE_PATH = DLC_01_TEXT_PATH.resolve("CIV5GameTextInfos_Leaders_GenghisKhan.xml");
-    public static final Path MONGOL_TRAIT_TEXT_FILE_PATH = DLC_01_TEXT_PATH.resolve("CIV5GameTextInfos_Mongol.xml");
-    public static final Path MONGOL_UNIT_TEXT_FILE_PATH = DLC_01_TEXT_PATH.resolve("CIV5GameTextInfos_Units_Mongol.xml");
-    public static final Path MONGOL_CIVILOPEDIA_TEXT_FILE_PATH = DLC_01_TEXT_PATH.resolve("Civ5CivlopediaDLC_Mongolia.xml");
+    private static final Path MONGOL_CIVILIZATION_TEXT_FILE_PATH = DLC_01_TEXT_PATH.resolve("CIV5GameTextInfos_Civilizations_Mongol.xml");
+    private static final Path MONGOL_LEADER_TEXT_FILE_PATH = DLC_01_TEXT_PATH.resolve("CIV5GameTextInfos_Leaders_GenghisKhan.xml");
+    private static final Path MONGOL_TRAIT_TEXT_FILE_PATH = DLC_01_TEXT_PATH.resolve("CIV5GameTextInfos_Mongol.xml");
+    private static final Path MONGOL_UNIT_TEXT_FILE_PATH = DLC_01_TEXT_PATH.resolve("CIV5GameTextInfos_Units_Mongol.xml");
+    private static final Path MONGOL_CIVILOPEDIA_TEXT_FILE_PATH = DLC_01_TEXT_PATH.resolve("Civ5CivlopediaDLC_Mongolia.xml");
 
-    public static final Path MONGOL_TRAIT_FILE_PATH = DLC_01_GAME_PATH.resolve("CIV5Traits_Mongol.xml");
+    private static final Path MONGOL_TRAIT_FILE_PATH = DLC_01_GAME_PATH.resolve("CIV5Traits_Mongol.xml");
 
-    public static final Path EXPANSION2_MONGOL_CIVILIZATION_FILE_PATH = EXPANSION2_DLC_01_GAME_PATH.resolve("CIV5Civilization_Mongol.xml");
-    public static final Path EXPANSION2_MONGOL_UNIT_FILE_PATH = EXPANSION2_DLC_01_GAME_PATH.resolve("CIV5Units_Mongol.xml");
+    private static final Path EXPANSION2_MONGOL_CIVILIZATION_FILE_PATH = EXPANSION2_DLC_01_GAME_PATH.resolve("CIV5Civilization_Mongol.xml");
+    private static final Path EXPANSION2_MONGOL_UNIT_FILE_PATH = EXPANSION2_DLC_01_GAME_PATH.resolve("CIV5Units_Mongol.xml");
 
     @Override
     public List<Path> requiredPathList() {

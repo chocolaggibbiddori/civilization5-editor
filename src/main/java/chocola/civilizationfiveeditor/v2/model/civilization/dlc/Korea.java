@@ -13,19 +13,19 @@ import org.dom4j.Node;
 
 public class Korea extends AbstractCivilization {
 
-    public static final Path DLC_05_GAME_PATH = DEFAULT_GAME_PATH.resolve("DLC/DLC_05/Gameplay/XML");
-    public static final Path DLC_05_TEXT_PATH = DLC_05_GAME_PATH.resolve("Text/KO_KR");
-    public static final Path EXPANSION2_DLC_05_GAME_PATH = DEFAULT_GAME_PATH.resolve("DLC/Expansion2/DLC/DLC_05/Gameplay/XML");
+    private static final Path DLC_05_GAME_PATH = DEFAULT_GAME_PATH.resolve("DLC/DLC_05/Gameplay/XML");
+    private static final Path DLC_05_TEXT_PATH = DLC_05_GAME_PATH.resolve("Text/KO_KR");
+    private static final Path EXPANSION2_DLC_05_GAME_PATH = DEFAULT_GAME_PATH.resolve("DLC/Expansion2/DLC/DLC_05/Gameplay/XML");
 
-    public static final Path KOREA_CIVILIZATION_TEXT_FILE_PATH = DLC_05_TEXT_PATH.resolve("CIV5GameTextInfos_Civilizations_DLC_Korea.xml");
-    public static final Path KOREA_LEADER_TEXT_FILE_PATH = DLC_05_TEXT_PATH.resolve("CIV5GameTextInfos_Leaders_Sejong.xml");
-    public static final Path KOREA_TRAIT_TEXT_FILE_PATH = DLC_05_TEXT_PATH.resolve("CIV5GameTextInfos_Korea.xml");
-    public static final Path KOREA_UNIT_TEXT_FILE_PATH = DLC_05_TEXT_PATH.resolve("CIV5GameTextInfos_Units_Korea.xml");
-    public static final Path KOREA_CIVILOPEDIA_TEXT_FILE_PATH = DLC_05_TEXT_PATH.resolve("Civ5CivlopediaDLC_Korea.xml");
+    private static final Path KOREA_CIVILIZATION_TEXT_FILE_PATH = DLC_05_TEXT_PATH.resolve("CIV5GameTextInfos_Civilizations_DLC_Korea.xml");
+    private static final Path KOREA_LEADER_TEXT_FILE_PATH = DLC_05_TEXT_PATH.resolve("CIV5GameTextInfos_Leaders_Sejong.xml");
+    private static final Path KOREA_TRAIT_TEXT_FILE_PATH = DLC_05_TEXT_PATH.resolve("CIV5GameTextInfos_Korea.xml");
+    private static final Path KOREA_UNIT_TEXT_FILE_PATH = DLC_05_TEXT_PATH.resolve("CIV5GameTextInfos_Units_Korea.xml");
+    private static final Path KOREA_CIVILOPEDIA_TEXT_FILE_PATH = DLC_05_TEXT_PATH.resolve("Civ5CivlopediaDLC_Korea.xml");
 
-    public static final Path EXPANSION2_KOREA_CIVILIZATION_FILE_PATH = EXPANSION2_DLC_05_GAME_PATH.resolve("CIV5Civilization_DLC_Korea.xml");
-    public static final Path EXPANSION2_KOREA_TRAIT_FILE_PATH = EXPANSION2_DLC_05_GAME_PATH.resolve("CIV5Traits_Korea.xml");
-    public static final Path EXPANSION2_KOREA_UNIT_FILE_PATH = EXPANSION2_DLC_05_GAME_PATH.resolve("CIV5Units_Korea.xml");
+    private static final Path EXPANSION2_KOREA_CIVILIZATION_FILE_PATH = EXPANSION2_DLC_05_GAME_PATH.resolve("CIV5Civilization_DLC_Korea.xml");
+    private static final Path EXPANSION2_KOREA_TRAIT_FILE_PATH = EXPANSION2_DLC_05_GAME_PATH.resolve("CIV5Traits_Korea.xml");
+    private static final Path EXPANSION2_KOREA_UNIT_FILE_PATH = EXPANSION2_DLC_05_GAME_PATH.resolve("CIV5Units_Korea.xml");
 
     @Override
     public List<Path> requiredPathList() {

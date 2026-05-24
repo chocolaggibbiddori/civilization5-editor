@@ -12,20 +12,20 @@ import org.dom4j.Element;
 
 public class Denmark extends AbstractCivilization {
 
-    public static final Path DLC_04_GAME_PATH = DEFAULT_GAME_PATH.resolve("DLC/DLC_04/Gameplay/XML");
-    public static final Path DLC_04_TEXT_PATH = DLC_04_GAME_PATH.resolve("Text/KO_KR");
-    public static final Path EXPANSION2_DLC_04_GAME_PATH = DEFAULT_GAME_PATH.resolve("DLC/Expansion2/DLC/DLC_04/Gameplay/XML");
+    private static final Path DLC_04_GAME_PATH = DEFAULT_GAME_PATH.resolve("DLC/DLC_04/Gameplay/XML");
+    private static final Path DLC_04_TEXT_PATH = DLC_04_GAME_PATH.resolve("Text/KO_KR");
+    private static final Path EXPANSION2_DLC_04_GAME_PATH = DEFAULT_GAME_PATH.resolve("DLC/Expansion2/DLC/DLC_04/Gameplay/XML");
 
-    public static final Path DENMARK_CIVILIZATION_TEXT_FILE_PATH = DLC_04_TEXT_PATH.resolve("CIV5GameTextInfos_Civilizations_DLC_Denmark.xml");
-    public static final Path DENMARK_LEADER_TEXT_FILE_PATH = DLC_04_TEXT_PATH.resolve("CIV5GameTextInfos_Leaders_Harald.xml");
-    public static final Path DENMARK_TRAIT_TEXT_FILE_PATH = DLC_04_TEXT_PATH.resolve("CIV5GameTextInfos_Denmark.xml");
-    public static final Path DENMARK_UNIT_TEXT_FILE_PATH = DLC_04_TEXT_PATH.resolve("CIV5GameTextInfos_Units_Denmark.xml");
-    public static final Path DENMARK_CIVILOPEDIA_TEXT_FILE_PATH = DLC_04_TEXT_PATH.resolve("Civ5CivlopediaDLC_Denmark.xml");
+    private static final Path DENMARK_CIVILIZATION_TEXT_FILE_PATH = DLC_04_TEXT_PATH.resolve("CIV5GameTextInfos_Civilizations_DLC_Denmark.xml");
+    private static final Path DENMARK_LEADER_TEXT_FILE_PATH = DLC_04_TEXT_PATH.resolve("CIV5GameTextInfos_Leaders_Harald.xml");
+    private static final Path DENMARK_TRAIT_TEXT_FILE_PATH = DLC_04_TEXT_PATH.resolve("CIV5GameTextInfos_Denmark.xml");
+    private static final Path DENMARK_UNIT_TEXT_FILE_PATH = DLC_04_TEXT_PATH.resolve("CIV5GameTextInfos_Units_Denmark.xml");
+    private static final Path DENMARK_CIVILOPEDIA_TEXT_FILE_PATH = DLC_04_TEXT_PATH.resolve("Civ5CivlopediaDLC_Denmark.xml");
 
-    public static final Path DENMARK_TRAIT_FILE_PATH = DLC_04_GAME_PATH.resolve("CIV5Traits_Denmark.xml");
+    private static final Path DENMARK_TRAIT_FILE_PATH = DLC_04_GAME_PATH.resolve("CIV5Traits_Denmark.xml");
 
-    public static final Path EXPANSION2_DENMARK_CIVILIZATION_FILE_PATH = EXPANSION2_DLC_04_GAME_PATH.resolve("CIV5Civilization_DLC_Denmark.xml");
-    public static final Path EXPANSION2_DENMARK_UNIT_FILE_PATH = EXPANSION2_DLC_04_GAME_PATH.resolve("CIV5Units_Denmark.xml");
+    private static final Path EXPANSION2_DENMARK_CIVILIZATION_FILE_PATH = EXPANSION2_DLC_04_GAME_PATH.resolve("CIV5Civilization_DLC_Denmark.xml");
+    private static final Path EXPANSION2_DENMARK_UNIT_FILE_PATH = EXPANSION2_DLC_04_GAME_PATH.resolve("CIV5Units_Denmark.xml");
 
     @Override
     public List<Path> requiredPathList() {

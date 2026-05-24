@@ -15,22 +15,22 @@ import org.dom4j.Node;
 
 public class Inca extends AbstractCivilization {
 
-    public static final Path DLC_02_GAME_PATH = DEFAULT_GAME_PATH.resolve("DLC/DLC_02/Gameplay/XML");
-    public static final Path DLC_02_TEXT_PATH = DLC_02_GAME_PATH.resolve("Text/KO_KR");
-    public static final Path EXPANSION2_DLC_02_GAME_PATH = DEFAULT_GAME_PATH.resolve("DLC/Expansion2/DLC/DLC_02/Gameplay/XML");
+    private static final Path DLC_02_GAME_PATH = DEFAULT_GAME_PATH.resolve("DLC/DLC_02/Gameplay/XML");
+    private static final Path DLC_02_TEXT_PATH = DLC_02_GAME_PATH.resolve("Text/KO_KR");
+    private static final Path EXPANSION2_DLC_02_GAME_PATH = DEFAULT_GAME_PATH.resolve("DLC/Expansion2/DLC/DLC_02/Gameplay/XML");
 
-    public static final Path DLC_02_CIVILIZATION_TEXT_FILE_PATH = DLC_02_TEXT_PATH.resolve("CIV5GameTextInfos_Civilizations_DLC_02.xml");
-    public static final Path DLC_02_LEADER_TEXT_FILE_PATH = DLC_02_TEXT_PATH.resolve("CIV5GameTextInfos_Leaders_DLC_02.xml");
-    public static final Path DLC_02_TRAIT_TEXT_FILE_PATH = DLC_02_TEXT_PATH.resolve("CIV5GameTextInfos_DLC_02.xml");
-    public static final Path DLC_02_UNIT_TEXT_FILE_PATH = DLC_02_TEXT_PATH.resolve("CIV5GameTextInfos_Units_DLC_02.xml");
-    public static final Path INCA_CIVILOPEDIA_TEXT_FILE_PATH = DLC_02_TEXT_PATH.resolve("Civ5CivlopediaDLC_Inca.xml");
-    public static final Path DLC_02_IMPROVEMENT_TEXT_FILE_PATH = DLC_02_TEXT_PATH.resolve("CIV5GameTextInfos_Objects_DLC_02.xml");
+    private static final Path DLC_02_CIVILIZATION_TEXT_FILE_PATH = DLC_02_TEXT_PATH.resolve("CIV5GameTextInfos_Civilizations_DLC_02.xml");
+    private static final Path DLC_02_LEADER_TEXT_FILE_PATH = DLC_02_TEXT_PATH.resolve("CIV5GameTextInfos_Leaders_DLC_02.xml");
+    private static final Path DLC_02_TRAIT_TEXT_FILE_PATH = DLC_02_TEXT_PATH.resolve("CIV5GameTextInfos_DLC_02.xml");
+    private static final Path DLC_02_UNIT_TEXT_FILE_PATH = DLC_02_TEXT_PATH.resolve("CIV5GameTextInfos_Units_DLC_02.xml");
+    private static final Path INCA_CIVILOPEDIA_TEXT_FILE_PATH = DLC_02_TEXT_PATH.resolve("Civ5CivlopediaDLC_Inca.xml");
+    private static final Path DLC_02_IMPROVEMENT_TEXT_FILE_PATH = DLC_02_TEXT_PATH.resolve("CIV5GameTextInfos_Objects_DLC_02.xml");
 
-    public static final Path DLC_02_TRAIT_FILE_PATH = DLC_02_GAME_PATH.resolve("CIV5Traits_DLC_02.xml");
+    private static final Path DLC_02_TRAIT_FILE_PATH = DLC_02_GAME_PATH.resolve("CIV5Traits_DLC_02.xml");
 
-    public static final Path EXPANSION2_DLC_02_CIVILIZATION_FILE_PATH = EXPANSION2_DLC_02_GAME_PATH.resolve("CIV5Civilization_DLC_02.xml");
-    public static final Path EXPANSION2_DLC_02_UNIT_FILE_PATH = EXPANSION2_DLC_02_GAME_PATH.resolve("CIV5Units_DLC_02.xml");
-    public static final Path EXPANSION2_DLC_02_IMPROVEMENT_FILE_PATH = EXPANSION2_DLC_02_GAME_PATH.resolve("CIV5Improvements_DLC_02.xml");
+    private static final Path EXPANSION2_DLC_02_CIVILIZATION_FILE_PATH = EXPANSION2_DLC_02_GAME_PATH.resolve("CIV5Civilization_DLC_02.xml");
+    private static final Path EXPANSION2_DLC_02_UNIT_FILE_PATH = EXPANSION2_DLC_02_GAME_PATH.resolve("CIV5Units_DLC_02.xml");
+    private static final Path EXPANSION2_DLC_02_IMPROVEMENT_FILE_PATH = EXPANSION2_DLC_02_GAME_PATH.resolve("CIV5Improvements_DLC_02.xml");
 
     @Override
     public List<Path> requiredPathList() {

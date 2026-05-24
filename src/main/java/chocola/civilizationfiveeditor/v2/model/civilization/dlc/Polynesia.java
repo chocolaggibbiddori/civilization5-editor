@@ -15,21 +15,21 @@ import org.dom4j.Node;
 
 public class Polynesia extends AbstractCivilization {
 
-    public static final Path DLC_03_GAME_PATH = DEFAULT_GAME_PATH.resolve("DLC/DLC_03/Gameplay/XML");
-    public static final Path DLC_03_TEXT_PATH = DLC_03_GAME_PATH.resolve("Text/KO_KR");
-    public static final Path EXPANSION2_DLC_03_GAME_PATH = DEFAULT_GAME_PATH.resolve("DLC/Expansion2/DLC/DLC_03/Gameplay/XML");
+    private static final Path DLC_03_GAME_PATH = DEFAULT_GAME_PATH.resolve("DLC/DLC_03/Gameplay/XML");
+    private static final Path DLC_03_TEXT_PATH = DLC_03_GAME_PATH.resolve("Text/KO_KR");
+    private static final Path EXPANSION2_DLC_03_GAME_PATH = DEFAULT_GAME_PATH.resolve("DLC/Expansion2/DLC/DLC_03/Gameplay/XML");
 
-    public static final Path DLC_03_CIVILIZATION_TEXT_FILE_PATH = DLC_03_TEXT_PATH.resolve("CIV5GameTextInfos_Civilizations_DLC_Polynesia.xml");
-    public static final Path DLC_03_LEADER_TEXT_FILE_PATH = DLC_03_TEXT_PATH.resolve("CIV5GameTextInfos_Leaders_Kamehameha.xml");
-    public static final Path DLC_03_TRAIT_TEXT_FILE_PATH = DLC_03_TEXT_PATH.resolve("CIV5GameTextInfos_Polynesia.xml");
-    public static final Path DLC_03_UNIT_TEXT_FILE_PATH = DLC_03_TEXT_PATH.resolve("CIV5GameTextInfos_Units_Polynesia.xml");
-    public static final Path DLC_03_CIVILOPEDIA_TEXT_FILE_PATH = DLC_03_TEXT_PATH.resolve("Civ5CivlopediaDLC_Polynesia.xml");
+    private static final Path DLC_03_CIVILIZATION_TEXT_FILE_PATH = DLC_03_TEXT_PATH.resolve("CIV5GameTextInfos_Civilizations_DLC_Polynesia.xml");
+    private static final Path DLC_03_LEADER_TEXT_FILE_PATH = DLC_03_TEXT_PATH.resolve("CIV5GameTextInfos_Leaders_Kamehameha.xml");
+    private static final Path DLC_03_TRAIT_TEXT_FILE_PATH = DLC_03_TEXT_PATH.resolve("CIV5GameTextInfos_Polynesia.xml");
+    private static final Path DLC_03_UNIT_TEXT_FILE_PATH = DLC_03_TEXT_PATH.resolve("CIV5GameTextInfos_Units_Polynesia.xml");
+    private static final Path DLC_03_CIVILOPEDIA_TEXT_FILE_PATH = DLC_03_TEXT_PATH.resolve("Civ5CivlopediaDLC_Polynesia.xml");
 
-    public static final Path DLC_03_TRAIT_FILE_PATH = DLC_03_GAME_PATH.resolve("CIV5Traits_Polynesia.xml");
+    private static final Path DLC_03_TRAIT_FILE_PATH = DLC_03_GAME_PATH.resolve("CIV5Traits_Polynesia.xml");
 
-    public static final Path EXPANSION2_DLC_03_CIVILIZATION_FILE_PATH = EXPANSION2_DLC_03_GAME_PATH.resolve("CIV5Civilization_DLC_Polynesia.xml");
-    public static final Path EXPANSION2_DLC_03_UNIT_FILE_PATH = EXPANSION2_DLC_03_GAME_PATH.resolve("CIV5Units_Polynesia.xml");
-    public static final Path EXPANSION2_DLC_03_IMPROVEMENT_FILE_PATH = EXPANSION2_DLC_03_GAME_PATH.resolve("CIV5Improvements_Polynesia.xml");
+    private static final Path EXPANSION2_DLC_03_CIVILIZATION_FILE_PATH = EXPANSION2_DLC_03_GAME_PATH.resolve("CIV5Civilization_DLC_Polynesia.xml");
+    private static final Path EXPANSION2_DLC_03_UNIT_FILE_PATH = EXPANSION2_DLC_03_GAME_PATH.resolve("CIV5Units_Polynesia.xml");
+    private static final Path EXPANSION2_DLC_03_IMPROVEMENT_FILE_PATH = EXPANSION2_DLC_03_GAME_PATH.resolve("CIV5Improvements_Polynesia.xml");
 
     @Override
     public List<Path> requiredPathList() {
