@@ -40,7 +40,6 @@ public class PathUtils {
     public static final Path EXPANSION_UNIT_TEXT_FILE_PATH = EXPANSION_DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Units_Expansion.xml");
     public static final Path EXPANSION_CIVILOPEDIA_TEXT_FILE_PATH = EXPANSION_DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Civilopedia_Expansion.xml");
     public static final Path EXPANSION_BUILDING_TEXT_FILE_PATH = EXPANSION_DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Buildings_Expansion.xml");
-    public static final Path EXPANSION_OBJECT_TEXT_FILE_PATH = EXPANSION_DEFAULT_TEXT_PATH.resolve("CIV5GameTextInfos_Objects_Expansion.xml");
 
     public static final Path EXPANSION_DEFAULT_CIVILIZATION_PATH = EXPANSION_GAME_PATH.resolve("Civilizations");
     public static final Path EXPANSION_CIVILIZATION_FILE_PATH = EXPANSION_DEFAULT_CIVILIZATION_PATH.resolve("CIV5Civilizations_Expansion.xml");

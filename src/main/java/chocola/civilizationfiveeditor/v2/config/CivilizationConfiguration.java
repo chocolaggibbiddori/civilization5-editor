@@ -3,6 +3,7 @@ package chocola.civilizationfiveeditor.v2.config;
 import chocola.civilizationfiveeditor.v2.model.civilization.Civilization;
 import chocola.civilizationfiveeditor.v2.model.civilization.basic.*;
 import chocola.civilizationfiveeditor.v2.model.civilization.bnw.*;
+import chocola.civilizationfiveeditor.v2.model.civilization.dlc.Mongol;
 import chocola.civilizationfiveeditor.v2.model.civilization.gak.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +50,7 @@ public class CivilizationConfiguration {
         CIVILIZATION_LIST.add(new Shoshone());
         CIVILIZATION_LIST.add(new Venice());
         CIVILIZATION_LIST.add(new Zulu());
+        CIVILIZATION_LIST.add(new Mongol());
     }
 
     public static List<Civilization> getCivilizationList() {
