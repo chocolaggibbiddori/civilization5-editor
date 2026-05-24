@@ -5,6 +5,7 @@ import chocola.civilizationfiveeditor.v2.model.civilization.basic.*;
 import chocola.civilizationfiveeditor.v2.model.civilization.bnw.*;
 import chocola.civilizationfiveeditor.v2.model.civilization.dlc.Inca;
 import chocola.civilizationfiveeditor.v2.model.civilization.dlc.Mongol;
+import chocola.civilizationfiveeditor.v2.model.civilization.dlc.Polynesia;
 import chocola.civilizationfiveeditor.v2.model.civilization.dlc.Spain;
 import chocola.civilizationfiveeditor.v2.model.civilization.gak.*;
 import java.util.ArrayList;
@@ -55,6 +56,7 @@ public class CivilizationConfiguration {
         CIVILIZATION_LIST.add(new Mongol());
         CIVILIZATION_LIST.add(new Inca());
         CIVILIZATION_LIST.add(new Spain());
+        CIVILIZATION_LIST.add(new Polynesia());
     }
 
     public static List<Civilization> getCivilizationList() {
