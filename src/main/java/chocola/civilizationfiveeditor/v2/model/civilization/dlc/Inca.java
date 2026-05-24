@@ -23,7 +23,7 @@ public class Inca extends AbstractCivilization {
     public static final Path DLC_02_LEADER_TEXT_FILE_PATH = DLC_02_TEXT_PATH.resolve("CIV5GameTextInfos_Leaders_DLC_02.xml");
     public static final Path DLC_02_TRAIT_TEXT_FILE_PATH = DLC_02_TEXT_PATH.resolve("CIV5GameTextInfos_DLC_02.xml");
     public static final Path DLC_02_UNIT_TEXT_FILE_PATH = DLC_02_TEXT_PATH.resolve("CIV5GameTextInfos_Units_DLC_02.xml");
-    public static final Path DLC_02_CIVILOPEDIA_TEXT_FILE_PATH = DLC_02_TEXT_PATH.resolve("Civ5CivlopediaDLC_DLC_02.xml");
+    public static final Path INCA_CIVILOPEDIA_TEXT_FILE_PATH = DLC_02_TEXT_PATH.resolve("Civ5CivlopediaDLC_Inca.xml");
     public static final Path DLC_02_IMPROVEMENT_TEXT_FILE_PATH = DLC_02_TEXT_PATH.resolve("CIV5GameTextInfos_Objects_DLC_02.xml");
 
     public static final Path DLC_02_TRAIT_FILE_PATH = DLC_02_GAME_PATH.resolve("CIV5Traits_DLC_02.xml");
@@ -40,7 +40,7 @@ public class Inca extends AbstractCivilization {
                 DLC_02_LEADER_TEXT_FILE_PATH,
                 DLC_02_TRAIT_TEXT_FILE_PATH,
                 DLC_02_UNIT_TEXT_FILE_PATH,
-                DLC_02_CIVILOPEDIA_TEXT_FILE_PATH,
+                INCA_CIVILOPEDIA_TEXT_FILE_PATH,
                 DLC_02_IMPROVEMENT_TEXT_FILE_PATH,
                 DLC_02_TRAIT_FILE_PATH,
                 EXPANSION2_DLC_02_CIVILIZATION_FILE_PATH,
@@ -123,7 +123,7 @@ public class Inca extends AbstractCivilization {
 
         @Override
         protected Path getCivilopediaTextFilePath() {
-            return DLC_02_CIVILOPEDIA_TEXT_FILE_PATH;
+            return INCA_CIVILOPEDIA_TEXT_FILE_PATH;
         }
 
         @Override

@@ -20,7 +20,7 @@ public class Denmark extends AbstractCivilization {
     public static final Path DENMARK_LEADER_TEXT_FILE_PATH = DLC_04_TEXT_PATH.resolve("CIV5GameTextInfos_Leaders_Harald.xml");
     public static final Path DENMARK_TRAIT_TEXT_FILE_PATH = DLC_04_TEXT_PATH.resolve("CIV5GameTextInfos_Denmark.xml");
     public static final Path DENMARK_UNIT_TEXT_FILE_PATH = DLC_04_TEXT_PATH.resolve("CIV5GameTextInfos_Units_Denmark.xml");
-    public static final Path DENMARK_CIVILOPEDIA_TEXT_FILE_PATH = DLC_04_TEXT_PATH.resolve("Civ5CivlopediaDLC_Denmarkia.xml");
+    public static final Path DENMARK_CIVILOPEDIA_TEXT_FILE_PATH = DLC_04_TEXT_PATH.resolve("Civ5CivlopediaDLC_Denmark.xml");
 
     public static final Path DENMARK_TRAIT_FILE_PATH = DLC_04_GAME_PATH.resolve("CIV5Traits_Denmark.xml");
 
