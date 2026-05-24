@@ -3,7 +3,6 @@ plugins {
     application
     id("org.javamodularity.moduleplugin") version "1.8.15"
     id("org.openjfx.javafxplugin") version "0.0.13"
-    id("org.beryx.jlink") version "2.25.0"
     id("io.freefair.lombok") version "8.10.2"
 }
 
@@ -13,8 +12,6 @@ version = "1.0.0"
 repositories {
     mavenCentral()
 }
-
-val junitVersion = "5.12.1"
 
 java {
     toolchain {
@@ -27,7 +24,6 @@ tasks.withType<JavaCompile> {
 }
 
 application {
-    mainModule.set("chocola.civilizationfiveeditor")
     mainClass.set("chocola.civilizationfiveeditor.Launcher")
 }
 
@@ -39,18 +35,8 @@ javafx {
 dependencies {
     implementation("org.dom4j:dom4j:2.1.4")
     implementation("org.controlsfx:controlsfx:11.2.1")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 }
 
 tasks.withType<Test> {
     useJUnitPlatform()
-}
-
-jlink {
-    imageZip.set(layout.buildDirectory.file("/distributions/app-${javafx.platform.classifier}.zip"))
-    options.set(listOf("--strip-debug", "--compress", "2", "--no-header-files", "--no-man-pages"))
-    launcher {
-        name = "app"
-    }
 }
