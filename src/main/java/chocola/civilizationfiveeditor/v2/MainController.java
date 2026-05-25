@@ -1,5 +1,7 @@
 package chocola.civilizationfiveeditor.v2;
 
+import static java.util.Comparator.comparing;
+
 import chocola.civilizationfiveeditor.v2.config.CivilizationConfiguration;
 import chocola.civilizationfiveeditor.v2.model.*;
 import chocola.civilizationfiveeditor.v2.model.civilization.Civilization;
@@ -82,6 +84,8 @@ public class MainController {
 
         CivilizationConfiguration
                 .getCivilizationList()
+                .stream()
+                .sorted(comparing(Civilization::getName))
                 .forEach(civ -> civListView.getItems().add(civ));
         civListView.setCellFactory(listView -> new ListCell<>() {
 

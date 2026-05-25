@@ -60,8 +60,6 @@ public class CivilizationConfiguration {
         CIVILIZATION_LIST.add(new Denmark());
         CIVILIZATION_LIST.add(new Korea());
         CIVILIZATION_LIST.add(new Babylon());
-
-        CIVILIZATION_LIST.sort(comparing(Civilization::getName));
     }
 
     public static List<Civilization> getCivilizationList() {
