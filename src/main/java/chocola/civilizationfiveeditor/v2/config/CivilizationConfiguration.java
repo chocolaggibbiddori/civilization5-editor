@@ -1,7 +1,5 @@
 package chocola.civilizationfiveeditor.v2.config;
 
-import static java.util.Comparator.comparing;
-
 import chocola.civilizationfiveeditor.v2.model.civilization.Civilization;
 import chocola.civilizationfiveeditor.v2.model.civilization.basic.*;
 import chocola.civilizationfiveeditor.v2.model.civilization.bnw.*;
