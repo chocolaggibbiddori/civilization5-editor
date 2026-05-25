@@ -1,5 +1,7 @@
 package chocola.civilizationfiveeditor.v2.config;
 
+import static java.util.Comparator.comparing;
+
 import chocola.civilizationfiveeditor.v2.model.civilization.Civilization;
 import chocola.civilizationfiveeditor.v2.model.civilization.basic.*;
 import chocola.civilizationfiveeditor.v2.model.civilization.bnw.*;
@@ -14,6 +16,7 @@ public class CivilizationConfiguration {
 
     public static void init() {
         CIVILIZATION_LIST.clear();
+
         CIVILIZATION_LIST.add(new America());
         CIVILIZATION_LIST.add(new Arabia());
         CIVILIZATION_LIST.add(new Aztec());
@@ -57,6 +60,8 @@ public class CivilizationConfiguration {
         CIVILIZATION_LIST.add(new Denmark());
         CIVILIZATION_LIST.add(new Korea());
         CIVILIZATION_LIST.add(new Babylon());
+
+        CIVILIZATION_LIST.sort(comparing(Civilization::getName));
     }
 
     public static List<Civilization> getCivilizationList() {
